@@ -1,0 +1,2 @@
+Index/*.faiss filter=lfs diff=lfs merge=lfs -text
+Index/*.npy filter=lfs diff=lfs merge=lfs -text

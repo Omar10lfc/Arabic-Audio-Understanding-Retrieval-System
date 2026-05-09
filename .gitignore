@@ -1,0 +1,23 @@
+# Local model checkpoints — already published on the HF Hub, don't ship in the Space repo
+Whisper-Fine-tuned-final-model/
+Summarizer/
+
+# Local dataset / extracted XL-Sum
+Data/
+arabic_XLSum_v2.0/
+arabic_XLSum_v2.0.tar.bz2
+xl-sum/
+
+# Notebook + training artifacts
+*.ipynb_checkpoints/
+summarization_outputs/
+__pycache__/
+*.pyc
+
+# Virtualenv
+.venv/
+
+# Local results / scratch
+*.log
+upload.log
+upload.err.log
