@@ -319,6 +319,28 @@ def on_takeaway_click(selected, state):
     return drill_down(selected, state.get("chunks"), state.get("index"))
 
 
+def clear_all():
+    """Reset every input/output to the same state the app starts in. Wired to
+       the Clear button so the user can run a fresh test without leftover
+       transcript/summary/takeaway content from a previous audio."""
+    empty_radio = gr.Radio(
+        choices=[], value=None,
+        label="Click a takeaway to jump to its source context",
+        interactive=True,
+        elem_classes=["arabic-radio"],
+    )
+    return (
+        None,                                                                # audio_in
+        "",                                                                  # url_in
+        "*The structured study guide will appear here after analysis.*",     # cheat_out
+        empty_radio,                                                         # takeaways_radio
+        "",                                                                  # transcript_box
+        None,                                                                # pdf_out
+        None,                                                                # state_payload
+        "",                                                                  # drill_out
+    )
+
+
 # =============================================================================
 # UI layout
 # =============================================================================
@@ -356,6 +378,8 @@ with gr.Blocks(title="Smart Lecture Assistant — Arabic",
         with gr.Column(scale=1):
             analyze_btn = gr.Button("🔍 Analyze Lecture",
                                     variant="primary", size="lg")
+            clear_btn   = gr.Button("🧹 Clear",
+                                    variant="secondary", size="lg")
 
     with gr.Row():
         with gr.Column(scale=1):
@@ -405,6 +429,13 @@ with gr.Blocks(title="Smart Lecture Assistant — Arabic",
         fn=on_takeaway_click,
         inputs=[takeaways_radio, state_payload],
         outputs=[drill_out],
+    )
+
+    clear_btn.click(
+        fn=clear_all,
+        inputs=[],
+        outputs=[audio_in, url_in, cheat_out, takeaways_radio,
+                 transcript_box, pdf_out, state_payload, drill_out],
     )
 
 
