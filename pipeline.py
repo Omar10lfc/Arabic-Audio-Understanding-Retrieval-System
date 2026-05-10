@@ -167,7 +167,7 @@ def _load_whisper():
     if _M.asr_pipeline is not None:
         return
     from transformers import (
-        WhisperFeatureExtractor, WhisperTokenizerFast, WhisperProcessor,
+        WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor,
         WhisperForConditionalGeneration,
         pipeline as hf_pipeline,
     )
@@ -176,11 +176,11 @@ def _load_whisper():
     # fine-tuned repo. Fine-tuning didn't change the tokenizer, and the
     # tokenizer.json saved alongside our fine-tuned weights was serialized
     # with a newer `tokenizers` (>=0.20) than transformers 4.44.2 can parse.
-    # Loading from openai/whisper-small bypasses that incompatibility while
-    # still using our fine-tuned weights below.
+    # WhisperProcessor requires the slow WhisperTokenizer (not Fast), and the
+    # base repo ships vocab.json + merges.txt that the slow tokenizer needs.
     _BASE = "openai/whisper-small"
     _feat = WhisperFeatureExtractor.from_pretrained(_BASE)
-    _tok  = WhisperTokenizerFast.from_pretrained(_BASE)
+    _tok  = WhisperTokenizer.from_pretrained(_BASE)
     _M.whisper_proc = WhisperProcessor(feature_extractor=_feat, tokenizer=_tok)
     _M.whisper_mdl  = (WhisperForConditionalGeneration
                        .from_pretrained(str(WHISPER_DIR), **_load_kwargs())
