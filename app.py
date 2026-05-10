@@ -200,21 +200,23 @@ APP_CSS = """
     letter-spacing: 0.01em;
 }
 
-/* === Arabic content surfaces (RTL only here) === */
+/* === Arabic content surfaces (auto-direction per paragraph) ===
+   `unicode-bidi: plaintext` makes each paragraph pick its direction from its
+   first strong character — Arabic flows RTL, English placeholder flows LTR.
+   `text-align: start` then aligns to whichever side that direction indicates. */
 .arabic-text textarea,
 .arabic-text .prose,
 .arabic-text .markdown-body {
-    direction: rtl !important;
-    text-align: right !important;
+    unicode-bidi: plaintext !important;
+    text-align: start !important;
     font-family: "Amiri", "Noto Naskh Arabic", "Segoe UI", serif;
     font-size: 1.05rem;
     line-height: 1.85;
     color: #e7ecf3;
 }
 .arabic-radio label > span:last-child {
-    direction: rtl !important;
-    text-align: right !important;
-    unicode-bidi: plaintext;
+    unicode-bidi: plaintext !important;
+    text-align: start !important;
     display: inline-block;
     font-family: "Amiri", "Noto Naskh Arabic", serif;
     font-size: 1.0rem;
