@@ -1,16 +1,17 @@
-gradio>=4.44.0,<5.0
+gradio==4.44.0
 # huggingface_hub 1.0 removed `HfFolder`, which gradio 4.x still imports.
-# Pin to <1.0 until we move to gradio 5.x.
 huggingface_hub>=0.23,<1.0
 fastapi>=0.110.0
 uvicorn[standard]>=0.27.0
 python-multipart>=0.0.9
-torch
-transformers>=4.44.0,<5.0
-accelerate>=0.30.0
+torch==2.3.1
+# Whisper + AraBART weights were saved with transformers 4.44.2.
+# Loading with >=4.45 breaks Whisper's tokenizer (extra_special_tokens list/dict).
+transformers==4.44.2
+accelerate>=0.30.0,<1.0
 librosa>=0.10.0
 faiss-cpu>=1.8.0
-sentence-transformers>=3.0.0
+sentence-transformers>=3.0.0,<4.0
 fpdf2>=2.7.0
 arabic-reshaper>=3.0.0
 python-bidi>=0.4.2
