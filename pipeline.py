@@ -167,11 +167,18 @@ def _load_whisper():
     if _M.asr_pipeline is not None:
         return
     from transformers import (
-        WhisperProcessor, WhisperForConditionalGeneration,
+        WhisperFeatureExtractor, WhisperTokenizerFast, WhisperProcessor,
+        WhisperForConditionalGeneration,
         pipeline as hf_pipeline,
     )
     print(f"[pipeline] loading Whisper from {WHISPER_DIR} ...")
-    _M.whisper_proc = WhisperProcessor.from_pretrained(str(WHISPER_DIR))
+    # Build the processor from the fast tokenizer explicitly: the published
+    # repo only contains tokenizer.json (fast format), not vocab.json/merges.txt
+    # (slow format), so the default `WhisperProcessor.from_pretrained` path
+    # fails when it picks the slow tokenizer based on tokenizer_class.
+    _feat = WhisperFeatureExtractor.from_pretrained(str(WHISPER_DIR))
+    _tok  = WhisperTokenizerFast.from_pretrained(str(WHISPER_DIR))
+    _M.whisper_proc = WhisperProcessor(feature_extractor=_feat, tokenizer=_tok)
     _M.whisper_mdl  = (WhisperForConditionalGeneration
                        .from_pretrained(str(WHISPER_DIR), **_load_kwargs())
                        .to(_device()).eval())
