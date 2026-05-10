@@ -1,7 +1,11 @@
 gradio==4.44.1
 # huggingface_hub 1.0 removed `HfFolder`, which gradio 4.x still imports.
 huggingface_hub>=0.23,<1.0
-fastapi>=0.110.0
+# starlette 0.45 reordered TemplateResponse args (added `request` first).
+# Gradio 4.44 calls the old signature, so newer starlette interprets a dict
+# as the template name -> "TypeError: unhashable type: 'dict'".
+starlette>=0.36,<0.45
+fastapi>=0.110.0,<0.116
 uvicorn[standard]>=0.27.0
 python-multipart>=0.0.9
 torch==2.3.1
