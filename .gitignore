@@ -21,3 +21,9 @@ __pycache__/
 *.log
 upload.log
 upload.err.log
+
+# Generated demo artifacts — regenerate with generate_test_audio.py
+arabic_lecture_sample.mp3
+
+# Project brief PDF — not for redistribution
+Project NLP.pdf
