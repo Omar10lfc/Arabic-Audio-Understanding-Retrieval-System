@@ -41,22 +41,51 @@ from pipeline import (
 
 
 # =============================================================================
-# Global RTL styling — every Arabic surface should read right-to-left
+# Styling — bilingual UI: English chrome (LTR), Arabic content boxes (RTL).
+# Applying RTL only to the elements that hold Arabic output (transcript, cheat
+# sheet, takeaways, drill-down) keeps button/label text reading naturally
+# left-to-right while Arabic still renders correctly.
 # =============================================================================
-RTL_CSS = """
-.gradio-container, .gradio-container * {
-    direction: rtl;
-    text-align: right;
-}
-textarea, input[type="text"] {
+APP_CSS = """
+/* The actual Arabic content surfaces */
+.arabic-text textarea,
+.arabic-text .prose,
+.arabic-text .markdown-body {
     direction: rtl !important;
     text-align: right !important;
+    font-size: 1.02rem;
+    line-height: 1.7;
 }
-.markdown-body, .prose {
-    direction: rtl;
-    text-align: right;
+.arabic-radio label > span:last-child {
+    direction: rtl !important;
+    text-align: right !important;
+    unicode-bidi: plaintext;
+    display: inline-block;
 }
-button { direction: rtl; }
+
+/* Hero header */
+.hero {
+    padding: 1.4rem 1.6rem;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    color: #fff;
+    margin-bottom: 0.8rem;
+}
+.hero h1 { margin: 0 0 0.35rem 0; font-weight: 700; }
+.hero p  { margin: 0; opacity: 0.92; }
+.hero code {
+    background: rgba(255,255,255,0.18);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+}
+
+.section-header {
+    font-weight: 600;
+    margin: 0.2rem 0 0.4rem 0;
+    border-bottom: 1px solid rgba(127,127,127,0.25);
+    padding-bottom: 0.3rem;
+}
 """
 
 
@@ -76,18 +105,18 @@ def analyze_lecture(audio_path, url):
             audio_path = download_audio_from_url(url.strip())
         except Exception as e:
             empty_radio = gr.Radio(choices=[], value=None, interactive=True)
-            return (f"⚠️ تعذر تحميل الفيديو من الرابط: {e}",
+            return (f"⚠️ Failed to download video — تعذر تحميل الفيديو: {e}",
                     empty_radio, "", None, {}, "")
 
     if not audio_path:
         empty_radio = gr.Radio(choices=[], value=None, interactive=True)
-        return ("⚠️ الرجاء تحميل ملف صوتي أو إدخال رابط فيديو.",
+        return ("⚠️ Please upload an audio file or paste a YouTube URL.",
                 empty_radio, "", None, {}, "")
 
     transcript = run_whisper(audio_path)
     if not transcript:
         empty_radio = gr.Radio(choices=[], value=None, interactive=True)
-        return ("⚠️ تعذر التعرف على الصوت. تأكد من جودة الملف.",
+        return ("⚠️ Speech recognition failed — check audio quality.",
                 empty_radio, "", None, {}, "")
 
     chunks, index = build_index(transcript)
@@ -97,8 +126,9 @@ def analyze_lecture(audio_path, url):
     radio = gr.Radio(
         choices=takeaways,
         value=None,
-        label="اضغط على فكرة لعرض السياق الأصلي من المحاضرة",
+        label="Key Takeaways — click one to jump to its source context",
         interactive=True,
+        elem_classes=["arabic-radio"],
     )
 
     state_payload = {"chunks": chunks, "index": index}
@@ -115,17 +145,25 @@ def on_takeaway_click(selected, state):
 # =============================================================================
 # UI layout
 # =============================================================================
-with gr.Blocks(title="Smart Lecture Assistant",
+with gr.Blocks(title="Smart Lecture Assistant — Arabic",
                theme=gr.themes.Soft(),
-               css=RTL_CSS) as demo:
+               css=APP_CSS) as demo:
 
-    gr.Markdown(
+    gr.HTML(
         """
-        # 🎓 المساعد الذكي للمحاضرات
-
-        **حوّل صوت المحاضرة إلى دليل مراجعة كامل + اكتشف السياق الأصلي خلف كل فكرة.**
-
-        *المراحل: التعرف على الصوت → الفهرسة الدلالية → التلخيص → إعادة الترتيب*
+        <div class="hero">
+            <h1>🎓 Smart Lecture Assistant — Arabic</h1>
+            <p>
+                Upload an Arabic lecture and get a transcript, a structured study
+                guide, and one-click drill-down to the exact source segment.
+            </p>
+            <p style="margin-top:0.4rem; font-size:0.9em;">
+                Pipeline:
+                <code>Whisper (ASR)</code> →
+                <code>CAMeL-BERT + FAISS (Semantic Search)</code> →
+                <code>AraBART (Summarization)</code>
+            </p>
+        </div>
         """
     )
 
@@ -133,38 +171,46 @@ with gr.Blocks(title="Smart Lecture Assistant",
         with gr.Column(scale=2):
             audio_in = gr.Audio(sources=["upload", "microphone"],
                                 type="filepath",
-                                label="🎙️ ملف صوت المحاضرة")
+                                label="🎙️ Lecture audio")
             url_in = gr.Textbox(
-                label="📹 أو ألصق رابط فيديو يوتيوب",
+                label="📹 …or paste a YouTube URL",
                 placeholder="https://www.youtube.com/watch?v=...",
                 lines=1,
             )
         with gr.Column(scale=1):
-            analyze_btn = gr.Button("🔍 حلل المحاضرة",
+            analyze_btn = gr.Button("🔍 Analyze Lecture",
                                     variant="primary", size="lg")
 
     with gr.Row():
         with gr.Column(scale=1):
-            gr.Markdown("## 📘 دليل المراجعة")
-            cheat_out = gr.Markdown(value="*سيظهر دليل المراجعة هنا بعد التحليل.*")
-            pdf_out   = gr.File(label="⬇️ تحميل بصيغة PDF",
+            gr.Markdown("### 📘 Study Guide", elem_classes=["section-header"])
+            cheat_out = gr.Markdown(
+                value="*The structured study guide will appear here after analysis.*",
+                elem_classes=["arabic-text"],
+            )
+            pdf_out   = gr.File(label="⬇️ Download as PDF",
                                 interactive=False)
 
         with gr.Column(scale=1):
-            gr.Markdown("## ✨ أهم الأفكار")
+            gr.Markdown("### ✨ Key Takeaways", elem_classes=["section-header"])
             takeaways_radio = gr.Radio(
                 choices=[], value=None,
-                label="اضغط على فكرة لعرض السياق الأصلي",
+                label="Click a takeaway to jump to its source context",
                 interactive=True,
+                elem_classes=["arabic-radio"],
             )
             drill_out = gr.Textbox(
-                label="📝 السياق الأصلي من المحاضرة",
+                label="📝 Source context from the lecture",
                 lines=8, interactive=False,
-                placeholder="ستظهر هنا الفقرة الأصلية المرتبطة بالفكرة المختارة.",
+                placeholder="The original passage tied to the selected takeaway will appear here.",
+                elem_classes=["arabic-text"],
             )
 
-    with gr.Accordion("📜 النص الكامل للمحاضرة", open=False):
-        transcript_box = gr.Textbox(lines=12, interactive=False, show_label=False)
+    with gr.Accordion("📜 Full Transcript", open=False):
+        transcript_box = gr.Textbox(
+            lines=12, interactive=False, show_label=False,
+            elem_classes=["arabic-text"],
+        )
 
     # Don't pass an empty dict as the State default — gradio_client's schema
     # introspection chokes on `additionalProperties: True` ("'bool' is not
