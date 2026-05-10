@@ -24,11 +24,27 @@ import re
 import textwrap
 import tempfile
 import urllib.request
+from collections import namedtuple
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
+
+
+# Each indexed chunk carries its own time range when timestamps are available
+# (Whisper produces 30s segments by default — we interpolate per-word inside
+# each segment). `start` / `end` may be None when timestamps weren't requested.
+Chunk = namedtuple("Chunk", ["text", "start", "end"])
+
+
+def _fmt_time(t: Optional[float]) -> str:
+    """Seconds -> `mm:ss` (or `hh:mm:ss` past one hour). Returns `??:??` if None."""
+    if t is None:
+        return "??:??"
+    t = max(0, int(round(t)))
+    h, m, s = t // 3600, (t % 3600) // 60, t % 60
+    return f"{h:02d}:{m:02d}:{s:02d}" if h else f"{m:02d}:{s:02d}"
 
 
 # =============================================================================
@@ -317,37 +333,93 @@ def download_audio_from_url(url: str) -> str:
     return str(fallback[0])
 
 
-def run_whisper(audio_path: str) -> str:
+def run_whisper(audio_path: str, *, return_segments: bool = False):
     """Transcribe an Arabic audio file. Long-form audio is handled by HF's
        pipeline via 30s chunks + 5s stride — no manual windowing needed.
 
        We decode the file with librosa first (soundfile backend) and hand the
        resulting numpy array to the pipeline. This avoids the pipeline's
        default ffmpeg-shell-out, which is missing on most Windows installs and
-       blows up with `WinError 2` when transcribing uploads."""
+       blows up with `WinError 2` when transcribing uploads.
+
+       When `return_segments=True`, returns `(text, segments)` where segments
+       is a list of `{"start": float, "end": float, "text": str}` — used by
+       `build_index` to attach time ranges to each searchable chunk."""
     if not audio_path:
-        return ""
+        return ("", []) if return_segments else ""
     import librosa
     _load_whisper()
     speech, _ = librosa.load(audio_path, sr=16000, mono=True)
     result = _M.asr_pipeline(
         speech,
         generate_kwargs={"language": "arabic", "task": "transcribe"},
+        return_timestamps=True if return_segments else None,
     )
-    return result["text"].strip()
+    text = result["text"].strip()
+    if not return_segments:
+        return text
+    raw_chunks = result.get("chunks") or []
+    segments: List[Dict] = []
+    for c in raw_chunks:
+        ts = c.get("timestamp") or (None, None)
+        segments.append({
+            "start": float(ts[0]) if ts[0] is not None else None,
+            "end":   float(ts[1]) if ts[1] is not None else None,
+            "text":  (c.get("text") or "").strip(),
+        })
+    return text, segments
+
+
+def _word_times_from_segments(segments: List[Dict]) -> List[Tuple[float, float]]:
+    """Interpolate per-word `(start, end)` linearly inside each whisper segment.
+
+       Whisper emits one timestamp per 30s window, not per word. For drill-down
+       precision we don't need word-level accuracy — we just need each
+       50-word chunk to land in roughly the right place in the audio. Linear
+       interpolation inside the segment is sufficient for that."""
+    out: List[Tuple[float, float]] = []
+    for seg in segments:
+        words = (seg.get("text") or "").strip().split()
+        if not words:
+            continue
+        s = seg.get("start"); e = seg.get("end")
+        if s is None: s = (out[-1][1] if out else 0.0)
+        if e is None or e <= s: e = s + 0.5 * len(words)   # ~0.5s/word fallback
+        per = (e - s) / max(1, len(words))
+        for j in range(len(words)):
+            out.append((s + j * per, s + (j + 1) * per))
+    return out
 
 
 # =============================================================================
 # 2. INDEX
 # =============================================================================
-def build_index(transcript: str):
-    """Chunk → embed → FAISS inner-product index. Returns (chunks, index).
-       For lecture-sized inputs an exact `IndexFlatIP` is the right choice."""
+def build_index(transcript: str, segments: Optional[List[Dict]] = None):
+    """Chunk → embed → FAISS inner-product index. Returns (chunks, index)
+       where `chunks` is a list of `Chunk(text, start, end)` namedtuples.
+
+       When `segments` is provided (from `run_whisper(..., return_segments=True)`),
+       each chunk carries a `(start, end)` time range derived from Whisper's
+       segment timestamps. Otherwise the time fields are `None` and the
+       behaviour matches the old string-only signature."""
     import faiss
-    chunks = chunk_text(transcript)
+    word_times = _word_times_from_segments(segments) if segments else []
+    norm_words = normalize_arabic(transcript).split()
+    chunks: List[Chunk] = []
+    for i in range(0, len(norm_words), CHUNK_WORDS):
+        slice_w = norm_words[i:i + CHUNK_WORDS]
+        if len(slice_w) < 5:
+            continue
+        text = " ".join(slice_w)
+        if word_times and i < len(word_times):
+            j_end = min(i + len(slice_w) - 1, len(word_times) - 1)
+            t0, t1 = word_times[i][0], word_times[j_end][1]
+            chunks.append(Chunk(text=text, start=t0, end=t1))
+        else:
+            chunks.append(Chunk(text=text, start=None, end=None))
     if not chunks:
         return [], None
-    emb = encode_arabic(chunks)
+    emb = encode_arabic([c.text for c in chunks])
     index = faiss.IndexFlatIP(emb.shape[1])
     index.add(emb)
     return chunks, index
@@ -395,16 +467,34 @@ def _summarize(texts, num_beams: int = 4, max_target: int = SUMM_MAX_OUT,
 # 4. CHEAT SHEET
 # =============================================================================
 def generate_cheat_sheet(chunks, index) -> Tuple[str, Optional[str]]:
-    """Returns (markdown, pdf_path)."""
+    """Returns (markdown, pdf_path).
+
+       Diversification: each section retrieves from a *wider* top-k (TOP_K_FAISS)
+       and skips chunks already consumed by an earlier section. With a noisy
+       transcript the top FAISS hits cluster — without this filter every
+       section ends up summarizing the same one or two chunks, which is what
+       produced the near-identical sections in the earlier test run."""
     if not chunks or index is None:
         return "## لا يوجد محتوى لتحليله.", None
 
     sections: List[Tuple[str, str]] = []
+    used: set = set()
+    PER_SECTION = 3
+
     for title, query in CHEAT_QUERIES:
-        hits = _retrieve(query, chunks, index, k=3)
-        if not hits:
+        hits = _retrieve(query, chunks, index, k=TOP_K_FAISS)
+        # Drop any chunk already used by a previous section so the model isn't
+        # asked to summarize the same input five times.
+        fresh = [(i, s) for (i, s) in hits if i not in used][:PER_SECTION]
+        # If everything's been used, fall back to top-1 of the original hits —
+        # better to repeat one chunk than emit an empty section.
+        if not fresh and hits:
+            fresh = hits[:1]
+        if not fresh:
             continue
-        retrieved = " ".join(chunks[h[0]] for h in hits)
+        for i, _ in fresh:
+            used.add(i)
+        retrieved = " ".join(chunks[i].text for i, _ in fresh)
         summary   = _summarize(retrieved)[0]
         sections.append((title, summary))
 
@@ -448,7 +538,8 @@ def generate_takeaways(transcript: str, n: int = N_TAKEAWAYS) -> List[str]:
 # 6. DRILL-DOWN
 # =============================================================================
 def drill_down(selected_takeaway: str, chunks, index) -> str:
-    """FAISS top-K → cross-encoder rerank → return the single best chunk."""
+    """FAISS top-K → cross-encoder rerank → return the single best chunk,
+       prefixed with its `[mm:ss — mm:ss]` time range when available."""
     if not selected_takeaway or not chunks or index is None:
         return ""
     _load_reranker()
@@ -458,10 +549,13 @@ def drill_down(selected_takeaway: str, chunks, index) -> str:
     # Cross-encoder reads the takeaway against the *normalized* form of each
     # candidate, mirroring the embedding-eval setup so scores are comparable.
     pairs     = [(normalize_arabic(selected_takeaway),
-                  normalize_arabic(chunks[i])) for i, _ in hits]
+                  normalize_arabic(chunks[i].text)) for i, _ in hits]
     ce_scores = _M.reranker.predict(pairs)
     best_local = int(np.argmax(ce_scores))
-    return chunks[hits[best_local][0]]
+    best = chunks[hits[best_local][0]]
+    if best.start is not None and best.end is not None:
+        return f"⏱ {_fmt_time(best.start)} — {_fmt_time(best.end)}\n\n{best.text}"
+    return best.text
 
 
 # =============================================================================

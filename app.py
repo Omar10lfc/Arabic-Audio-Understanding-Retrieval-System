@@ -290,13 +290,13 @@ def analyze_lecture(audio_path, url):
         return ("⚠️ Please upload an audio file or paste a YouTube URL.",
                 empty_radio, "", None, {}, "")
 
-    transcript = run_whisper(audio_path)
+    transcript, segments = run_whisper(audio_path, return_segments=True)
     if not transcript:
         empty_radio = gr.Radio(choices=[], value=None, interactive=True)
         return ("⚠️ Speech recognition failed — check audio quality.",
                 empty_radio, "", None, {}, "")
 
-    chunks, index = build_index(transcript)
+    chunks, index = build_index(transcript, segments)
     cheat_md, pdf = generate_cheat_sheet(chunks, index)
     takeaways     = generate_takeaways(transcript)
 
