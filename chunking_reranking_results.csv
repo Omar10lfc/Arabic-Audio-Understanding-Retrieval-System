@@ -1,0 +1,7 @@
+Config,P@1,P@3,P@5
+Small (50 words) (FAISS Only),0.64,0.8,0.88
+Small (50 words) (+ Re-Rank),0.86,0.9,0.9
+Medium (100 words) (FAISS Only),0.58,0.76,0.88
+Medium (100 words) (+ Re-Rank),0.84,0.9,0.9
+Large (200 words) (FAISS Only),0.6,0.78,0.86
+Large (200 words) (+ Re-Rank),0.82,0.92,0.92

@@ -33,11 +33,20 @@ def _safe_json_schema_to_python_type(schema, defs=None):
     return _orig_json_schema_to_python_type(schema, defs)
 _gcu._json_schema_to_python_type = _safe_json_schema_to_python_type
 
+import os
+
 from pipeline import (
     run_whisper, build_index,
     generate_cheat_sheet, generate_takeaways, drill_down,
     download_audio_from_url, warm_up,
 )
+
+
+# HF Spaces sets `SPACE_ID` automatically. We use it to hide features that
+# don't work reliably from a datacenter IP — currently the YouTube URL input,
+# which YouTube's anti-bot gate blocks on every unauthenticated request from
+# AWS / GCP / HF ranges.
+ON_SPACE = bool(os.environ.get("SPACE_ID"))
 
 
 # =============================================================================
@@ -341,8 +350,21 @@ def analyze_lecture(audio_path, url):
             audio_path = download_audio_from_url(url.strip())
         except Exception as e:
             empty_radio = gr.Radio(choices=[], value=None, interactive=True)
-            return (f"⚠️ Failed to download video — تعذر تحميل الفيديو: {e}",
-                    empty_radio, "", None, {}, "")
+            msg = str(e)
+            # YouTube's bot-verification block is the most common failure on
+            # any non-residential IP. Surface a clear explanation instead of
+            # the raw yt-dlp stacktrace.
+            if "Sign in to confirm" in msg or "bot" in msg.lower():
+                friendly = (
+                    "⚠️ **YouTube blocked this download.**  \n"
+                    "YouTube refuses requests from datacenter IPs (this "
+                    "includes Hugging Face Spaces, AWS, GCP, etc.) without "
+                    "a logged-in cookie. There's no fix on the server side. "
+                    "Please upload the audio file directly instead."
+                )
+            else:
+                friendly = f"⚠️ Failed to download video: {msg}"
+            return (friendly, empty_radio, "", None, {}, "")
 
     if not audio_path:
         empty_radio = gr.Radio(choices=[], value=None, interactive=True)
@@ -442,11 +464,22 @@ with gr.Blocks(title="Smart Lecture Assistant — Arabic",
             audio_in = gr.Audio(sources=["upload", "microphone"],
                                 type="filepath",
                                 label="🎙️ Lecture audio")
+            # YouTube ingest only works locally. On HF Spaces, YouTube blocks
+            # yt-dlp from the Space's datacenter IP with a bot-verification
+            # challenge that we can't satisfy without leaking cookies.
             url_in = gr.Textbox(
                 label="📹 …or paste a YouTube URL",
                 placeholder="https://www.youtube.com/watch?v=...",
                 lines=1,
+                visible=not ON_SPACE,
             )
+            if ON_SPACE:
+                gr.Markdown(
+                    "<span style='color:#94a3b8;font-size:0.85rem'>"
+                    "💡 YouTube ingest is disabled on the hosted demo "
+                    "(YouTube blocks datacenter IPs). Upload an audio file "
+                    "above to try the pipeline.</span>"
+                )
         with gr.Column(scale=1):
             analyze_btn = gr.Button("🔍 Analyze Lecture",
                                     variant="primary", size="lg")

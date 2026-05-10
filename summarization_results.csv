@@ -1,0 +1,4 @@
+model,ROUGE-1,ROUGE-2,ROUGE-L,BLEU,n
+mT5-XLSum (zero-shot),34.82,14.77,29.17,7.43,4688
+"AraBART (pretrained, no FT)",20.25,5.08,13.48,1.83,4688
+AraBART (fine-tuned),34.99,15.77,29.56,8.26,4688

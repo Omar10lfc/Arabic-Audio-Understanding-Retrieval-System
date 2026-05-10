@@ -1,0 +1,10 @@
+{
+  "model": "openai/whisper-small",
+  "n_train": 25000,
+  "n_test": 300,
+  "max_steps": 4000,
+  "baseline_wer": 42.69,
+  "finetuned_wer": 20.61,
+  "abs_improvement": 22.08,
+  "rel_improvement": 51.7
+}
