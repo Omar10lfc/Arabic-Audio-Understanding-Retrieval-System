@@ -10,6 +10,29 @@ Run:
 
 import gradio as gr
 
+# ---------------------------------------------------------------------------
+# Workaround for gradio_client schema bug (4.44.x):
+#   When a callback's return type contains `dict`, gradio emits a JSON schema
+#   with `additionalProperties: True`. The schema parser then does
+#   `"const" in <bool>` and crashes with `TypeError: argument of type 'bool'
+#   is not iterable`. Patch `get_type` to return "Any" for non-dict inputs.
+# ---------------------------------------------------------------------------
+import gradio_client.utils as _gcu
+
+_orig_get_type = _gcu.get_type
+def _safe_get_type(schema):
+    if not isinstance(schema, dict):
+        return "Any"
+    return _orig_get_type(schema)
+_gcu.get_type = _safe_get_type
+
+_orig_json_schema_to_python_type = _gcu._json_schema_to_python_type
+def _safe_json_schema_to_python_type(schema, defs=None):
+    if not isinstance(schema, dict):
+        return "Any"
+    return _orig_json_schema_to_python_type(schema, defs)
+_gcu._json_schema_to_python_type = _safe_json_schema_to_python_type
+
 from pipeline import (
     run_whisper, build_index,
     generate_cheat_sheet, generate_takeaways, drill_down,
