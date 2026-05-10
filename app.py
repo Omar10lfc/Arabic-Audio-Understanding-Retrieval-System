@@ -143,7 +143,11 @@ with gr.Blocks(title="Smart Lecture Assistant",
     with gr.Accordion("📜 النص الكامل للمحاضرة", open=False):
         transcript_box = gr.Textbox(lines=12, interactive=False, show_label=False)
 
-    state_payload = gr.State({})
+    # Don't pass an empty dict as the State default — gradio_client's schema
+    # introspection chokes on `additionalProperties: True` ("'bool' is not
+    # iterable" in get_type). Initial value `None` produces a clean schema and
+    # the consumer (`on_takeaway_click`) already guards against falsy state.
+    state_payload = gr.State()
 
     analyze_btn.click(
         fn=analyze_lecture,
