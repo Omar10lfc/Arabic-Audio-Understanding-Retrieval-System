@@ -30,26 +30,7 @@ Three independently fine-tuned components, each evaluated against a public bench
 
 ## Pipeline
 
-```
-                   ┌──────────────────────────────────────────────────┐
-   audio (.wav,    │                                                  │
-   .mp3, YouTube)  ┼─► Whisper-small-arabic   ─► transcript           │
-                   │       (ASR, fine-tuned)         (with timestamps)│
-                   │                                                  │
-                   │                ├─► chunk @ 50 words ─► CAMeL-BERT│
-                   │                │     embedder + FAISS index      │
-                   │                │                                 │
-                   │                ├─► AraBART-XLSum ─► study guide  │
-                   │                │      (5 sections)   (PDF + MD)  │
-                   │                │                                 │
-                   │                └─► AraBART per-segment ─► 3-5    │
-                   │                        takeaways                 │
-                   │                                                  │
-                   │   click takeaway ─► cross-encoder rerank top-10  │
-                   │                  ─► exact transcript segment     │
-                   │                       (with mm:ss timestamp)     │
-                   └──────────────────────────────────────────────────┘
-```
+![Smart Lecture Assistant — Pipeline Architecture](assets/architecture.svg)
 
 All four models load lazily on first use; the pure helpers (Arabic normalization, chunking, dedup) have no model dependencies and are unit-tested independently.
 
