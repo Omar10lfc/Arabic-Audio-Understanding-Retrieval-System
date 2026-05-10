@@ -92,7 +92,9 @@ def on_takeaway_click(selected, state):
 # =============================================================================
 # UI layout
 # =============================================================================
-with gr.Blocks(title="Smart Lecture Assistant") as demo:
+with gr.Blocks(title="Smart Lecture Assistant",
+               theme=gr.themes.Soft(),
+               css=RTL_CSS) as demo:
 
     gr.Markdown(
         """
@@ -160,6 +162,7 @@ with gr.Blocks(title="Smart Lecture Assistant") as demo:
 if __name__ == "__main__":
     # Front-load model loading so the first user click isn't slow.
     warm_up()
-    demo.launch(server_name="127.0.0.1", server_port=7860,
-                share=False, show_error=True,
-                css=RTL_CSS, theme=gr.themes.Soft())
+    # On HF Spaces, bind to 0.0.0.0 so the container's port is reachable.
+    # Locally this also works — the browser hits 127.0.0.1 transparently.
+    demo.launch(server_name="0.0.0.0", server_port=7860,
+                share=False, show_error=True)
