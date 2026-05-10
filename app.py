@@ -227,6 +227,38 @@ APP_CSS = """
 .card-surface ul { padding-inline-start: 1.2rem; }
 .card-surface li { margin: 0.25rem 0; }
 
+/* RTL bullet alignment for Arabic-content cards: list flows right→left,
+   bullet sits on the right (the paragraph *start* in Arabic). Custom amber
+   marker matches the theme's gold/cream accent. */
+.arabic-text.card-surface ul {
+    direction: rtl;
+    list-style: none;
+    padding-inline-start: 0;
+    padding-inline-end: 0.4rem;
+}
+.arabic-text.card-surface li {
+    position: relative;
+    padding-inline-end: 1.2rem;
+    text-align: start;
+}
+.arabic-text.card-surface li::before {
+    content: "•";
+    position: absolute;
+    inset-inline-end: 0;
+    top: 0;
+    color: #fcd34d;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+/* Section headings inside the cheat sheet — small left-side amber rule for
+   a manuscript-like marginal accent. */
+.arabic-text.card-surface h2 {
+    position: relative;
+    padding-inline-end: 0.6rem;
+    border-inline-end: 3px solid rgba(245,158,11,0.55);
+    padding-inline-start: 0.4rem;
+}
+
 /* === Arabic content surfaces (auto-direction per paragraph) ===
    `unicode-bidi: plaintext` makes each paragraph pick its direction from its
    first strong character — Arabic flows RTL, English placeholder flows LTR.
