@@ -41,51 +41,223 @@ from pipeline import (
 
 
 # =============================================================================
+# Custom Gradio theme — "Manuscript": deep midnight indigo + warm amber accent,
+# inspired by classical Arabic manuscript color palettes (ink + gold leaf).
+# =============================================================================
+MANUSCRIPT_THEME = gr.themes.Base(
+    primary_hue=gr.themes.colors.amber,        # buttons, accents -> warm gold
+    secondary_hue=gr.themes.colors.indigo,
+    neutral_hue=gr.themes.colors.slate,
+    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "system-ui"],
+    font_mono=[gr.themes.GoogleFont("JetBrains Mono"), "ui-monospace", "Consolas"],
+).set(
+    body_background_fill="#0b1020",
+    body_background_fill_dark="#0b1020",
+    body_text_color="#e7ecf3",
+    body_text_color_dark="#e7ecf3",
+    background_fill_primary="rgba(255,255,255,0.04)",
+    background_fill_primary_dark="rgba(255,255,255,0.04)",
+    background_fill_secondary="rgba(255,255,255,0.02)",
+    background_fill_secondary_dark="rgba(255,255,255,0.02)",
+    border_color_primary="rgba(255,255,255,0.08)",
+    border_color_primary_dark="rgba(255,255,255,0.08)",
+    block_background_fill="rgba(255,255,255,0.035)",
+    block_background_fill_dark="rgba(255,255,255,0.035)",
+    block_border_color="rgba(255,255,255,0.07)",
+    block_border_color_dark="rgba(255,255,255,0.07)",
+    block_border_width="1px",
+    block_radius="14px",
+    block_shadow="0 4px 24px -8px rgba(0,0,0,0.45)",
+    block_label_background_fill="transparent",
+    block_label_text_color="#cbd5e1",
+    block_title_text_color="#f5e8c8",
+    input_background_fill="rgba(255,255,255,0.045)",
+    input_background_fill_dark="rgba(255,255,255,0.045)",
+    input_border_color="rgba(255,255,255,0.08)",
+    input_border_color_dark="rgba(255,255,255,0.08)",
+    input_border_color_focus="#f59e0b",
+    button_primary_background_fill="linear-gradient(135deg,#f59e0b 0%,#ef4444 100%)",
+    button_primary_background_fill_hover="linear-gradient(135deg,#fbbf24 0%,#f87171 100%)",
+    button_primary_text_color="#1c1207",
+    button_primary_border_color="transparent",
+    button_primary_shadow="0 6px 20px -6px rgba(245,158,11,0.55)",
+    button_secondary_background_fill="rgba(255,255,255,0.06)",
+    button_secondary_background_fill_hover="rgba(255,255,255,0.10)",
+    button_secondary_text_color="#e7ecf3",
+)
+
+
+# =============================================================================
 # Styling — bilingual UI: English chrome (LTR), Arabic content boxes (RTL).
 # Applying RTL only to the elements that hold Arabic output (transcript, cheat
 # sheet, takeaways, drill-down) keeps button/label text reading naturally
 # left-to-right while Arabic still renders correctly.
 # =============================================================================
 APP_CSS = """
-/* The actual Arabic content surfaces */
+/* === Layered background: subtle radial glows + a faint grid === */
+.gradio-container {
+    background:
+        radial-gradient(ellipse 80% 50% at 15% 0%,
+            rgba(245,158,11,0.10), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 100% 100%,
+            rgba(99,102,241,0.14), transparent 55%),
+        linear-gradient(180deg, #0b1020 0%, #0a0e1a 100%) !important;
+    min-height: 100vh;
+}
+.gradio-container::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+}
+.gradio-container > * { position: relative; z-index: 1; }
+
+/* === Hero header — "manuscript folio" feel === */
+.hero {
+    padding: 1.8rem 1.8rem 1.6rem;
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 88% 0%, rgba(245,158,11,0.22), transparent 60%),
+        linear-gradient(135deg, #1e1b4b 0%, #312e81 55%, #1e1b4b 100%);
+    color: #f5e8c8;
+    margin-bottom: 1.1rem;
+    border: 1px solid rgba(245,158,11,0.18);
+    box-shadow:
+        0 12px 40px -12px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    /* Subtle ornamental corner accent */
+    content: "";
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background:
+        conic-gradient(from 45deg,
+            rgba(245,158,11,0.18), transparent 35%,
+            rgba(245,158,11,0.10) 70%, transparent);
+    filter: blur(8px);
+}
+.hero h1 {
+    margin: 0 0 0.4rem 0;
+    font-weight: 700;
+    font-size: 1.85rem;
+    letter-spacing: -0.01em;
+    background: linear-gradient(90deg, #fef3c7 0%, #fcd34d 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.hero p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    max-width: 720px;
+}
+.hero .pipeline {
+    margin-top: 0.7rem;
+    font-size: 0.82rem;
+    color: #94a3b8;
+    letter-spacing: 0.02em;
+}
+.hero code {
+    background: rgba(245,158,11,0.12);
+    color: #fcd34d;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 0.85em;
+    border: 1px solid rgba(245,158,11,0.18);
+    font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+.hero .badges { margin-top: 0.9rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.hero .badge {
+    display: inline-flex; align-items: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: #e7ecf3;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+}
+.hero .badge b { color: #fcd34d; margin-left: 6px; }
+
+/* === Section headers === */
+.section-header {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #f5e8c8;
+    margin: 0.3rem 0 0.5rem 0;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(245,158,11,0.22);
+    letter-spacing: 0.01em;
+}
+
+/* === Arabic content surfaces (RTL only here) === */
 .arabic-text textarea,
 .arabic-text .prose,
 .arabic-text .markdown-body {
     direction: rtl !important;
     text-align: right !important;
-    font-size: 1.02rem;
-    line-height: 1.7;
+    font-family: "Amiri", "Noto Naskh Arabic", "Segoe UI", serif;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: #e7ecf3;
 }
 .arabic-radio label > span:last-child {
     direction: rtl !important;
     text-align: right !important;
     unicode-bidi: plaintext;
     display: inline-block;
+    font-family: "Amiri", "Noto Naskh Arabic", serif;
+    font-size: 1.0rem;
+    line-height: 1.6;
+}
+.arabic-radio label {
+    padding: 8px 12px !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+    background: rgba(255,255,255,0.025) !important;
+    margin: 4px 0 !important;
+    transition: all 160ms ease;
+}
+.arabic-radio label:hover {
+    background: rgba(245,158,11,0.08) !important;
+    border-color: rgba(245,158,11,0.30) !important;
 }
 
-/* Hero header */
-.hero {
-    padding: 1.4rem 1.6rem;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-    color: #fff;
-    margin-bottom: 0.8rem;
+/* === Primary button polish === */
+button.lg.primary {
+    font-weight: 600 !important;
+    letter-spacing: 0.02em;
+    transition: transform 120ms ease, box-shadow 180ms ease;
 }
-.hero h1 { margin: 0 0 0.35rem 0; font-weight: 700; }
-.hero p  { margin: 0; opacity: 0.92; }
-.hero code {
-    background: rgba(255,255,255,0.18);
-    padding: 1px 6px;
-    border-radius: 4px;
-    font-size: 0.85em;
-}
+button.lg.primary:hover { transform: translateY(-1px); }
+button.lg.primary:active { transform: translateY(0); }
 
-.section-header {
-    font-weight: 600;
-    margin: 0.2rem 0 0.4rem 0;
-    border-bottom: 1px solid rgba(127,127,127,0.25);
-    padding-bottom: 0.3rem;
+/* === Footer === */
+.footer {
+    margin-top: 1.4rem;
+    padding: 0.9rem 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    color: #94a3b8;
+    font-size: 0.82rem;
+    text-align: center;
 }
+.footer a {
+    color: #fcd34d;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(252,211,77,0.4);
+}
+.footer a:hover { border-bottom-style: solid; }
 """
 
 
@@ -146,23 +318,22 @@ def on_takeaway_click(selected, state):
 # UI layout
 # =============================================================================
 with gr.Blocks(title="Smart Lecture Assistant — Arabic",
-               theme=gr.themes.Soft(),
+               theme=MANUSCRIPT_THEME,
                css=APP_CSS) as demo:
 
     gr.HTML(
         """
         <div class="hero">
-            <h1>🎓 Smart Lecture Assistant — Arabic</h1>
+            <h1>Smart Lecture Assistant <span style="opacity:0.55;font-weight:400">— Arabic</span></h1>
             <p>
                 Upload an Arabic lecture and get a transcript, a structured study
                 guide, and one-click drill-down to the exact source segment.
             </p>
-            <p style="margin-top:0.4rem; font-size:0.9em;">
-                Pipeline:
-                <code>Whisper (ASR)</code> →
-                <code>CAMeL-BERT + FAISS (Semantic Search)</code> →
-                <code>AraBART (Summarization)</code>
-            </p>
+            <div class="pipeline">
+                <code>Whisper</code> &nbsp;ASR &nbsp;→&nbsp;
+                <code>CAMeL-BERT + FAISS</code> &nbsp;Semantic Search &nbsp;→&nbsp;
+                <code>AraBART</code> &nbsp;Summarization
+            </div>
         </div>
         """
     )
@@ -192,7 +363,7 @@ with gr.Blocks(title="Smart Lecture Assistant — Arabic",
                                 interactive=False)
 
         with gr.Column(scale=1):
-            gr.Markdown("### ✨ Key Takeaways", elem_classes=["section-header"])
+            gr.Markdown("### Key Takeaways", elem_classes=["section-header"])
             takeaways_radio = gr.Radio(
                 choices=[], value=None,
                 label="Click a takeaway to jump to its source context",
