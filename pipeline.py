@@ -172,12 +172,15 @@ def _load_whisper():
         pipeline as hf_pipeline,
     )
     print(f"[pipeline] loading Whisper from {WHISPER_DIR} ...")
-    # Build the processor from the fast tokenizer explicitly: the published
-    # repo only contains tokenizer.json (fast format), not vocab.json/merges.txt
-    # (slow format), so the default `WhisperProcessor.from_pretrained` path
-    # fails when it picks the slow tokenizer based on tokenizer_class.
-    _feat = WhisperFeatureExtractor.from_pretrained(str(WHISPER_DIR))
-    _tok  = WhisperTokenizerFast.from_pretrained(str(WHISPER_DIR))
+    # Load the tokenizer/feature-extractor from the base model, not the
+    # fine-tuned repo. Fine-tuning didn't change the tokenizer, and the
+    # tokenizer.json saved alongside our fine-tuned weights was serialized
+    # with a newer `tokenizers` (>=0.20) than transformers 4.44.2 can parse.
+    # Loading from openai/whisper-small bypasses that incompatibility while
+    # still using our fine-tuned weights below.
+    _BASE = "openai/whisper-small"
+    _feat = WhisperFeatureExtractor.from_pretrained(_BASE)
+    _tok  = WhisperTokenizerFast.from_pretrained(_BASE)
     _M.whisper_proc = WhisperProcessor(feature_extractor=_feat, tokenizer=_tok)
     _M.whisper_mdl  = (WhisperForConditionalGeneration
                        .from_pretrained(str(WHISPER_DIR), **_load_kwargs())
