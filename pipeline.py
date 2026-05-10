@@ -563,14 +563,24 @@ def drill_down(selected_takeaway: str, chunks, index) -> str:
 # =============================================================================
 def _ensure_font():
     FONT_DIR.mkdir(exist_ok=True)
-    if FONT_PATH.exists():
+    if FONT_PATH.exists() and FONT_PATH.stat().st_size > 0:
         return FONT_PATH
     try:
-        print(f"[pdf] downloading Arabic font → {FONT_PATH}")
-        urllib.request.urlretrieve(FONT_URL, FONT_PATH)
+        print(f"[pdf] downloading Arabic font -> {FONT_PATH}")
+        # The HF Space outbound network goes through a proxy that occasionally
+        # rejects generic Python user-agents. Setting a browser UA fixes 403s.
+        req = urllib.request.Request(
+            FONT_URL,
+            headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"},
+        )
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            FONT_PATH.write_bytes(resp.read())
+        if FONT_PATH.stat().st_size == 0:
+            raise RuntimeError("downloaded font is 0 bytes")
+        print(f"[pdf] font ready ({FONT_PATH.stat().st_size} bytes)")
         return FONT_PATH
     except Exception as e:
-        print(f"[pdf] font download failed: {e}; PDF export will be skipped.")
+        print(f"[pdf] font download FAILED: {e!r}; PDF export will be skipped.")
         return None
 
 
@@ -581,29 +591,37 @@ def _shape_ar(text: str) -> str:
 
 
 def _write_arabic_pdf(sections: List[Tuple[str, str]]) -> Optional[str]:
-    from fpdf import FPDF
-    font_path = _ensure_font()
-    if not font_path:
-        return None
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.add_font("Amiri", style="", fname=str(font_path))
+    try:
+        from fpdf import FPDF
+        font_path = _ensure_font()
+        if not font_path:
+            print("[pdf] skipping PDF: no font available")
+            return None
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.add_font("Amiri", style="", fname=str(font_path))
 
-    pdf.set_font("Amiri", size=18)
-    pdf.cell(0, 12, _shape_ar("ملخص المحاضرة - دليل المراجعة"),
-             align="C", new_x="LMARGIN", new_y="NEXT")
-    pdf.ln(6)
+        pdf.set_font("Amiri", size=18)
+        pdf.cell(0, 12, _shape_ar("ملخص المحاضرة - دليل المراجعة"),
+                 align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.ln(6)
 
-    for title, body in sections:
-        pdf.set_font("Amiri", size=14)
-        pdf.cell(0, 10, _shape_ar(title),
-                 align="R", new_x="LMARGIN", new_y="NEXT")
-        pdf.set_font("Amiri", size=12)
-        for line in textwrap.wrap(body, width=70):
-            pdf.cell(0, 8, _shape_ar(line),
+        for title, body in sections:
+            pdf.set_font("Amiri", size=14)
+            pdf.cell(0, 10, _shape_ar(title),
                      align="R", new_x="LMARGIN", new_y="NEXT")
-        pdf.ln(4)
+            pdf.set_font("Amiri", size=12)
+            for line in textwrap.wrap(body, width=70):
+                pdf.cell(0, 8, _shape_ar(line),
+                         align="R", new_x="LMARGIN", new_y="NEXT")
+            pdf.ln(4)
 
-    out_path = Path(tempfile.gettempdir()) / "cheat_sheet.pdf"
-    pdf.output(str(out_path))
-    return str(out_path)
+        out_path = Path(tempfile.gettempdir()) / "cheat_sheet.pdf"
+        pdf.output(str(out_path))
+        print(f"[pdf] wrote {out_path} ({out_path.stat().st_size} bytes)")
+        return str(out_path)
+    except Exception as e:
+        # Don't let a broken PDF kill the whole analyze call — the markdown
+        # study guide is the primary output, the PDF is a convenience.
+        print(f"[pdf] generation FAILED: {e!r}")
+        return None

@@ -200,6 +200,33 @@ APP_CSS = """
     letter-spacing: 0.01em;
 }
 
+/* === Card wrapper for the markdown/transcript surfaces ===
+   gr.Markdown is normally inline content with no chrome — wrapping it in a
+   card matches the visual weight of the radio + textbox panel on the right
+   so the two halves feel like one consistent layout. */
+.card-surface {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 4px 24px -8px rgba(0,0,0,0.45);
+    min-height: 220px;
+}
+.card-surface .prose, .card-surface .markdown-body {
+    margin: 0;
+}
+.card-surface h2 {
+    font-size: 1.1rem;
+    margin: 0.8rem 0 0.4rem 0;
+    color: #f5e8c8;
+}
+.card-surface h2:first-child { margin-top: 0; }
+.card-surface h1 {
+    display: none;   /* the section header above already shows the title */
+}
+.card-surface ul { padding-inline-start: 1.2rem; }
+.card-surface li { margin: 0.25rem 0; }
+
 /* === Arabic content surfaces (auto-direction per paragraph) ===
    `unicode-bidi: plaintext` makes each paragraph pick its direction from its
    first strong character — Arabic flows RTL, English placeholder flows LTR.
@@ -308,8 +335,17 @@ def analyze_lecture(audio_path, url):
         elem_classes=["arabic-radio"],
     )
 
+    # Only show the download button if the PDF actually got produced (the font
+    # download or fpdf can fail silently on cold-start Spaces).
+    pdf_button = gr.DownloadButton(
+        label="⬇️ Download as PDF",
+        value=pdf if pdf else None,
+        visible=bool(pdf),
+        size="sm",
+    )
+
     state_payload = {"chunks": chunks, "index": index}
-    return cheat_md, radio, transcript, pdf, state_payload, ""
+    return cheat_md, radio, transcript, pdf_button, state_payload, ""
 
 
 def on_takeaway_click(selected, state):
@@ -329,13 +365,17 @@ def clear_all():
         interactive=True,
         elem_classes=["arabic-radio"],
     )
+    hidden_pdf = gr.DownloadButton(
+        label="⬇️ Download as PDF",
+        value=None, visible=False, size="sm",
+    )
     return (
         None,                                                                # audio_in
         "",                                                                  # url_in
         "*The structured study guide will appear here after analysis.*",     # cheat_out
         empty_radio,                                                         # takeaways_radio
         "",                                                                  # transcript_box
-        None,                                                                # pdf_out
+        hidden_pdf,                                                          # pdf_out
         None,                                                                # state_payload
         "",                                                                  # drill_out
     )
@@ -386,10 +426,14 @@ with gr.Blocks(title="Smart Lecture Assistant — Arabic",
             gr.Markdown("### 📘 Study Guide", elem_classes=["section-header"])
             cheat_out = gr.Markdown(
                 value="*The structured study guide will appear here after analysis.*",
-                elem_classes=["arabic-text"],
+                elem_classes=["arabic-text", "card-surface"],
             )
-            pdf_out   = gr.File(label="⬇️ Download as PDF",
-                                interactive=False)
+            pdf_out = gr.DownloadButton(
+                label="⬇️ Download as PDF",
+                value=None,
+                visible=False,
+                size="sm",
+            )
 
         with gr.Column(scale=1):
             gr.Markdown("### Key Takeaways", elem_classes=["section-header"])
@@ -409,7 +453,7 @@ with gr.Blocks(title="Smart Lecture Assistant — Arabic",
     with gr.Accordion("📜 Full Transcript", open=False):
         transcript_box = gr.Textbox(
             lines=12, interactive=False, show_label=False,
-            elem_classes=["arabic-text"],
+            elem_classes=["arabic-text", "card-surface"],
         )
 
     # Don't pass an empty dict as the State default — gradio_client's schema
