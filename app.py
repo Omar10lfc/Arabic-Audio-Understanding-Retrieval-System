@@ -80,7 +80,6 @@ MANUSCRIPT_THEME = gr.themes.Base(
     button_primary_background_fill_hover="linear-gradient(135deg,#fbbf24 0%,#f87171 100%)",
     button_primary_text_color="#1c1207",
     button_primary_border_color="transparent",
-    button_primary_shadow="0 6px 20px -6px rgba(245,158,11,0.55)",
     button_secondary_background_fill="rgba(255,255,255,0.06)",
     button_secondary_background_fill_hover="rgba(255,255,255,0.10)",
     button_secondary_text_color="#e7ecf3",
@@ -238,9 +237,13 @@ APP_CSS = """
 button.lg.primary {
     font-weight: 600 !important;
     letter-spacing: 0.02em;
+    box-shadow: 0 6px 20px -6px rgba(245,158,11,0.55);
     transition: transform 120ms ease, box-shadow 180ms ease;
 }
-button.lg.primary:hover { transform: translateY(-1px); }
+button.lg.primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px -6px rgba(245,158,11,0.65);
+}
 button.lg.primary:active { transform: translateY(0); }
 
 /* === Footer === */
