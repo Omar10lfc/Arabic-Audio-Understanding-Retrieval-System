@@ -148,9 +148,9 @@ Excluded from git (see [.gitignore](.gitignore)): local copies of the published 
 
 | Component | Dataset | Source | Splits used |
 |---|---|---|---|
-| ASR | Mozilla Common Voice (Arabic) | [Common Voice](https://commonvoice.mozilla.org/ar/datasets) | 25,000 train / 300 test, seed 42 |
-| Summarization | XL-Sum v2.0 (Arabic split) | [csebuetnlp/xl-sum](https://github.com/csebuetnlp/xl-sum) | 37,454 train / 4,689 val / 4,688 test (after cleaning) |
-| Semantic Search | ARCD — Arabic Reading Comprehension Dataset | included in [Index/](Index/) | 231 passages, 200 query–context pairs |
+| ASR | Mozilla Common Voice (Arabic) | [Mozilla Data Collective](https://mozilladatacollective.com/datasets/cmn2g7uu701fqo1072r5na25l) | 25,000 train / 300 test, seed 42 |
+| Summarization | XL-Sum v2.0 (Arabic split) | [csebuetnlp/xl-sum — Datasets](https://github.com/csebuetnlp/xl-sum?tab=readme-ov-file#datasets) | 37,454 train / 4,689 val / 4,688 test (after cleaning) |
+| Semantic Search | ARCD — Arabic Reading Comprehension Dataset | [Kaggle: Unlocking Arabic Language Comprehension](https://www.kaggle.com/datasets/thedevastator/unlocking-arabic-language-comprehension-with-the) (also included in [Index/](Index/)) | 231 passages, 200 query–context pairs |
 
 XL-Sum is licensed CC-BY-NC-SA 4.0; Common Voice is CC0; ARCD is CC-BY-SA 4.0. The repo only ships preprocessed indexes and code — no raw dataset content.
 
