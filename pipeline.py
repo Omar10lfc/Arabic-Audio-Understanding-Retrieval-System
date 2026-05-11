@@ -112,6 +112,49 @@ def normalize_arabic(text: str) -> str:
     return text
 
 
+# Known Whisper-on-Arabic mis-transcriptions. Kept deliberately small — wider
+# lists hurt as often as they help, so we only patch errors we've actually seen
+# Whisper produce repeatedly on this domain (AI / lecture content).
+# Format: { wrong: right }. Matched as a whole Arabic-letter token (punctuation
+# and Latin chars at the edges are fine).
+_ASR_FIXUPS: Dict[str, str] = {
+    "استناعي":   "اصطناعي",
+    "الاستناعي": "الاصطناعي",
+    "إصطناعي":   "اصطناعي",
+    "الإصطناعي": "الاصطناعي",
+    "الألي":     "الآلي",
+    "الانتشال":  "الانتشار",
+    "الإنتشار":  "الانتشار",
+    "الإنحدار":  "الانحدار",
+    "الإنتباه":  "الانتباه",
+    "خوارزميه":  "خوارزمية",
+    "العسبية":   "العصبية",
+    "العسبيه":   "العصبية",
+}
+
+# Match each wrong token only when not flanked by another Arabic letter, so
+# we don't accidentally rewrite a longer word that contains the pattern as a
+# substring.
+_AR_LETTER_CLASS = r"[؀-ۿ]"
+_ASR_FIXUP_RE = re.compile(
+    r"(?<!" + _AR_LETTER_CLASS + r")(" +
+    "|".join(re.escape(k) for k in _ASR_FIXUPS) +
+    r")(?!" + _AR_LETTER_CLASS + r")"
+)
+
+
+def post_asr_fixups(text: str) -> str:
+    """Light, surgical correction of common Whisper-on-Arabic typos before the
+       transcript flows into AraBART / embeddings. Cheap dict-based whole-word
+       replacement — no model, no allocations beyond a single regex pass.
+
+       Diminishing returns kicks in fast here, so we keep the list short and
+       only add entries for errors that show up repeatedly in real audio."""
+    if not text:
+        return ""
+    return _ASR_FIXUP_RE.sub(lambda m: _ASR_FIXUPS[m.group(0)], text)
+
+
 def clean_for_summary(text: str) -> str:
     """Lighter cleanup for AraBART input (preserves alef forms / ta-marbuta /
        dotless-ya so tokenization matches what the model saw at training time)."""
@@ -355,7 +398,10 @@ def run_whisper(audio_path: str, *, return_segments: bool = False):
         generate_kwargs={"language": "arabic", "task": "transcribe"},
         return_timestamps=True if return_segments else None,
     )
-    text = result["text"].strip()
+    # Patch known Whisper-on-Arabic typos before anything downstream sees the
+    # text — this way embeddings, AraBART, and per-segment word-time interpolation
+    # all consume the same corrected token stream.
+    text = post_asr_fixups(result["text"].strip())
     if not return_segments:
         return text
     raw_chunks = result.get("chunks") or []
@@ -365,7 +411,7 @@ def run_whisper(audio_path: str, *, return_segments: bool = False):
         segments.append({
             "start": float(ts[0]) if ts[0] is not None else None,
             "end":   float(ts[1]) if ts[1] is not None else None,
-            "text":  (c.get("text") or "").strip(),
+            "text":  post_asr_fixups((c.get("text") or "").strip()),
         })
     return text, segments
 
