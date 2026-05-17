@@ -1,17 +1,3 @@
----
-title: Smart Lecture Assistant (Arabic)
-emoji: 🎙️
-colorFrom: indigo
-colorTo: purple
-sdk: gradio
-sdk_version: 4.44.1
-python_version: "3.11"
-app_file: app.py
-pinned: false
-license: apache-2.0
-short_description: Arabic ASR → summary → semantic search over the transcript.
----
-
 # Smart Lecture Assistant — Arabic
 
 End-to-end Arabic audio understanding pipeline. Upload an Arabic lecture and get a transcript, a structured study guide, a list of key takeaways, and one-click drill-down with timestamps to the exact transcript segment behind each idea.
@@ -25,6 +11,8 @@ Three independently fine-tuned components, each evaluated against a public bench
 | Semantic Search | CAMeL-BERT MSA + FAISS + cross-encoder rerank | ARCD (P@1 ↑) | 0.64 | **0.86** | **+34%** |
 
 **Live demo:** [Smart Lecture Assistant on HF Spaces](https://huggingface.co/spaces/Omar10lfc/smart-lecture-assistant-arabic)
+
+> The user-facing Space description lives in [README_SPACE.md](README_SPACE.md) (with the Spaces YAML frontmatter). Copy it over `README.md` on the Space remote when deploying — see [Deploying to Hugging Face Spaces](#deploying-to-hugging-face-spaces) below.
 
 ---
 
@@ -112,6 +100,9 @@ arabic_audio_system/
 ├── generate_test_audio.py         # edge-tts helper: ~3 min Arabic lecture sample
 ├── requirements.txt               # Python deps (HF Space-compatible pins)
 ├── packages.txt                   # apt deps for HF Spaces (ffmpeg)
+│
+├── README.md                      # This file — developer / repo doc
+├── README_SPACE.md                # HF Space landing page (with Spaces frontmatter)
 │
 ├── nlp-fine-tune-edit-1.ipynb     # Whisper fine-tuning (stage 1, lr 1e-5)
 ├── nlp-fine-tune-edit-2.ipynb     # Whisper fine-tuning (stage 2, lr 5e-6)
@@ -232,13 +223,22 @@ Both scripts validate required files, skip `training_args.bin` (large + not need
 
 ## Deploying to Hugging Face Spaces
 
-The repo is ready to deploy as a Gradio Space:
+[README_SPACE.md](README_SPACE.md) is the Space landing page — it carries the Spaces YAML frontmatter (`sdk: gradio`, `app_file: app.py`, etc.) and a demo-focused description. This `README.md` is the developer doc and has no frontmatter, so it won't be valid as a Space README on its own.
+
+To deploy:
 
 1. Create a new Space (Gradio SDK, CPU basic is enough for a demo).
-2. Add the repo as a remote: `git remote add space https://huggingface.co/spaces/<user>/<space>`.
-3. Push: `git push space main`.
+2. Add the Space as a remote: `git remote add space https://huggingface.co/spaces/<user>/<space>`.
+3. On a deploy branch, replace `README.md` with `README_SPACE.md`:
+   ```bash
+   git checkout -b space-deploy
+   cp README_SPACE.md README.md
+   git commit -am "Use Space README for deploy"
+   git push space space-deploy:main
+   ```
+   Or keep them swapped in a long-lived branch and push that branch to the Space remote.
 
-The YAML frontmatter at the top of this README, [requirements.txt](requirements.txt), and [packages.txt](packages.txt) are already configured for Spaces (Python 3.11, Gradio 4.44.1, ffmpeg).
+[requirements.txt](requirements.txt) and [packages.txt](packages.txt) are already configured for Spaces (Python 3.11, Gradio 4.44.1, ffmpeg).
 
 **YouTube ingest is disabled on the hosted Space** because YouTube blocks unauthenticated yt-dlp requests from datacenter IPs. The local `python app.py` path keeps the full feature set.
 
