@@ -29,3 +29,8 @@ arabic_lecture_sample.mp3
 Project NLP.pdf
 
 README_SPACE.md
+
+# Large model outputs and local scratch data
+whisper_medium_output/
+scratch/test.tsv
+scratch/audio_test/

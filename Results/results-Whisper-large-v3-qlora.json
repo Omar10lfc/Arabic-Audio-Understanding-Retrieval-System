@@ -1,0 +1,14 @@
+{
+  "model": "openai/whisper-large-v3",
+  "method": "QLoRA (4-bit NF4, r=32, alpha=64)",
+  "n_train": 25000,
+  "n_test": 400,
+  "max_steps": 1000,
+  "baseline_wer": 18.35,
+  "finetuned_wer": 12.51,
+  "abs_improvement": 5.84,
+  "rel_improvement": 31.8,
+  "train_loss": 1.3013,
+  "train_runtime_seconds": 33182.8,
+  "train_runtime_hours": 9.22
+}

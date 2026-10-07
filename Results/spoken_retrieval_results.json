@@ -1,0 +1,58 @@
+{
+  "benchmark_name": "Spoken Document Retrieval & Semantic Search Error Propagation",
+  "dataset": "ARCD (Arabic Reading Comprehension Dataset)",
+  "asr_model": "Whisper-Medium CT2 Static INT8 (Stage 2 Fine-tuned)",
+  "num_passages": 76,
+  "oracle_chunks": 276,
+  "spoken_chunks": 289,
+  "num_eval_queries": 50,
+  "mean_upstream_wer": 31.07,
+  "asr_processing_time_sec": 391.2,
+  "tts_duration_sec": 18.5,
+  "benchmarks": {
+    "oracle_clean_faiss": {
+      "P@1": 0.6400,
+      "P@3": 0.8000,
+      "P@5": 0.8800,
+      "MRR@10": 0.7337
+    },
+    "oracle_clean_rerank": {
+      "P@1": 0.8800,
+      "P@3": 0.9000,
+      "P@5": 0.9000,
+      "MRR@10": 0.8867
+    },
+    "spoken_transcribed_faiss": {
+      "P@1": 0.7000,
+      "P@3": 0.8000,
+      "P@5": 0.8200,
+      "MRR@10": 0.7604
+    },
+    "spoken_transcribed_rerank": {
+      "P@1": 0.8000,
+      "P@3": 0.8800,
+      "P@5": 0.8800,
+      "MRR@10": 0.8367
+    }
+  },
+  "upgraded_embedder_ablation": {
+    "model_name": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+    "clean_faiss": {
+      "P@1": 0.7600,
+      "MRR@10": 0.8245
+    },
+    "spoken_faiss": {
+      "P@1": 0.7600,
+      "MRR@10": 0.8185
+    }
+  },
+  "cross_attention_recovery": {
+    "recovered_queries_count": 7,
+    "sample_case": {
+      "query": "- ما هي اطول حدود بريه؟ ال",
+      "bi_encoder_rank": 10,
+      "cross_encoder_rank": 1,
+      "note": "Bi-encoder dropped candidate to Rank #10 due to phonetic and numeral spelling noise in transcript; Cross-encoder recovered it back to Rank #1 via joint token-level cross-attention."
+    }
+  }
+}

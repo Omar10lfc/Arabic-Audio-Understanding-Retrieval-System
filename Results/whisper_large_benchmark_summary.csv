@@ -1,0 +1,5 @@
+Model Architecture,Parameters,Disk (MB),Adaptation,Clean WER (%),Clean CER (%),Throughput ↑,RTF (Compute/Audio) ↓,VRAM Peak (GB),ARCD WER (%),Noise +10 dB WER (%),Noise +5 dB WER (%)
+Whisper-Small (Fine-tuned),244M,483 MB,Full Fine-Tuning,20.61,9.45,12.4× real-time,0.0806,2.1 GB,37.8,31.8,45.2
+Whisper-Medium (Stage 2 Ours),769M,770 MB (INT8),QLoRA (Steps 0-3000),18.16,8.12,8.8× real-time,0.1135,4.2 GB,31.07,24.6,34.2
+Whisper-Large-v3 (Zero-shot),1550M,"3,090 MB (FP16)",Zero-Shot Pretrained,15.42,6.85,4.1× real-time,0.2439,9.8 GB,28.5,21.1,29.8
+Whisper-Large-v3-Turbo (Zero-shot),809M,"1,610 MB (FP16)",Zero-Shot Distilled,16.2,7.15,8.5× real-time,0.1176,5.6 GB,29.4,22.8,31.5

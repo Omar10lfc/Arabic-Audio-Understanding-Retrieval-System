@@ -1,0 +1,229 @@
+{
+  "benchmark": "End-to-End Cascading Error Propagation & Quantization Benchmark",
+  "dataset": "Arabic XL-Sum Held-Out Test Set (BBC Arabic, Standardized Sequential Selection)",
+  "scorer": "Official XL-Sum multilingual_rouge_scoring (NLTK Arabic Snowball stemmer)",
+  "hardware": "NVIDIA Tesla T4 GPU (16 GB) on Kaggle",
+  "experiments": {
+    "experiment_a_n25": {
+      "sample_count": 25,
+      "description": "Subset multi-quantization cascaded error propagation benchmark (consistency check)",
+      "results": [
+        {
+          "configuration": "Oracle Baseline (Clean Text -> AraBART)",
+          "engine": "AraBART Only",
+          "precision": "FP16",
+          "disk_mb": null,
+          "asr_wer_pct": 0.0,
+          "throughput_xrt": null,
+          "rouge1": 37.42,
+          "rouge2": 18.13,
+          "rougeL": 33.28,
+          "rougeL_95_ci": [28.47, 38.13],
+          "delta_rl_pp": 0.0,
+          "quality_retention_pct": 100.0
+        },
+        {
+          "configuration": "Vanilla PyTorch HF",
+          "engine": "Transformers HF",
+          "precision": "FP16",
+          "disk_mb": 1531.8,
+          "asr_wer_pct": 84.28,
+          "throughput_xrt": 47.2,
+          "rouge1": 29.01,
+          "rouge2": 10.81,
+          "rougeL": 25.01,
+          "rougeL_95_ci": [20.82, 29.24],
+          "delta_rl_pp": -8.26,
+          "quality_retention_pct": 75.2
+        },
+        {
+          "configuration": "CT2 Float16",
+          "engine": "faster-whisper (CT2)",
+          "precision": "float16",
+          "disk_mb": 1529.0,
+          "asr_wer_pct": 17.83,
+          "throughput_xrt": 16.1,
+          "rouge1": 28.41,
+          "rouge2": 9.73,
+          "rougeL": 24.35,
+          "rougeL_95_ci": [20.36, 28.13],
+          "delta_rl_pp": -8.93,
+          "quality_retention_pct": 73.2
+        },
+        {
+          "configuration": "CT2 INT8_FLOAT16",
+          "engine": "faster-whisper (CT2)",
+          "precision": "int8_float16",
+          "disk_mb": 1529.0,
+          "asr_wer_pct": 16.93,
+          "throughput_xrt": 17.5,
+          "rouge1": 28.48,
+          "rouge2": 11.04,
+          "rougeL": 23.84,
+          "rougeL_95_ci": [19.34, 28.27],
+          "delta_rl_pp": -9.44,
+          "quality_retention_pct": 71.6
+        },
+        {
+          "configuration": "CT2 Static INT8",
+          "engine": "faster-whisper (CT2)",
+          "precision": "int8",
+          "disk_mb": 770.2,
+          "asr_wer_pct": 17.52,
+          "throughput_xrt": 17.1,
+          "rouge1": 28.73,
+          "rouge2": 10.74,
+          "rougeL": 24.17,
+          "rougeL_95_ci": [20.02, 28.19],
+          "delta_rl_pp": -9.11,
+          "quality_retention_pct": 72.6
+        }
+      ]
+    },
+    "experiment_b_n50": {
+      "sample_count": 50,
+      "description": "Primary multi-quantization cascaded error propagation benchmark (full held-out set)",
+      "results": [
+        {
+          "configuration": "Oracle Baseline (Clean Text -> AraBART)",
+          "engine": "AraBART Only",
+          "precision": "FP16",
+          "disk_mb": null,
+          "asr_wer_pct": 0.0,
+          "throughput_xrt": null,
+          "rouge1": 37.86,
+          "rouge2": 18.17,
+          "rougeL": 32.99,
+          "rougeL_95_ci": [29.26, 36.83],
+          "delta_rl_pp": 0.0,
+          "quality_retention_pct": 100.0
+        },
+        {
+          "configuration": "Vanilla PyTorch HF",
+          "engine": "Transformers HF",
+          "precision": "FP16",
+          "disk_mb": 1531.8,
+          "asr_wer_pct": 84.56,
+          "throughput_xrt": 47.2,
+          "rouge1": 26.87,
+          "rouge2": 9.40,
+          "rougeL": 23.25,
+          "rougeL_95_ci": [20.31, 26.00],
+          "delta_rl_pp": -9.75,
+          "quality_retention_pct": 70.5
+        },
+        {
+          "configuration": "CT2 Float16",
+          "engine": "faster-whisper (CT2)",
+          "precision": "float16",
+          "disk_mb": 1529.0,
+          "asr_wer_pct": 17.33,
+          "throughput_xrt": 16.1,
+          "rouge1": 27.31,
+          "rouge2": 8.71,
+          "rougeL": 22.99,
+          "rougeL_95_ci": [20.11, 25.79],
+          "delta_rl_pp": -10.00,
+          "quality_retention_pct": 69.7
+        },
+        {
+          "configuration": "CT2 INT8_FLOAT16",
+          "engine": "faster-whisper (CT2)",
+          "precision": "int8_float16",
+          "disk_mb": 1529.0,
+          "asr_wer_pct": 16.83,
+          "throughput_xrt": 17.5,
+          "rouge1": 28.66,
+          "rouge2": 9.72,
+          "rougeL": 23.77,
+          "rougeL_95_ci": [20.87, 26.83],
+          "delta_rl_pp": -9.23,
+          "quality_retention_pct": 72.0
+        },
+        {
+          "configuration": "CT2 Static INT8",
+          "engine": "faster-whisper (CT2)",
+          "precision": "int8",
+          "disk_mb": 770.2,
+          "asr_wer_pct": 17.47,
+          "throughput_xrt": 17.1,
+          "rouge1": 28.59,
+          "rouge2": 9.50,
+          "rougeL": 23.66,
+          "rougeL_95_ci": [20.78, 26.74],
+          "delta_rl_pp": -9.33,
+          "quality_retention_pct": 71.7
+        }
+      ]
+    }
+  },
+  "scale_stability_comparison": [
+    {
+      "configuration": "Oracle Baseline",
+      "wer_n25": "0.00%",
+      "wer_n50": "0.00%",
+      "delta_wer_pp": 0.0,
+      "rougeL_n25": 33.28,
+      "rougeL_n50": 32.99,
+      "delta_rl_pp": -0.29,
+      "retention_n25": "100.0%",
+      "retention_n50": "100.0%",
+      "delta_retention_pp": 0.0
+    },
+    {
+      "configuration": "Vanilla PyTorch HF",
+      "wer_n25": "84.28%",
+      "wer_n50": "84.56%",
+      "delta_wer_pp": 0.28,
+      "rougeL_n25": 25.01,
+      "rougeL_n50": 23.25,
+      "delta_rl_pp": -1.76,
+      "retention_n25": "75.2%",
+      "retention_n50": "70.5%",
+      "delta_retention_pp": -4.7
+    },
+    {
+      "configuration": "CT2 Float16",
+      "wer_n25": "17.83%",
+      "wer_n50": "17.33%",
+      "delta_wer_pp": -0.50,
+      "rougeL_n25": 24.35,
+      "rougeL_n50": 22.99,
+      "delta_rl_pp": -1.36,
+      "retention_n25": "73.2%",
+      "retention_n50": "69.7%",
+      "delta_retention_pp": -3.5
+    },
+    {
+      "configuration": "CT2 INT8_FLOAT16",
+      "wer_n25": "16.93%",
+      "wer_n50": "16.83%",
+      "delta_wer_pp": -0.10,
+      "rougeL_n25": 23.84,
+      "rougeL_n50": 23.77,
+      "delta_rl_pp": -0.07,
+      "retention_n25": "71.6%",
+      "retention_n50": "72.0%",
+      "delta_retention_pp": 0.4
+    },
+    {
+      "configuration": "CT2 Static INT8",
+      "wer_n25": "17.52%",
+      "wer_n50": "17.47%",
+      "delta_wer_pp": -0.05,
+      "rougeL_n25": 24.17,
+      "rougeL_n50": 23.66,
+      "delta_rl_pp": -0.51,
+      "retention_n25": "72.6%",
+      "retention_n50": "71.7%",
+      "delta_retention_pp": -0.9
+    }
+  ],
+  "quantization_parity_summary": {
+    "ct2_best_rougeL": 23.77,
+    "ct2_lowest_rougeL": 22.99,
+    "ct2_span_pp": 0.78,
+    "retention_range_pct": [69.7, 72.0],
+    "static_int8_retention_pct": 71.7
+  }
+}

@@ -1,0 +1,7 @@
+snr_db,label,wer_small,wer_med,cer_med,rouge_l,p_at_1_bi,p_at_1_cross,mrr_cross
+inf,Clean (Inf dB),20.61,18.16,8.12,23.98,0.7,0.8,0.8367
+20.0,+20 dB (Classroom),23.4,19.85,9.04,23.12,0.68,0.8,0.831
+10.0,+10 dB (Moderate HVAC),31.8,24.6,12.15,21.45,0.62,0.78,0.8125
+5.0,+5 dB (Heavy Babble),45.2,34.2,17.8,18.7,0.52,0.72,0.764
+0.0,0 dB (High Noise),68.5,52.8,29.4,13.9,0.36,0.6,0.652
+-5.0,-5 dB (Extreme Noise),86.9,74.5,46.1,8.4,0.22,0.42,0.481

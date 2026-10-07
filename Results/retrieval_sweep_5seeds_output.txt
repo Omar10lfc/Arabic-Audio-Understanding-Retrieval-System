@@ -1,0 +1,22 @@
+Loaded 50 passages and 50 queries.
+Total clean chunks: 121
+Clean Chunks MD5 : af460da3c4ef72770409f7c538067196
+Queries MD5      : 6af4c515785a4a6b7e80ef1e45f9cf4c
+Precomputing Query and Clean Embeddings...
+
+--- 5-Seed Evaluation on Canonical 121-Chunk ARCD ---
+Clean Oracle (Bi-Encoder): P@1=0.5000, P@3=0.6600, MRR=0.5855, CI_P1=(0.3664, 0.6336)
+Clean Oracle (+ Re-Rank): P@1=0.6200, P@3=0.7800, MRR=0.7017, CI_P1=(0.4815, 0.7414) [GPU-Canonical Baseline]
+Seed    42 | Turbo RR P@1=0.64 (vs Clean p=1.0, sig=False; Bi vs RR p=0.0034) | Large RR P@1=0.64 (vs Clean p=1.0, sig=False; Bi vs RR p=0.0034)
+Seed   100 | Turbo RR P@1=0.56 (vs Clean p=0.375, sig=False; Bi vs RR p=0.0225) | Large RR P@1=0.58 (vs Clean p=0.6875, sig=False; Bi vs RR p=0.0063)
+Seed  2024 | Turbo RR P@1=0.62 (vs Clean p=1.0, sig=False; Bi vs RR p=0.1796) | Large RR P@1=0.66 (vs Clean p=0.7539, sig=False; Bi vs RR p=0.0352)
+Seed   777 | Turbo RR P@1=0.64 (vs Clean p=1.0, sig=False; Bi vs RR p=0.0414) | Large RR P@1=0.64 (vs Clean p=1.0, sig=False; Bi vs RR p=0.0963)
+Seed  9999 | Turbo RR P@1=0.62 (vs Clean p=1.0, sig=False; Bi vs RR p=0.3877) | Large RR P@1=0.62 (vs Clean p=1.0, sig=False; Bi vs RR p=0.0923)
+
+=== SUMMARY ACROSS 5 SEEDS (CANONICAL 121 CHUNKS) ===
+clean_bi_p1    : mean=0.5000, std=0.0000
+clean_rr_p1    : mean=0.6200, std=0.0000
+turbo_bi_p1    : mean=0.4560, std=0.0639
+turbo_rr_p1    : mean=0.6160, std=0.0329
+large_bi_p1    : mean=0.4480, std=0.0460
+large_rr_p1    : mean=0.6280, std=0.0303

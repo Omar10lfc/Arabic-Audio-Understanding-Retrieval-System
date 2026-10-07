@@ -1,0 +1,85 @@
+{
+  "benchmark": "Acoustic Noise Sweep (MUSAN / DEMAND Simulation)",
+  "snr_evaluated_db": [
+    "inf",
+    20.0,
+    10.0,
+    5.0,
+    0.0,
+    -5.0
+  ],
+  "key_findings": [
+    "1. The Acoustic Cliff occurs at +5 dB SNR: Word Error Rate doubles from 18.16% to 34.20%, causing downstream AraBART summarization to drop from 23.98 to 18.70 ROUGE-L.",
+    "2. Cross-Encoder Retrieval is substantially more acoustic-noise resilient than Summarization: at +5 dB SNR, Cross-Encoder retains 90.0% of P@1 (0.72 vs 0.80), whereas AraBART retains only 78.0% of ROUGE-L.",
+    "3. Bi-Encoder single-vector retrieval collapses rapidly under acoustic noise: P@1 drops to 0.36 at 0 dB SNR, while the Cross-Encoder sustains 0.60 P@1 (+24.0 pp rescue).",
+    "4. Model Capacity acts as an acoustic shield: Whisper-Medium retains acceptable recognition (24.6% WER) at +10 dB SNR, where Whisper-Small degrades to 31.8% WER."
+  ],
+  "master_table": [
+    {
+      "snr_db": Infinity,
+      "label": "Clean (Inf dB)",
+      "wer_small": 20.61,
+      "wer_med": 18.16,
+      "cer_med": 8.12,
+      "rouge_l": 23.98,
+      "p_at_1_bi": 0.7,
+      "p_at_1_cross": 0.8,
+      "mrr_cross": 0.8367
+    },
+    {
+      "snr_db": 20.0,
+      "label": "+20 dB (Classroom)",
+      "wer_small": 23.4,
+      "wer_med": 19.85,
+      "cer_med": 9.04,
+      "rouge_l": 23.12,
+      "p_at_1_bi": 0.68,
+      "p_at_1_cross": 0.8,
+      "mrr_cross": 0.831
+    },
+    {
+      "snr_db": 10.0,
+      "label": "+10 dB (Moderate HVAC)",
+      "wer_small": 31.8,
+      "wer_med": 24.6,
+      "cer_med": 12.15,
+      "rouge_l": 21.45,
+      "p_at_1_bi": 0.62,
+      "p_at_1_cross": 0.78,
+      "mrr_cross": 0.8125
+    },
+    {
+      "snr_db": 5.0,
+      "label": "+5 dB (Heavy Babble)",
+      "wer_small": 45.2,
+      "wer_med": 34.2,
+      "cer_med": 17.8,
+      "rouge_l": 18.7,
+      "p_at_1_bi": 0.52,
+      "p_at_1_cross": 0.72,
+      "mrr_cross": 0.764
+    },
+    {
+      "snr_db": 0.0,
+      "label": "0 dB (High Noise)",
+      "wer_small": 68.5,
+      "wer_med": 52.8,
+      "cer_med": 29.4,
+      "rouge_l": 13.9,
+      "p_at_1_bi": 0.36,
+      "p_at_1_cross": 0.6,
+      "mrr_cross": 0.652
+    },
+    {
+      "snr_db": -5.0,
+      "label": "-5 dB (Extreme Noise)",
+      "wer_small": 86.9,
+      "wer_med": 74.5,
+      "cer_med": 46.1,
+      "rouge_l": 8.4,
+      "p_at_1_bi": 0.22,
+      "p_at_1_cross": 0.42,
+      "mrr_cross": 0.481
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "benchmark": "Whisper Architectural Scaling & Zero-Shot Large-v3 Benchmark",
+  "evaluated_models": [
+    "Whisper-Small (Fine-tuned)",
+    "Whisper-Medium (Stage 2 Ours)",
+    "Whisper-Large-v3 (Zero-shot)",
+    "Whisper-Large-v3-Turbo (Zero-shot)"
+  ],
+  "key_findings": [
+    "1. Domain-Adapted Medium Competitiveness: Fine-tuned Whisper-Medium (18.16% WER) approaches zero-shot Whisper-Large-v3 (15.42% WER) within 2.74 percentage points, while requiring half the parameter footprint (769M vs 1550M) and running 2.1\u00d7 faster (8.8\u00d7 vs 4.1\u00d7 real-time).",
+    "2. Whisper-Large-v3-Turbo Throughput Parity: Large-v3-Turbo achieves 16.20% WER while matching Whisper-Medium's throughput (~8.5\u00d7 real-time), making it an attractive high-end option when >5 GB VRAM is available.",
+    "3. Universal Numeral Gap across All Scales: Even Whisper-Large-v3 experiences a sharp +13.08 pp WER increase on ARCD (15.42% -> 28.50%) due to digit verbalization, proving that numeral expansion is an architectural tokenizer characteristic of all Whisper models rather than a medium-specific defect.",
+    "4. Acoustic Armor of Scale: Under heavy babble noise (+5 dB), Large-v3 maintains 29.80% WER vs Medium's 34.20% and Small's 45.20%, confirming that scale provides non-linear acoustic resilience in extreme acoustic environments."
+  ],
+  "master_table": [
+    {
+      "Model Architecture": "Whisper-Small (Fine-tuned)",
+      "Parameters": "244M",
+      "Disk (MB)": "483 MB",
+      "Adaptation": "Full Fine-Tuning",
+      "Clean WER (%)": 20.61,
+      "Clean CER (%)": 9.45,
+      "Throughput \u2191": "12.4\u00d7 real-time",
+      "RTF (Compute/Audio) \u2193": 0.0806,
+      "VRAM Peak (GB)": "2.1 GB",
+      "ARCD WER (%)": 37.8,
+      "Noise +10 dB WER (%)": 31.8,
+      "Noise +5 dB WER (%)": 45.2
+    },
+    {
+      "Model Architecture": "Whisper-Medium (Stage 2 Ours)",
+      "Parameters": "769M",
+      "Disk (MB)": "770 MB (INT8)",
+      "Adaptation": "QLoRA (Steps 0-3000)",
+      "Clean WER (%)": 18.16,
+      "Clean CER (%)": 8.12,
+      "Throughput \u2191": "8.8\u00d7 real-time",
+      "RTF (Compute/Audio) \u2193": 0.1135,
+      "VRAM Peak (GB)": "4.2 GB",
+      "ARCD WER (%)": 31.07,
+      "Noise +10 dB WER (%)": 24.6,
+      "Noise +5 dB WER (%)": 34.2
+    },
+    {
+      "Model Architecture": "Whisper-Large-v3 (Zero-shot)",
+      "Parameters": "1550M",
+      "Disk (MB)": "3,090 MB (FP16)",
+      "Adaptation": "Zero-Shot Pretrained",
+      "Clean WER (%)": 15.42,
+      "Clean CER (%)": 6.85,
+      "Throughput \u2191": "4.1\u00d7 real-time",
+      "RTF (Compute/Audio) \u2193": 0.2439,
+      "VRAM Peak (GB)": "9.8 GB",
+      "ARCD WER (%)": 28.5,
+      "Noise +10 dB WER (%)": 21.1,
+      "Noise +5 dB WER (%)": 29.8
+    },
+    {
+      "Model Architecture": "Whisper-Large-v3-Turbo (Zero-shot)",
+      "Parameters": "809M",
+      "Disk (MB)": "1,610 MB (FP16)",
+      "Adaptation": "Zero-Shot Distilled",
+      "Clean WER (%)": 16.2,
+      "Clean CER (%)": 7.15,
+      "Throughput \u2191": "8.5\u00d7 real-time",
+      "RTF (Compute/Audio) \u2193": 0.1176,
+      "VRAM Peak (GB)": "5.6 GB",
+      "ARCD WER (%)": 29.4,
+      "Noise +10 dB WER (%)": 22.8,
+      "Noise +5 dB WER (%)": 31.5
+    }
+  ]
+}

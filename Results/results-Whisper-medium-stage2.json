@@ -1,0 +1,15 @@
+{
+  "model": "openai/whisper-medium",
+  "method": "QLoRA (4-bit NF4) -> FP16 Merged",
+  "stage": "Stage 2 Continuation (Step 2000 -> 3000)",
+  "learning_rate": 0.00003,
+  "n_train": 30000,
+  "n_test": 400,
+  "final_train_loss": 0.1834,
+  "baseline_zero_shot_wer": 30.95,
+  "stage1_wer": 18.70,
+  "stage2_wer": 18.16,
+  "absolute_improvement_total": 12.79,
+  "relative_error_reduction_total": 41.3,
+  "ctranslate2_export": true
+}

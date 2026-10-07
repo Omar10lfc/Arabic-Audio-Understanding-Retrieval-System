@@ -1,0 +1,186 @@
+{
+  "benchmark_name": "Whisper-Large-v3-Turbo Downstream Evaluation & Quantization Suite",
+  "asr_model": "Whisper-Large-v3-Turbo CT2 Static INT8 (QLoRA Fine-tuned)",
+  "asr_quantization": [
+    {
+      "Model": "Whisper-Large-v3-Turbo (PyTorch FP16 Greedy)",
+      "Engine": "PyTorch HuggingFace",
+      "Precision": "float16",
+      "Disk (MB)": 1621.8,
+      "Inference Time (s)": 35.35,
+      "RTF": 0.078,
+      "Throughput": "12.8x",
+      "WER (%)": 18.46
+    },
+    {
+      "Model": "Whisper-Large-v3-Turbo (CT2 Float16)",
+      "Engine": "faster-whisper (CT2)",
+      "Precision": "float16",
+      "Disk (MB)": 1622.9,
+      "Inference Time (s)": 73.55,
+      "RTF": 0.1623,
+      "Throughput": "6.2x",
+      "WER (%)": 19.09
+    },
+    {
+      "Model": "Whisper-Large-v3-Turbo (CT2 Static INT8)",
+      "Engine": "faster-whisper (CT2)",
+      "Precision": "int8",
+      "Disk (MB)": 819.1,
+      "Inference Time (s)": 73.51,
+      "RTF": 0.1623,
+      "Throughput": "6.2x",
+      "WER (%)": 18.26
+    }
+  ],
+  "cascading_summarization": [
+    {
+      "Sample Scale": "N=25 Articles",
+      "Pipeline": "Oracle Baseline (Clean Text ➔ AraBART)",
+      "ASR Model": "None (0% WER)",
+      "Scorer": "official_multilingual_rouge_scoring (csebuetnlp/xl-sum)",
+      "ROUGE-1": 37.8,
+      "ROUGE-2": 18.26,
+      "ROUGE-L": 33.68,
+      "95% Bootstrap CI": "[28.69, 38.76]",
+      "Quality Retention": "100.0% (Ref)"
+    },
+    {
+      "Sample Scale": "N=25 Articles",
+      "Pipeline": "Spoken Pipeline (Whisper-Large-v3-Turbo CT2 INT8 ➔ AraBART)",
+      "ASR Model": "Whisper-Large-v3-Turbo QLoRA",
+      "Scorer": "official_multilingual_rouge_scoring (csebuetnlp/xl-sum)",
+      "ROUGE-1": 26.92,
+      "ROUGE-2": 9.86,
+      "ROUGE-L": 23.16,
+      "95% Bootstrap CI": "[19.34, 27.39]",
+      "Quality Retention": "68.8%"
+    },
+    {
+      "Sample Scale": "N=50 Articles",
+      "Pipeline": "Oracle Baseline (Clean Text ➔ AraBART)",
+      "ASR Model": "None (0% WER)",
+      "Scorer": "official_multilingual_rouge_scoring (csebuetnlp/xl-sum)",
+      "ROUGE-1": 38.05,
+      "ROUGE-2": 18.24,
+      "ROUGE-L": 33.2,
+      "95% Bootstrap CI": "[29.48, 37.14]",
+      "Quality Retention": "100.0% (Ref)"
+    },
+    {
+      "Sample Scale": "N=50 Articles",
+      "Pipeline": "Spoken Pipeline (Whisper-Large-v3-Turbo CT2 INT8 ➔ AraBART)",
+      "ASR Model": "Whisper-Large-v3-Turbo QLoRA",
+      "Scorer": "official_multilingual_rouge_scoring (csebuetnlp/xl-sum)",
+      "ROUGE-1": 28.18,
+      "ROUGE-2": 10.34,
+      "ROUGE-L": 23.56,
+      "95% Bootstrap CI": "[20.79, 26.22]",
+      "Quality Retention": "71.0%"
+    }
+  ],
+  "spoken_retrieval": [
+    {
+      "Pipeline": "1. Clean Oracle (Bi-Encoder Only)",
+      "Condition": "Clean (0% WER)",
+      "Reranker": "None",
+      "P@1": 0.5,
+      "P@1 95% Wilson CI": "(0.3664, 0.6336)",
+      "P@3": 0.66,
+      "P@3 95% Wilson CI": "(0.5215, 0.7756)",
+      "MRR": 0.5822,
+      "Paired McNemar (vs Clean)": "N/A (Ref)"
+    },
+    {
+      "Pipeline": "2. Clean Oracle (+ Re-Rank)",
+      "Condition": "Clean (0% WER)",
+      "Reranker": "mMARCO",
+      "P@1": 0.62,
+      "P@1 95% Wilson CI": "(0.4815, 0.7414)",
+      "P@3": 0.78,
+      "P@3 95% Wilson CI": "(0.6476, 0.8725)",
+      "MRR": 0.7017,
+      "Paired McNemar (vs Clean)": "N/A (Ref)"
+    },
+    {
+      "Pipeline": "3. Spoken ASR (Bi-Encoder Only)",
+      "Condition": "Whisper-Large-v3-Turbo INT8",
+      "Reranker": "None",
+      "P@1": 0.42,
+      "P@1 95% Wilson CI": "(0.2937, 0.5577)",
+      "P@3": 0.58,
+      "P@3 95% Wilson CI": "(0.4423, 0.7063)",
+      "MRR": 0.5509,
+      "Paired McNemar (vs Clean)": "p=0.2891 (sig=False)"
+    },
+    {
+      "Pipeline": "4. Spoken ASR (+ Re-Rank)",
+      "Condition": "Whisper-Large-v3-Turbo INT8",
+      "Reranker": "mMARCO",
+      "P@1": 0.64,
+      "P@1 95% Wilson CI": "(0.5014, 0.7586)",
+      "P@3": 0.8,
+      "P@3 95% Wilson CI": "(0.6696, 0.8876)",
+      "MRR": 0.739,
+      "Paired McNemar (vs Clean)": "p=1.0 (sig=False)"
+    }
+  ],
+  "speech_rag_ablation_evidence": [
+    {
+      "Regime / Audio Coverage": "Truncation Stress-Test (250 chars / 55 chunks)",
+      "Clean Oracle P@1": 0.62,
+      "Spoken Turbo P@1": 0.54,
+      "Quality Retention": "87.1%",
+      "Status / Note": "Evidence of high robustness under severe audio truncation"
+    },
+    {
+      "Regime / Audio Coverage": "Full-Passage Parity (~121 chunks, Medium Protocol)",
+      "Clean Oracle P@1": 0.62,
+      "Spoken Turbo P@1": 0.64,
+      "Quality Retention": "103.2%",
+      "Status / Note": "Official Gold Standard (Strict parity with Whisper-Medium)"
+    }
+  ],
+  "master_comparison": [
+    {
+      "ASR Model": "Whisper-Small (Fine-tuned)",
+      "Model Size": "244M",
+      "Common Voice WER": "20.61%",
+      "Throughput": "12.4x",
+      "Summarization ROUGE-L": "20.54",
+      "Summary Retention": "70.7%",
+      "Speech-RAG P@1": "0.7400",
+      "Speech-RAG Retention": "84.1%"
+    },
+    {
+      "ASR Model": "Whisper-Medium (Stage 2 Ours)",
+      "Model Size": "769M",
+      "Common Voice WER": "18.16%",
+      "Throughput": "8.8x",
+      "Summarization ROUGE-L": "23.98",
+      "Summary Retention": "76.9%",
+      "Speech-RAG P@1": "0.8000",
+      "Speech-RAG Retention": "90.9%"
+    },
+    {
+      "ASR Model": "Whisper-Large-v3-Turbo (Fine-tuned QLoRA)",
+      "Model Size": "809M",
+      "Common Voice WER": "18.26%",
+      "Throughput": "6.2x (CT2 INT8)",
+      "Summarization ROUGE-L": "23.56",
+      "Summary Retention": "71.0%",
+      "Speech-RAG P@1": "0.6400",
+      "Speech-RAG Retention": "103.2%"
+    },
+    {
+      "ASR Model": "Whisper-Large-v3 (Fine-tuned QLoRA)",
+      "Model Size": "1550M",
+      "Common Voice WER": "17.63%",
+      "Throughput": "4.6x (CT2 INT8)",
+      "Summarization ROUGE-L": "23.77",
+      "Summary Retention": "71.6%",
+      "Speech-RAG P@1": "0.5600",
+      "Speech-RAG Retention": "90.3%"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "model": "openai/whisper-medium",
+  "method": "QLoRA (4-bit NF4)",
+  "n_train": 25000,
+  "n_test": 300,
+  "max_steps": 2000,
+  "baseline_wer": 30.95,
+  "finetuned_wer": 18.7,
+  "abs_improvement": 12.25,
+  "rel_improvement": 39.6
+}

@@ -1,0 +1,5 @@
+Corpus / Pipeline,Corpus Condition,Reranker,P@1,P@3,P@5,MRR@10,Delta P@1,Quality Retention
+1. Oracle Clean Text (Bi-Encoder Only),Clean Text (0% WER),None (FAISS),0.64,0.8,0.88,0.7337,-24.0 pp,72.7%
+2. Oracle Clean Text (+ Re-Rank),Clean Text (0% WER),mmarco-mMiniLMv2,0.88,0.9,0.9,0.8867,0.0 pp (Ref),100.0% (Ref)
+3. Spoken ASR Transcripts (Bi-Encoder Only),Whisper INT8 (~31.1% WER),None (FAISS),0.7,0.8,0.82,0.7604,-18.0 pp,79.5%
+4. Spoken ASR Transcripts (+ Re-Rank),Whisper INT8 (~31.1% WER),mmarco-mMiniLMv2,0.8,0.88,0.88,0.8367,-8.0 pp,90.9%

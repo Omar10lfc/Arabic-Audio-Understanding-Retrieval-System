@@ -1,0 +1,54 @@
+[
+  {
+    "Configuration": "Vanilla PyTorch HF",
+    "Engine": "Transformers",
+    "Precision": "FP16",
+    "Disk Size (MB)": 1531.8,
+    "Peak VRAM (MB)": 1699.3,
+    "Inference Time (s)": 268.62,
+    "RTF (Compute/Audio)": 0.1494,
+    "Throughput (xRealtime)": 6.7,
+    "WER (%)": 17.83,
+    "Speedup vs PyTorch": "1.0x",
+    "WER Delta": "0.0 pp"
+  },
+  {
+    "Configuration": "CT2 Float16",
+    "Engine": "faster-whisper (CT2)",
+    "Precision": "float16",
+    "Disk Size (MB)": 1529.0,
+    "Peak VRAM (MB)": 0.0,
+    "Inference Time (s)": 203.96,
+    "RTF (Compute/Audio)": 0.1134,
+    "Throughput (xRealtime)": 8.8,
+    "WER (%)": 18.02,
+    "Speedup vs PyTorch": "1.32x",
+    "WER Delta": "+0.19 pp"
+  },
+  {
+    "Configuration": "CT2 INT8_FLOAT16",
+    "Engine": "faster-whisper (CT2)",
+    "Precision": "int8_float16",
+    "Disk Size (MB)": 1529.0,
+    "Peak VRAM (MB)": 0.0,
+    "Inference Time (s)": 204.30,
+    "RTF (Compute/Audio)": 0.1136,
+    "Throughput (xRealtime)": 8.8,
+    "WER (%)": 18.49,
+    "Speedup vs PyTorch": "1.31x",
+    "WER Delta": "+0.66 pp"
+  },
+  {
+    "Configuration": "CT2 Static INT8",
+    "Engine": "faster-whisper (CT2)",
+    "Precision": "int8",
+    "Disk Size (MB)": 770.2,
+    "Peak VRAM (MB)": 0.0,
+    "Inference Time (s)": 204.12,
+    "RTF (Compute/Audio)": 0.1135,
+    "Throughput (xRealtime)": 8.8,
+    "WER (%)": 18.35,
+    "Speedup vs PyTorch": "1.32x",
+    "WER Delta": "+0.52 pp"
+  }
+]

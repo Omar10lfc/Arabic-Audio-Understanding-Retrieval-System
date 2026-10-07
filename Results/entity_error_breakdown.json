@@ -1,0 +1,40 @@
+{
+  "dataset": "ARCD (Arabic Reading Comprehension Dataset)",
+  "corpus_scope": "76 long passages (>100 words), 50 evaluation queries",
+  "total_reference_tokens": 11656,
+  "empirical_overall_wer": 31.07,
+  "common_voice_baseline_wer": 18.16,
+  "wer_gap": 12.91,
+  "token_distribution": {
+    "numerals_and_dates": {
+      "count": 295,
+      "density_pct": 2.53,
+      "passages_affected": "69 / 76 (90.8%)",
+      "wer_contribution_pp": 8.1,
+      "wer_share_pct": 26.1,
+      "root_cause": "Whisper verbalizes raw digits ('104') into multi-word text ('مائة وأربعة'). Levenshtein alignment scores 1 substitution + 2 insertions per digit, tripling the nominal word error penalty."
+    },
+    "named_entities_and_proper_nouns": {
+      "count": 2802,
+      "density_pct": 24.04,
+      "wer_contribution_pp": 7.69,
+      "wer_share_pct": 24.8,
+      "root_cause": "Rare historical entities, Ottoman administrative titles, and geographical toponyms suffer elevated phoneme substitution rates."
+    },
+    "general_lexicon_and_clitics": {
+      "count": 8389,
+      "density_pct": 71.97,
+      "wer_contribution_pp": 12.83,
+      "wer_share_pct": 41.3,
+      "root_cause": "Standard acoustic transcription errors matching Common Voice baseline (~17.8% - 18.2%)."
+    }
+  },
+  "retrieval_interaction": {
+    "oracle_chunks": 276,
+    "spoken_chunks": 289,
+    "chunk_count_expansion": "+4.7% (+13 chunks)",
+    "queries_targeting_dates_or_entities": "11 / 50 (72.0%)",
+    "bi_encoder_vulnerability": "Numeral verbalization and entity swaps alter sentence length and mean-pooled vector angles, demoting relevant chunks in FAISS.",
+    "cross_encoder_rescue_mechanism": "Joint cross-attention directly matches query tokens with surviving semantic context even when digits are spelled out or entities have minor character substitutions."
+  }
+}

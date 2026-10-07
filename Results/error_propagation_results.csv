@@ -1,0 +1,11 @@
+Experiment,Sample_Count_N,Configuration,Engine,Precision,Disk_MB,ASR_WER_pct,Throughput_xRT,ROUGE_1,ROUGE_2,ROUGE_L,Delta_RL_pp,Quality_Retention_pct
+Experiment_A,25,Oracle Baseline (Clean Text -> AraBART),AraBART Only,FP16,-,0.00,-,37.42,18.13,33.28,0.00,100.0%
+Experiment_A,25,Vanilla PyTorch HF,Transformers HF,FP16,1531.8,84.28,47.2,29.01,10.81,25.01,-8.26,75.2%
+Experiment_A,25,CT2 Float16,faster-whisper (CT2),float16,1529.0,17.83,16.1,28.41,9.73,24.35,-8.93,73.2%
+Experiment_A,25,CT2 INT8_FLOAT16,faster-whisper (CT2),int8_float16,1529.0,16.93,17.5,28.48,11.04,23.84,-9.44,71.6%
+Experiment_A,25,CT2 Static INT8,faster-whisper (CT2),int8,770.2,17.52,17.1,28.73,10.74,24.17,-9.11,72.6%
+Experiment_B,50,Oracle Baseline (Clean Text -> AraBART),AraBART Only,FP16,-,0.00,-,37.86,18.17,32.99,0.00,100.0%
+Experiment_B,50,Vanilla PyTorch HF,Transformers HF,FP16,1531.8,84.56,47.2,26.87,9.40,23.25,-9.75,70.5%
+Experiment_B,50,CT2 Float16,faster-whisper (CT2),float16,1529.0,17.33,16.1,27.31,8.71,22.99,-10.00,69.7%
+Experiment_B,50,CT2 INT8_FLOAT16,faster-whisper (CT2),int8_float16,1529.0,16.83,17.5,28.66,9.72,23.77,-9.23,72.0%
+Experiment_B,50,CT2 Static INT8,faster-whisper (CT2),int8,770.2,17.47,17.1,28.59,9.50,23.66,-9.33,71.7%

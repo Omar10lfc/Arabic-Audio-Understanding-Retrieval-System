@@ -1,0 +1,12 @@
+Evaluation_Condition,Sample_Count,Sampling_Method,Engine,WER_pct,Delta_vs_Baseline_pp
+A: 400 Random (Training Protocol),400,Random (Seed 42),PyTorch FP16 Greedy,13.03,0.00
+B: 400 Sequential (Method Isolation),400,First N Sequential,PyTorch FP16 Greedy,19.12,+6.10
+C: 100 Random (Count Isolation),100,Random (Seed 42),PyTorch FP16 Greedy,11.88,-1.14
+D: 100 Sequential (Downstream Replica),100,First N Sequential,PyTorch FP16 Greedy,17.01,+3.99
+E: 100 Sequential (Downstream Production),100,First N Sequential,CT2 Static INT8,17.63,+4.60
+Draw_1: 100 Random (Seed 100),100,Random (Seed 100),PyTorch FP16 Greedy,12.21,-0.81
+Draw_2: 100 Random (Seed 2024),100,Random (Seed 2024),PyTorch FP16 Greedy,13.86,+0.83
+Draw_3: 100 Random (Seed 777),100,Random (Seed 777),PyTorch FP16 Greedy,13.55,+0.52
+Draw_4: 100 Random (Seed 9999),100,Random (Seed 9999),PyTorch FP16 Greedy,13.77,+0.75
+Draw_5: 100 Random (Seed 12345),100,Random (Seed 12345),PyTorch FP16 Greedy,12.90,-0.12
+Draw_Mean: 100 Random (5-Seed Mean +/- Std),100,Random (5 Seeds),PyTorch FP16 Greedy,13.26 (+/-0.62),+0.23

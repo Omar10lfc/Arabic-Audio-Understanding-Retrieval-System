@@ -1,0 +1,4 @@
+﻿Token Category,Token Count,Corpus Density (%),WER Contribution (pp),Share of Total WER (%),Failure Mechanism
+"Numerals & Dates (e.g. 104, 1984, 1157 هـ)",295,2.53%,+8.10 pp,26.1%,Whisper digit-to-word verbalization produces multiple insertion errors in Levenshtein alignment
+"Named Entities & Proper Nouns (Persons, Dynasties, Locations)",2802,24.04%,+7.69 pp,24.8%,Rare historical entities & toponyms suffer phonetic/morphological character substitution
+"General Lexicon & Function Words (Clitics, verbs, common nouns)",8389,71.97%,+12.83 pp,41.3%,Standard acoustic transcription baseline (~17.8% on Common Voice)

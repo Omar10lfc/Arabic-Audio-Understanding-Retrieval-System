@@ -1,0 +1,5 @@
+Configuration,Engine,Precision,Disk Size (MB),Peak VRAM (MB),Inference Time (s),RTF (Compute/Audio),Throughput (xRealtime),WER (%),Speedup vs PyTorch,WER Delta
+Vanilla PyTorch HF,Transformers,FP16,1531.8,1699.3,268.62,0.1494,6.7,17.83,1.0x,0.0 pp
+CT2 Float16,faster-whisper (CT2),float16,1529.0,0.0,203.96,0.1134,8.8,18.02,1.32x,+0.19 pp
+CT2 INT8_FLOAT16,faster-whisper (CT2),int8_float16,1529.0,0.0,204.30,0.1136,8.8,18.49,1.31x,+0.66 pp
+CT2 Static INT8,faster-whisper (CT2),int8,770.2,0.0,204.12,0.1135,8.8,18.35,1.32x,+0.52 pp
