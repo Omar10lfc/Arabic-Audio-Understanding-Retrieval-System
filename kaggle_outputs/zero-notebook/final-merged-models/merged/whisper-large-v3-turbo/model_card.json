@@ -1,0 +1,18 @@
+{
+  "model_key": "whisper-large-v3-turbo",
+  "base_model": "openai/whisper-large-v3-turbo",
+  "adapter_source": "/kaggle/input/notebooks/omar10lfc/whisper-large-turbo/whisper-large-v3-turbo-arabic-qlora/whisper-large-v3-turbo-arabic-lora-adapter",
+  "adapter_sha256": {
+    "README.md": "2bdf7bcf757f8fe069688469527a3f5f3d86e2f2b4326618b8851d7f40d17d1d",
+    "adapter_config.json": "ef8d89e12ff274527c85891687778b7ff30bda7362ee397ac23fa125a0c1289e",
+    "adapter_model.safetensors": "d7034088df42ce75febeb1899368ad96fd4ce6cee02025b2356ff7950051fbd0",
+    "preprocessor_config.json": "02051956d42fbab481cba9b17d28c2019c5e15cefde01699a0253e75a130d648",
+    "processor_config.json": "8efb801da889b24fc64a28d0af16d376852508aefb97d497a4c6d2200b114a33",
+    "tokenizer.json": "5a47b463cf9e79fdb8aa9e0129211da87d93f2d1ec00ec489d8e54a0452c6d30",
+    "tokenizer_config.json": "12f8ea7598458d613aa9ab5e3071d1ac3ea630064041c65f60341751bb6730f7",
+    "training_args.bin": "7d8dacd4e0aadafad057d0a54b4fb606bbc8e749eae417480db281fab0de313e"
+  },
+  "commit_sha": "unknown",
+  "precision": "PyTorch FP16",
+  "export_timestamp": "2026-10-16 12:38:39 UTC"
+}

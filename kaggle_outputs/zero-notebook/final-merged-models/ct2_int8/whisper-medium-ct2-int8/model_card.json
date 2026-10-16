@@ -1,0 +1,20 @@
+{
+  "model_key": "whisper-medium",
+  "base_model": "openai/whisper-medium",
+  "adapter_source": "/kaggle/input/notebooks/omar10lfc/stage-2/whisper-medium-arabic-qlora-stage2/checkpoint-3600",
+  "adapter_sha256": {
+    "README.md": "47d22e4202fae55178f982d9c09d15b716704e7dad1615453d198d808a2e8294",
+    "adapter_config.json": "969b66f07522dd9c30da47a27591d648c8a9063139ebd0a2768d541c24617151",
+    "adapter_model.safetensors": "f48948c39650156035020072ee91de61538b551cece50a2d8937a5e374fedef0",
+    "optimizer.pt": "d22fa77d041d60231e8b2de1f2a82862c4e74b06825dd5ea51483b3ba66f07dd",
+    "preprocessor_config.json": "ba2e601484abc80f4cded977f9a4fd4a53175b7d35c2f2511f0cfc3a32ad2499",
+    "rng_state.pth": "35cfa4d1a00ab54457943f098c81a7e08217bba6945f658bed4d6eaac6b0a2ad",
+    "scaler.pt": "7788c7cc60bd991bb584c9a8631c7010707cb818c6f2829b9625a72fb3ec1a89",
+    "scheduler.pt": "1d6522b7241c4a4335467048b92341b01b4f15f9165012ad174743f559c8ede1",
+    "trainer_state.json": "faeac6a203265d4e5ca50b69ecc96839d6399470a9f1209774278384f80a2f59",
+    "training_args.bin": "7cde1bda74df7c2f258decc5e6ea9ef624cdd5afdbea07c1a8560d7fee547b85"
+  },
+  "commit_sha": "unknown",
+  "precision": "CTranslate2 INT8",
+  "export_timestamp": "2026-10-16 12:39:21 UTC"
+}

@@ -1,0 +1,9 @@
+{
+  "model_key": "whisper-small",
+  "base_model": "openai/whisper-small",
+  "adapter_source": "Omar10lfc/whisper-small-arabic",
+  "adapter_sha256": {},
+  "commit_sha": "unknown",
+  "precision": "PyTorch FP16",
+  "export_timestamp": "2026-10-16 12:39:50 UTC"
+}

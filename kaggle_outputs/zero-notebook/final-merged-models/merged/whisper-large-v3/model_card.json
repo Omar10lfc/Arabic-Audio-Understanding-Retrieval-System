@@ -1,0 +1,18 @@
+{
+  "model_key": "whisper-large-v3",
+  "base_model": "openai/whisper-large-v3",
+  "adapter_source": "/kaggle/input/notebooks/omar10lfc/fine-tuning-whisper-large-v3-on-arabic-speech/whisper-large-v3-arabic-qlora/whisper-large-v3-arabic-lora-adapter",
+  "adapter_sha256": {
+    "README.md": "675556e30303101e692c2364dfb077397ba9aadf8a7dc4014a0b14d881b31e72",
+    "adapter_config.json": "40676544f1255f9f27e6f25d72ad087adc20920e98fff41561c414ea8de921bb",
+    "adapter_model.safetensors": "7ae54635bf729f00183c0532513d09da09b1cbf384d44e97482cdbab0ae2765d",
+    "preprocessor_config.json": "02051956d42fbab481cba9b17d28c2019c5e15cefde01699a0253e75a130d648",
+    "processor_config.json": "8efb801da889b24fc64a28d0af16d376852508aefb97d497a4c6d2200b114a33",
+    "tokenizer.json": "5a47b463cf9e79fdb8aa9e0129211da87d93f2d1ec00ec489d8e54a0452c6d30",
+    "tokenizer_config.json": "12f8ea7598458d613aa9ab5e3071d1ac3ea630064041c65f60341751bb6730f7",
+    "training_args.bin": "22aaa5848369f4d386a9ba03cdedca63495b08960a6d61c60de4793822de49cf"
+  },
+  "commit_sha": "unknown",
+  "precision": "PyTorch FP16",
+  "export_timestamp": "2026-10-16 12:37:58 UTC"
+}
