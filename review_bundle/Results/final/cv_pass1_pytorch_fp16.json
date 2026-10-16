@@ -1,16 +1,16 @@
 {
   "metadata": {
-    "timestamp": "2026-10-10 02:21:49 UTC",
+    "timestamp": "2026-10-16 16:44:01 UTC",
     "git_commit": "unknown",
     "device": "cuda",
     "evalkit_sha256": {
       "__init__.py": "e94e18cebd94d545da92da7f22df4da34e2a25654b5f06df978b3b1d08fb98ee",
       "normalize.py": "c1d3f76714de71d9291c4687d61f996680191ac3ea43e9f8be4c93afcef045ae",
-      "retrieval.py": "915ddb28861b4f50d4f172843dc0618f6125938adacd8da57937d7e975fd7619",
-      "rouge.py": "5d72ac5cad2e298945c69c7174db6128eb9bf14122af6848c255b26199919fed",
+      "retrieval.py": "33b6b23c9a5ca8a19deb2347782eff0745f87a7c47367400dab4a1e3e1425c69",
+      "rouge.py": "18043f9534d88163b6c65f3aaca29c5362691197ed0bdc6b3851a2602803e3fb",
       "stats.py": "518c54efa668f22a090f3d324368cb6938bcf963ba667206b4248f0d4aef9872",
       "summarize.py": "feb4fbb64d5eb782c69729570c0f0dd97a1171cee1d481d1407fe5bc97657a92",
-      "wer.py": "1f13a9528d8cfc26912f74d9de3e9d60b0a0b3874643b0b7d3a1814da8bec0fb"
+      "wer.py": "7682b7a19b0ed9baed2f409fc2024e562bc7cb99c9f0f87659b4896fe29e4a7b"
     },
     "config_sha256": "c2d75c2d70b82b58f9d2a6e34e39c61e1e44d810170376b73996603873c38b9b",
     "config_copy": {
@@ -125,10 +125,10 @@
     "num_clips": 10506,
     "total_audio_seconds": 45596.52,
     "total_audio_hours": 12.666,
-    "total_compute_seconds": 6705.75,
-    "total_compute_hours": 1.863,
-    "throughput_realtime": 6.8,
-    "rtf": 0.1471,
+    "total_compute_seconds": 6954.18,
+    "total_compute_hours": 1.932,
+    "throughput_realtime": 6.56,
+    "rtf": 0.1525,
     "gate_subset_a": {
       "gate_wer_measured": 13.03,
       "baseline_wer": 12.51,

@@ -88,7 +88,7 @@ print("\\nPreflight check completed.")
         """# ── CELL 3: SAVE BASE WEIGHTS, ADAPTERS, MERGE FP16 & BUILD CT2 INT8 ──────
 import os, sys, shutil, subprocess, gc, torch, time, hashlib, json
 from transformers import (
-    WhisperForConditionalGeneration, WhisperProcessor,
+    WhisperForConditionalGeneration, WhisperProcessor, WhisperFeatureExtractor, WhisperTokenizerFast,
     AutoTokenizer, AutoModelForSeq2SeqLM, AutoModel, AutoModelForSequenceClassification
 )
 import peft
@@ -199,8 +199,15 @@ for m in models:
     print(f"Downloading/Saving base weights for {m['base']}...")
     base_mdl = WhisperForConditionalGeneration.from_pretrained(m['base'], torch_dtype=torch.float16, low_cpu_mem_usage=True)
     base_proc = WhisperProcessor.from_pretrained(m['base'])
+    base_feat = WhisperFeatureExtractor.from_pretrained(m['base'])
     base_mdl.save_pretrained(base_save)
     base_proc.save_pretrained(base_save)
+    base_feat.save_pretrained(base_save)
+    try:
+        tok_fast = WhisperTokenizerFast.from_pretrained(m['base'])
+        tok_fast.save_pretrained(base_save)
+    except Exception:
+        pass
     print(f"[OK] Saved base weights to {base_save}")
 
     adapter_shas = {}
@@ -220,6 +227,12 @@ for m in models:
         merged.generation_config.task = "transcribe"
         merged.save_pretrained(merged_save)
         base_proc.save_pretrained(merged_save)
+        base_feat.save_pretrained(merged_save)
+        try:
+            tok_fast = WhisperTokenizerFast.from_pretrained(m['base'])
+            tok_fast.save_pretrained(merged_save)
+        except Exception:
+            pass
         print(f"[OK] Saved merged FP16 to {merged_save}")
         del peft_m, merged
     else:
@@ -228,6 +241,12 @@ for m in models:
         ft_proc = WhisperProcessor.from_pretrained(m['fine_tuned'])
         ft_mdl.save_pretrained(merged_save)
         ft_proc.save_pretrained(merged_save)
+        base_feat.save_pretrained(merged_save)
+        try:
+            tok_fast = WhisperTokenizerFast.from_pretrained(m['base'])
+            tok_fast.save_pretrained(merged_save)
+        except Exception:
+            pass
         print(f"[OK] Saved fine-tuned FP16 to {merged_save}")
         del ft_mdl
 
@@ -238,16 +257,25 @@ for m in models:
 
     # Convert to CT2 INT8 with --copy_files tokenizer.json preprocessor_config.json
     print(f"Converting {merged_save} to CT2 INT8 at {ct2_save}...")
+    copy_candidates = ["tokenizer.json", "preprocessor_config.json"]
+    copy_files = [cf for cf in copy_candidates if os.path.exists(os.path.join(merged_save, cf))]
     conv_cmd = [
         sys.executable, "-m", "ctranslate2.converters.transformers",
         "--model", merged_save,
         "--output_dir", ct2_save,
         "--quantization", "int8",
-        "--force",
-        "--copy_files", "tokenizer.json", "preprocessor_config.json"
+        "--force"
     ]
+    if copy_files:
+        conv_cmd.extend(["--copy_files"] + copy_files)
     subprocess.run(conv_cmd, check=True)
     base_proc.save_pretrained(ct2_save)
+    base_feat.save_pretrained(ct2_save)
+    try:
+        tok_fast = WhisperTokenizerFast.from_pretrained(m['base'])
+        tok_fast.save_pretrained(ct2_save)
+    except Exception:
+        pass
     print(f"[OK] Successfully built CT2 INT8 at {ct2_save}")
 
     # Write model_card.json for merged and CT2 models

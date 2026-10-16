@@ -38,8 +38,21 @@ def create_notebook(nb_path, cells_source):
 def build_n1b(evalkit_zip_sha=""):
     cells = [
         # Cell 1: Environment & evalkit check
-        f"""# ── CELL 1: ENVIRONMENT & EVALKIT-SRC VERIFICATION (INTERNET OFF) ──────
+        f"""# ── CELL 1: ENVIRONMENT & EVALKIT-SRC VERIFICATION ────────────────────────
 import os, sys, subprocess, json, hashlib, zipfile, shutil
+
+for pkg in ["ctranslate2", "faster-whisper", "soundfile"]:
+    try:
+        __import__(pkg.replace("-", "_"))
+    except ImportError:
+        print(f"Installing {{pkg}}...")
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", pkg])
+            print(f"[OK] Installed {{pkg}}.")
+        except Exception as e:
+            print(f"[ERROR] Could not install {{pkg}}: {{e}}")
+            print("Please toggle Internet: ON in Kaggle Notebook Settings (right sidebar) to allow pip install.")
+            raise
 
 RUN_MODE = os.environ.get("RUN_MODE", "full")
 OUT_DIR = "Results/smoke" if RUN_MODE == "smoke" else "Results/final"
@@ -47,7 +60,7 @@ os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs("Results/env", exist_ok=True)
 
 EXPECTED_EVALKIT_SHA = "{evalkit_zip_sha}"
-print(f"Internet: OFF | RUN_MODE: {{RUN_MODE}} | Target: {{OUT_DIR}} | Expected evalkit SHA: {{EXPECTED_EVALKIT_SHA}}")
+print(f"RUN_MODE: {{RUN_MODE}} | Target: {{OUT_DIR}} | Expected evalkit SHA: {{EXPECTED_EVALKIT_SHA}}")
 
 env_path = f"Results/env/final_01b_cv_pass2_beam5_{{RUN_MODE}}_env.txt"
 with open(env_path, 'w', encoding='utf-8') as f:
