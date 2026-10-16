@@ -1,0 +1,227 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 880" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif">
+  <defs>
+    <!-- Reusable arrowhead -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d97706"/>
+    </marker>
+
+    <!-- Subtle drop shadow -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.10"/>
+    </filter>
+
+    <!-- Color palettes for category accents -->
+    <linearGradient id="amber" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="indigo" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#818cf8"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#5eead4"/>
+      <stop offset="1" stop-color="#0d9488"/>
+    </linearGradient>
+    <linearGradient id="slate" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#94a3b8"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Page background -->
+  <rect x="0" y="0" width="1400" height="880" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="700" y="42" text-anchor="middle" font-size="24" font-weight="700" fill="#0f172a">
+    Smart Lecture Assistant — Pipeline Architecture
+  </text>
+  <text x="700" y="68" text-anchor="middle" font-size="13" fill="#64748b">
+    Arabic ASR → Semantic Index → Summarization → Drill-down
+  </text>
+
+  <!-- =====================================================
+       Stage 1: INPUT
+       ===================================================== -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="180" width="200" height="120" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <rect x="40" y="180" width="200" height="28" rx="12" fill="url(#slate)"/>
+    <rect x="40" y="194" width="200" height="14" fill="url(#slate)"/>
+    <text x="140" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">INPUT</text>
+    <text x="140" y="240" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">🎙 Audio file</text>
+    <text x="140" y="262" text-anchor="middle" font-size="12" fill="#475569">.wav · .mp3</text>
+    <text x="140" y="284" text-anchor="middle" font-size="11" fill="#94a3b8">(local: YouTube URL too)</text>
+  </g>
+
+  <!-- =====================================================
+       Stage 2: ASR
+       ===================================================== -->
+  <g filter="url(#shadow)">
+    <rect x="300" y="160" width="240" height="160" rx="12" fill="#fffaf0" stroke="#fcd34d" stroke-width="1.5"/>
+    <rect x="300" y="160" width="240" height="28" rx="12" fill="url(#amber)"/>
+    <rect x="300" y="174" width="240" height="14" fill="url(#amber)"/>
+    <text x="420" y="180" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">SPEECH-TO-TEXT (fine-tuned)</text>
+    <text x="420" y="218" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Whisper-small-arabic</text>
+    <text x="420" y="238" text-anchor="middle" font-size="11" fill="#78350f">Omar10lfc/whisper-small-arabic</text>
+    <text x="420" y="266" text-anchor="middle" font-size="11" fill="#475569">Mozilla Common Voice (ar) · 25k clips</text>
+    <text x="420" y="284" text-anchor="middle" font-size="11" fill="#475569">2-stage LR · 4k steps · fp16 T4</text>
+    <rect x="330" y="294" width="180" height="20" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+    <text x="420" y="308" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">WER 42.69 → 20.61 (−51.7%)</text>
+  </g>
+
+  <!-- Arrow INPUT -> ASR -->
+  <line x1="244" y1="240" x2="294" y2="240" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- =====================================================
+       Stage 3: TRANSCRIPT (middle hub)
+       ===================================================== -->
+  <g filter="url(#shadow)">
+    <rect x="600" y="180" width="200" height="120" rx="12" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+    <rect x="600" y="180" width="200" height="28" rx="12" fill="url(#teal)"/>
+    <rect x="600" y="194" width="200" height="14" fill="url(#teal)"/>
+    <text x="700" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">TRANSCRIPT</text>
+    <text x="700" y="234" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">📝 Arabic text</text>
+    <text x="700" y="256" text-anchor="middle" font-size="11" fill="#475569">+ word-level timestamps</text>
+    <text x="700" y="284" text-anchor="middle" font-size="11" fill="#94a3b8">(30s windows, 5s stride)</text>
+  </g>
+
+  <!-- Arrow ASR -> TRANSCRIPT -->
+  <line x1="544" y1="240" x2="594" y2="240" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- =====================================================
+       Three downstream branches (top: index, mid: summary, bottom: takeaways)
+       ===================================================== -->
+
+  <!-- 3a. INDEX branch (top) -->
+  <g filter="url(#shadow)">
+    <rect x="900" y="80" width="380" height="140" rx="12" fill="#f5f3ff" stroke="#a5b4fc" stroke-width="1.5"/>
+    <rect x="900" y="80" width="380" height="28" rx="12" fill="url(#indigo)"/>
+    <rect x="900" y="94" width="380" height="14" fill="url(#indigo)"/>
+    <text x="1090" y="100" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">SEMANTIC INDEX (off-the-shelf)</text>
+    <text x="1090" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#312e81">
+      Chunk @ 50 words  →  CAMeL-BERT (MSA)  →  FAISS
+    </text>
+    <text x="1090" y="156" text-anchor="middle" font-size="11" fill="#475569">
+      mean-pool + L2-norm  ·  IndexFlatIP (cosine via inner product)
+    </text>
+    <text x="1090" y="178" text-anchor="middle" font-size="11" fill="#64748b">
+      CAMeL-Lab/bert-base-arabic-camelbert-msa
+    </text>
+    <rect x="970" y="190" width="240" height="20" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/>
+    <text x="1090" y="204" text-anchor="middle" font-size="11" font-weight="700" fill="#3730a3">
+      Tuned on ARCD: P@1 0.64 (FAISS only)
+    </text>
+  </g>
+
+  <!-- 3b. SUMMARIZATION branch (middle) -->
+  <g filter="url(#shadow)">
+    <rect x="900" y="250" width="380" height="160" rx="12" fill="#fffaf0" stroke="#fcd34d" stroke-width="1.5"/>
+    <rect x="900" y="250" width="380" height="28" rx="12" fill="url(#amber)"/>
+    <rect x="900" y="264" width="380" height="14" fill="url(#amber)"/>
+    <text x="1090" y="270" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">SUMMARIZATION (fine-tuned)</text>
+    <text x="1090" y="304" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">AraBART-XLSum-arabic</text>
+    <text x="1090" y="324" text-anchor="middle" font-size="11" fill="#78350f">Omar10lfc/arabart-xlsum-arabic</text>
+    <text x="1090" y="350" text-anchor="middle" font-size="11" fill="#475569">XL-Sum (ar) · 37k pairs · 3 epochs · cosine LR</text>
+    <text x="1090" y="368" text-anchor="middle" font-size="11" fill="#475569">5 sections · top-3 retrieval per section · diversified</text>
+    <rect x="970" y="380" width="240" height="20" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+    <text x="1090" y="394" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">
+      ROUGE-L 13.48 → 29.56  ·  BLEU 8.26
+    </text>
+  </g>
+
+  <!-- 3c. TAKEAWAYS branch (bottom) -->
+  <g filter="url(#shadow)">
+    <rect x="900" y="440" width="380" height="120" rx="12" fill="#fffaf0" stroke="#fcd34d" stroke-width="1.5"/>
+    <rect x="900" y="440" width="380" height="28" rx="12" fill="url(#amber)"/>
+    <rect x="900" y="454" width="380" height="14" fill="url(#amber)"/>
+    <text x="1090" y="460" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">KEY TAKEAWAYS (same AraBART)</text>
+    <text x="1090" y="494" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">
+      Split transcript → 3-5 segments → summarize each
+    </text>
+    <text x="1090" y="516" text-anchor="middle" font-size="11" fill="#475569">
+      Jaccard dedup at 0.7 · uniform coverage across the whole lecture
+    </text>
+    <text x="1090" y="540" text-anchor="middle" font-size="11" fill="#64748b">
+      One clickable bullet per major topic
+    </text>
+  </g>
+
+  <!-- Arrows from TRANSCRIPT to 3 branches -->
+  <path d="M 800 220 Q 850 140 898 140" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="800" y1="330" x2="898" y2="330" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 800 260 Q 850 500 898 500" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- =====================================================
+       Stage 4: USER INTERACTION (bottom row)
+       ===================================================== -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="640" width="1320" height="160" rx="14" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+    <rect x="40" y="640" width="1320" height="32" rx="14" fill="url(#teal)"/>
+    <rect x="40" y="656" width="1320" height="16" fill="url(#teal)"/>
+    <text x="700" y="660" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">
+      INTERACTION LAYER — click a takeaway → instant drill-down to source segment with timestamp
+    </text>
+
+    <!-- Three sub-boxes -->
+    <g>
+      <rect x="80" y="695" width="280" height="80" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="220" y="720" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">👆 user clicks takeaway</text>
+      <text x="220" y="744" text-anchor="middle" font-size="11" fill="#475569">→ query the FAISS index</text>
+      <text x="220" y="762" text-anchor="middle" font-size="11" fill="#64748b">top-10 candidate chunks</text>
+    </g>
+
+    <g>
+      <rect x="420" y="695" width="320" height="80" rx="10" fill="#f5f3ff" stroke="#a5b4fc" stroke-width="1"/>
+      <rect x="420" y="695" width="320" height="22" rx="10" fill="url(#indigo)"/>
+      <rect x="420" y="706" width="320" height="11" fill="url(#indigo)"/>
+      <text x="580" y="710" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">CROSS-ENCODER RERANK</text>
+      <text x="580" y="738" text-anchor="middle" font-size="12" font-weight="700" fill="#312e81">
+        mmarco-mMiniLMv2-L12-H384
+      </text>
+      <text x="580" y="758" text-anchor="middle" font-size="11" fill="#475569">reads (query, chunk) jointly</text>
+    </g>
+
+    <g>
+      <rect x="800" y="695" width="280" height="80" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1"/>
+      <text x="940" y="722" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">📝 SOURCE SEGMENT</text>
+      <text x="940" y="744" text-anchor="middle" font-size="11" fill="#475569">⏱ mm:ss — mm:ss</text>
+      <text x="940" y="762" text-anchor="middle" font-size="11" fill="#64748b">exact transcript chunk</text>
+    </g>
+
+    <g>
+      <rect x="1120" y="695" width="220" height="80" rx="10" fill="#fffaf0" stroke="#fcd34d" stroke-width="1.5"/>
+      <text x="1230" y="722" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">+RERANK BOOST</text>
+      <text x="1230" y="746" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">P@1: 0.64 → 0.86</text>
+      <text x="1230" y="764" text-anchor="middle" font-size="11" fill="#475569">(ARCD, top-10)</text>
+    </g>
+
+    <!-- Arrows inside the interaction layer -->
+    <line x1="360" y1="735" x2="416" y2="735" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="740" y1="735" x2="796" y2="735" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- Connecting arrows: TAKEAWAYS -> interaction, INDEX -> interaction -->
+  <path d="M 1090 562 Q 1090 600 220 695" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow-amber)"/>
+  <path d="M 1090 222 Q 1330 620 940 695" fill="none" stroke="#6366f1" stroke-width="2" stroke-dasharray="5 4"/>
+
+  <!-- =====================================================
+       Legend
+       ===================================================== -->
+  <g transform="translate(40, 92)">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#0f172a">Legend</text>
+    <rect x="0" y="10" width="18" height="10" rx="2" fill="url(#amber)"/>
+    <text x="24" y="19" font-size="11" fill="#475569">Fine-tuned model (ours)</text>
+    <rect x="0" y="28" width="18" height="10" rx="2" fill="url(#indigo)"/>
+    <text x="24" y="37" font-size="11" fill="#475569">Off-the-shelf model</text>
+    <rect x="0" y="46" width="18" height="10" rx="2" fill="url(#teal)"/>
+    <text x="24" y="55" font-size="11" fill="#475569">Data / artefact</text>
+  </g>
+
+  <!-- Footer label -->
+  <text x="700" y="858" text-anchor="middle" font-size="10" fill="#94a3b8">
+    Audio → Whisper → Transcript → (Index | Summary | Takeaways) → User interaction returns timestamped source segment
+  </text>
+</svg>

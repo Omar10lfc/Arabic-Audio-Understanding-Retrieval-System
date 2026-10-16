@@ -58,7 +58,7 @@ Stage 2 training of Whisper-Medium reached a final training loss of **0.1834** a
 
 Fine-tuning **Whisper-Large-v3-Turbo (809M)** with 4-bit QLoRA and FlashAttention (SDPA) over 1,200 steps produced a massive **−48.3% relative error reduction** (27.36% $\rightarrow$ **14.15% WER**, train loss 0.6666, runtime 8.23 h on Tesla T4). 
 
-Fine-tuning flagship **Whisper-Large-v3 (1.55B)** with 4-bit QLoRA and FlashAttention over 1,000 steps achieved state-of-the-art **12.51% WER** (down from 18.35% zero-shot, −31.8% relative reduction, train loss 1.3013, runtime 9.22 h on Tesla T4). Both models merged cleanly back into standalone 16-bit safetensors with the PyTorch/PEFT `torchao` compatibility fix.
+Fine-tuning flagship **Whisper-Large-v3 (1.55B)** with 4-bit QLoRA and FlashAttention over 1,000 steps achieved **12.51% WER** (down from 18.35% zero-shot, −31.8% relative reduction, train loss 1.3013, runtime 9.22 h on Tesla T4). Both models merged cleanly back into standalone 16-bit safetensors with the PyTorch/PEFT `torchao` compatibility fix.
 
 > [!NOTE]
 > **Baseline Context & Model Scope:** While 18.16% WER represents a substantial −41.3% relative improvement over the zero-shot Whisper-Medium baseline (30.95%), larger foundational models (such as OpenAI's Whisper-large-v3, Meta MMS, and SeamlessM4T-v2) achieve lower absolute WER on Arabic benchmarks. Our objective was domain-adapting and optimizing a cost-effective, deployable 769M model under serverless compute constraints.
@@ -90,14 +90,14 @@ To position our domain-adapted Whisper-Medium model within the broader foundatio
 | **Whisper-Large-v3-Turbo (Zero-shot)** | 809M | 1,610 MB (FP16) | Zero-Shot Distilled | 27.36% | 11.20% | 9.6× (CT2) | 0.1042 | 5.6 GB | 34.20% | 29.50% | 38.10% |
 | **Whisper-Large-v3-Turbo (Fine-tuned)**| **809M** | **810 MB (INT8)** | **QLoRA (1,200 steps)** | **14.15%** | **6.40%** | **9.6× (CT2)**| **0.1042** | **6.1 GB** | **26.80%** | **19.80%** | **28.10%** |
 | **Whisper-Large-v3 (Zero-shot)** | 1550M | 3,090 MB (FP16) | Zero-Shot Pretrained | 18.35% | 7.95% | 5.2× (CT2) | 0.1923 | 9.8 GB | 28.50% | 21.10% | 29.80% |
-| **Whisper-Large-v3 (Fine-tuned SOTA)**| **1550M**| **1,550 MB (INT8)**| **QLoRA (1,000 steps)** | **12.51%** | **5.48%** | **5.2× (CT2)**| **0.1923** | **10.2 GB**| **24.10%** | **17.20%** | **25.40%** |
+| **Whisper-Large-v3 (Fine-tuned Flagship)**| **1550M**| **1,550 MB (INT8)**| **QLoRA (1,000 steps)** | **12.51%** | **5.48%** | **5.2× (CT2)**| **0.1923** | **10.2 GB**| **24.10%** | **17.20%** | **25.40%** |
 
 ![Whisper Large Scaling Comparison](assets/whisper_large_scaling_comparison.png)
 
 **Key Empirical Insights:**
 1. **Domain-Adapted Medium Approaches Zero-Shot Large:** Fine-tuned Whisper-Medium (18.16% WER) approaches zero-shot Whisper-Large-v3 (18.35% WER) within **0.19 percentage points**, while requiring **half the parameter size (769M vs 1550M)** and delivering **2.1× faster inference (8.8× vs 4.1× real-time)** on a budget T4 GPU.
 2. **Whisper-Large-v3-Turbo Dramatic Lift (−48.3%):** Large-v3-Turbo fine-tuning achieves **14.15% WER** (down from 27.36% zero-shot), beating fine-tuned Whisper-Medium by **4.01 percentage points** while delivering **9.6× real-time throughput** with its shallow 4-layer decoder.
-3. **Flagship SOTA with Whisper-Large-v3 (12.51%):** Fine-tuned Whisper-Large-v3 reaches the absolute project-best **12.51% WER**, retaining over **95.5%** of clean Oracle retrieval precision in downstream Speech-RAG.
+3. **Flagship Whisper-Large-v3 (12.51%):** Fine-tuned Whisper-Large-v3 reaches the lowest WER in the evaluation suite (**12.51%**), retaining over **95.5%** of clean Oracle retrieval precision in downstream Speech-RAG.
 4. **Universal Numeral Verbalization Gap:** Even fine-tuned Whisper-Large-v3 incurs an elevated WER on ARCD (24.10% vs 12.51%), confirming that digit verbalization (`104` $\rightarrow$ `مائة وأربعة`) is an architectural characteristic common to all Whisper tokenizers rather than a medium-specific defect.
 5. **Scale as Acoustic Armor:** Under heavy noise (+5 dB), Large-v3 sustains 25.40% WER compared to Medium's 34.20% and Small's 45.20%, demonstrating that scaling parameter count provides non-linear resilience in harsh acoustic environments.
 
@@ -119,34 +119,9 @@ When scaling ASR fine-tuning from **Whisper-Medium (769M)** to **Whisper-Large-v
 
 An audit of the experimental results revealed an apparent discrepancy between the training evaluation Word Error Rate (**12.51%**) and the downstream evaluation Word Error Rate (**17.63%**) for fine-tuned Whisper-Large-v3 on Common Voice 25.0 Arabic. To rigorously decompose this difference, an empirical isolation benchmark was executed on Kaggle GPU across four controlled subsets (Subsets A, B, C, D) using greedy decoding, evaluated against the downstream production reference (Condition E):
 
-| Evaluation Condition | Sample Count | Sampling Method | Decoding Engine | Empirical WER (%) | Delta vs. Baseline |
-|---|---:|---|---|---:|---:|
-| **A: Training Protocol Replica** | 400 | Random ($seed=42$) | PyTorch FP16 Greedy | **13.03%** | 0.00 pp (Ref) |
-| **B: Method Isolation** | 400 | First $N$ Sequential | PyTorch FP16 Greedy | **19.12%** | +6.10 pp |
-| **C: Sample Count Isolation** | 100 | Random ($seed=42$) | PyTorch FP16 Greedy | **11.88%** | −1.14 pp |
-| **D: Downstream Replica** | 100 | First $N$ Sequential | PyTorch FP16 Greedy | **17.01%** | +3.99 pp |
-| **E: Downstream Production** | 100 | First $N$ Sequential | CT2 Static INT8 | **17.63%** | +4.60 pp |
+*[Section 5.1.4 isolation tables removed pending Phase 2 regeneration from final_01a_cv_gate_pass1.ipynb and final_01b_cv_pass2_beam5.ipynb]*
 
-**Clean Mathematical Decomposition of Total Gap ($+4.60\text{ pp}$):**
-1. **Baseline Replica Sanity Check:** Observed Subset A WER is **13.03%**, successfully replicating the 12.51% training baseline within $0.52\text{ pp}$ (well within one empirical standard deviation).
-2. **Sampling Method Effect ($B - A = +6.10\text{ pp}$, 132.4% of gap):** Holding sample size fixed at $N=400$ and engine fixed at PyTorch FP16 Greedy, sequential sampling yields $+6.10\text{ pp}$ higher error than random sampling due to slice composition bias at the head of Common Voice `test.tsv`. Empirical inspection of all 10,506 valid clips refutes the notion of "longer audio" at the head; rather, Subset B exhibits a higher concentration of ultra-short utterances ($\le 3$ words: **26.8%** in B vs. **21.0%** in A; mean reference length **4.79 words** in B vs. **5.27 words** in A). Because WER normalizes edit distance by reference length, errors on short utterances incur disproportionately large percentage penalties (e.g. 1 error in a 2-word phrase = 50.0% clip WER). Furthermore, client ID analysis reveals significant speaker clustering deeper in the dataset (decreasing from 294 unique speakers in the head 400 clips to only 9 unique speakers in deeper blocks).
-3. **Sample Count Effect ($C - A = -1.14\text{ pp}$, −24.8% of gap):** Holding the sampling method fixed at Random ($seed=42$) and engine fixed at PyTorch FP16 Greedy, a single draw of $N=100$ yielded 11.88% WER. To evaluate whether this represents a systematic effect, 5 additional independent random draws of $N=100$ were executed on Kaggle GPU across independent seeds (100, 2024, 777, 9999, 12345), yielding WERs of **12.21%**, **13.86%**, **13.55%**, **13.77%**, and **12.90%**. Across these 5 draws, the empirical population standard deviation is $\sigma = 0.62\text{ pp}$ and the sample standard deviation ($N-1=4$) is $s = 0.70\text{ pp}$ ($\mathbf{Mean = 13.26\% \pm 0.70\%}$). The observed $-1.14\text{ pp}$ delta at Seed 42 sits about 2 standard deviations below the other draws ($z = (11.88 - 13.26)/0.70 = -1.97\sigma$), and the true 5-draw mean delta vs. the 400-clip baseline is merely **+0.23 pp**, confirming that sample size does not introduce a systematic structural shift.
-4. **Decoding Engine / Quantization Effect ($E - D = +0.62\text{ pp}$, 13.4% of gap):** On the exact same 100 sequential clips, CTranslate2 Static INT8 achieves **17.63%** compared to PyTorch FP16 Greedy's **17.01%**, confirming that 8-bit quantization contributes only **+0.62 pp** to the discrepancy.
-5. **Residual / Interaction Effect:** $-0.97\text{ pp}$ (−21.0% of gap).
-
-**Definitive Scientific Conclusion:** The gap between the 12.51% training result and the 17.63% downstream result is **not** an architectural regression or quantization failure; it is overwhelmingly an artifact of **sequential slice composition bias (+6.10 pp)** in the downstream test set.
-
-##### 5-Draw Random Sampling Stability ($N=100$ Clips, PyTorch FP16 Greedy)
-
-| Evaluation Draw | Random Seed | Clips ($N$) | Empirical WER (%) | Delta vs. 400-Clip Baseline ($A = 13.03\%$) |
-|---|:---:|:---:|:---:|:---:|
-| **Draw 1** | 100 | 100 | 12.21% | −0.81 pp |
-| **Draw 2** | 2024 | 100 | 13.86% | +0.83 pp |
-| **Draw 3** | 777 | 100 | 13.55% | +0.52 pp |
-| **Draw 4** | 9999 | 100 | 13.77% | +0.75 pp |
-| **Draw 5** | 12345 | 100 | 12.90% | −0.12 pp |
-| **Observed Subset C** | 42 | 100 | 11.88% | −1.14 pp *(~2σ below draws)* |
-| **5-Seed Summary** | — | 100 | **13.26% ± 0.70%** (Sample $s$) / **± 0.62%** (Pop $\sigma$) | **+0.23 pp** (Mean) |
+**Empirical Attribution Conclusion:** The gap between the 12.51% training result and the historical 17.63% downstream result is attributable to slice composition bias and decoding engine configuration in the downstream test set. Phase 2 will regenerate all decomposition matrices directly from the saved full pool results.
 
 ### 5.2 Summarization (Task 2)
 
@@ -244,13 +219,13 @@ To observe error propagation trends across sample counts, the cascading pipeline
 
 2. **Quantization Parity Across Tiers:**
    - On the full $N=50$ evaluation, downstream ROUGE-L scores across the three CTranslate2 tiers fall within a narrow **0.78 pp band**: CT2 Float16 (22.99), CT2 INT8_FLOAT16 (23.77), and CT2 Static INT8 (23.66). All three share overlapping 95% bootstrap confidence intervals ([20.11, 25.79] vs [20.78, 26.74]).
-   - The definitive scientific takeaway is **quantization parity**: 8-bit static quantization cuts the model file size in half (**770.2 MB vs. 1,529.0 MB, a 49.6% reduction**) while delivering downstream abstractive summarization quality identical to uncompressed FP16.
+   - The primary empirical takeaway is **quantization parity**: 8-bit static quantization cuts the model file size in half (**770.2 MB vs. 1,529.0 MB, a 49.6% reduction**) while delivering downstream abstractive summarization quality identical to uncompressed FP16.
 
 3. **Evaluation Scale Stability:**
    - Doubling the evaluation scale from $N=25$ to $N=50$ shifts the CT2 Static INT8 retention rate by merely **−0.9 pp** (72.6% vs. 71.7%), and shifts CT2 Static INT8 WER by **−0.05 pp** (17.52% vs. 17.47%), empirically proving that downstream error propagation metrics are stable and scale-invariant across evaluation sizes.
 
-4. **Oracle Baseline Alignment:**
-   - Standardizing article selection to sequential unfiltered loading and setting `no_repeat_ngram_size=3` aligns the Oracle Baseline ROUGE-L at **33.28** ($N=25$) and **32.99** ($N=50$), fully reconciling with the earlier Large-v3 and Turbo downstream benchmarks (**33.68–33.85**).
+4. **Oracle Baseline Alignment & Protocol Resolution:**
+   - Across three historical downstream runs on the same 25 articles, the Oracle baseline yielded 33.85, 33.68, and 33.28 ROUGE-L (cause unknown, likely subtle environment/library differences across runs). Under the final protocol, the clean Oracle baseline is computed once in `final_03_summarization_retrieval.ipynb`, its generated summaries are cached to disk, and all spoken conditions strictly reuse that single canonical Oracle baseline.
 
 4. **Production Deployment Decision:**
    - `CT2 Static INT8` is adopted as the primary production configuration: it compresses the ASR model to **770.2 MB (49.6% reduction)**, delivers **18.6× real-time throughput**, and maintains complete quality retention (75.4%) relative to full-precision serving.
@@ -315,42 +290,17 @@ Upgraded multilingual sentence embeddings maintain **100% Precision@1 retention 
 - **The Numeral Verbalization Gap:** Digits were intentionally not converted into text during normalization. In technical and encyclopedic corpora (such as ARCD), Whisper transcribes digits phonetically into Arabic words, which `jiwer` counts as substitution and insertion errors. This explains why ARCD's nominal WER was higher (**31.07%**) than Common Voice's conversational speech (**18.16%**).
 - **CER vs. WER in Morphologically Rich Arabic:** Because Arabic is an agglutinative, clitic-heavy language (where prefixes like `و-`, `ف-`, `ب-` and possessive suffixes attach directly to words), a single missing clitic is penalized as a complete word error in WER. In future extensions, Character Error Rate (CER) provides a valuable complementary metric alongside WER.
 
-#### 5.4.6 Entity-Level Linguistic Error Breakdown (ARCD 31.07% vs. Common Voice 18.16%)
+#### 5.4.6 Entity-Level Linguistic Error Breakdown (ARCD 31.07% vs. Common Voice 18.16%) *(Legacy, unverified — historical preliminary exploration, not part of final protocol)*
 
-To causally explain why technical reading comprehension passages (ARCD) incurred a **31.07% WER** compared to conversational speech (**18.16% WER**), an automated token-level linguistic error attribution was conducted across the 11,656 reference words of the 76 long passages:
+To explore why technical reading comprehension passages (ARCD) incurred elevated nominal error rates, a preliminary token-level linguistic categorization was explored in `legacy/evaluate_error_propagation.ipynb`.
 
-| Token Category | Exemplars in Corpus | Token Count | Corpus Density (%) | WER Contribution (pp) | Share of Total WER (%) | Failure Mechanism |
-|---|---|---:|---:|---:|---:|---|
-| **Numerals & Dates** | `104`, `1984`, `1157 هـ`, `78`, `2000` | 295 | 2.53% | **+8.10 pp** | **26.1%** | Digit-to-word verbalization (e.g. `104` $\rightarrow$ `مائة وأربعة`) generates multiple insertion and substitution penalties under Levenshtein alignment. |
-| **Named Entities & Nominals** | `صلاح الدين الأيوبي`, `نابليون`, `دمشق`, `العثمانية` | 2,802 | 24.04% | **+7.69 pp** | **24.8%** | Rare historical proper nouns, Ottoman administrative titles, and toponyms suffer elevated phonetic character substitutions without domain-specific language model biasing. |
-| **General Lexicon & Function Words** | `في`, `من`, `على`, `كانت`, `تعتبر`, `دولة`, `كبيرة` | 8,389 | 71.97% | **+12.83 pp** | **41.3%** | Standard acoustic transcription baseline matching Common Voice conversational speech (~17.8% – 18.2%). |
+*[Entity breakdown table and claims retained as legacy, unverified; not part of primary protocol evaluation]*
 
-**Key Linguistic Discoveries:**
-1. **Numerals and Named Entities account for 50.9% of all Word Errors:** Despite comprising only ~26.5% of reference tokens, numerals and proper nouns drive more than half of all measured transcription errors on encyclopedic lecture text.
-2. **The Retrieval Connection:** In 72% of evaluation queries targeting dates, quantities, or historical entities, numeral verbalization and proper-noun drift distorted mean-pooled vector representations. The Cross-Encoder bypassed this distortion by directly matching remaining contextual query tokens (`ما هي أطول حدود برية`), preserving 90.9% retrieval quality.
+#### 5.4.7 Acoustic Noise Sweep & Degradation Benchmark (MUSAN / DEMAND Simulation) *(Legacy, unverified — historical preliminary exploration, not part of final protocol)*
 
-#### 5.4.7 Acoustic Noise Sweep & Degradation Benchmark (MUSAN / DEMAND Simulation)
+To evaluate physical acoustic degradation beyond clean laboratory TTS, an acoustic Signal-to-Noise Ratio (SNR) sweep was explored in `legacy/evaluate_noise_sweep.ipynb`.
 
-To evaluate physical acoustic degradation beyond clean laboratory TTS, an acoustic Signal-to-Noise Ratio (SNR) sweep was implemented in [`evaluate_noise_sweep.ipynb`](Notebooks/evaluate_noise_sweep.ipynb) mixing calibrated multi-speaker babble (MUSAN) and room acoustic reverberation/HVAC (DEMAND) across $+20\text{ dB}$ to $-5\text{ dB}$:
-
-$$\text{SNR}_{\text{dB}} = 10 \cdot \log_{10}\left(\frac{P_{\text{signal}}}{P_{\text{noise}}}\right)$$
-
-| Acoustic Condition | SNR (dB) | Whisper-Small WER (%) | Whisper-Medium WER (%) | Whisper-Medium CER (%) | AraBART ROUGE-L | Speech-RAG Bi-Encoder (P@1) | Speech-RAG + Re-Rank (P@1) | Re-Rank MRR@10 | Quality Retention (%) |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| **Clean Baseline** | $\infty\text{ dB}$ | 20.61% | **18.16%** | **8.12%** | **23.98** | 0.7000 | **0.8000** | **0.8367** | **100.0% (Ref)** |
-| **Classroom Ambient** | $+20\text{ dB}$ | 23.40% | 19.85% | 9.04% | 23.12 | 0.6800 | 0.8000 | 0.8310 | 100.0% |
-| **Moderate HVAC / Chatter** | $+10\text{ dB}$ | 31.80% | 24.60% | 12.15% | 21.45 | 0.6200 | 0.7800 | 0.8125 | 97.5% |
-| **Heavy Babble Noise** | **$+5\text{ dB}$** | **45.20%** | **34.20%** | **17.80%** | **18.70** | **0.5200** | **0.7200** | **0.7640** | **90.0%** |
-| **High Noise (Energy Equal)** | $0\text{ dB}$ | 68.50% | 52.80% | 29.40% | 13.90 | 0.3600 | 0.6000 | 0.6520 | 75.0% |
-| **Extreme Noise (Noise Dominant)**| $-5\text{ dB}$ | 86.90% | 74.50% | 46.10% | 8.40 | 0.2200 | 0.4200 | 0.4810 | 52.5% |
-
-![Acoustic Noise Degradation Curves](assets/acoustic_noise_degradation_curves.png)
-
-**Master Empirical Takeaways:**
-1. **The Acoustic Breaking Cliff at $+5\text{ dB}$:** A sharp phase transition occurs at $+5\text{ dB}$ SNR: Word Error Rate doubles from 18.16% to 34.20%, causing downstream abstractive summarization to drop from 23.98 to 18.70 ROUGE-L.
-2. **Retrieval is Substantially More Acoustic-Resilient than Summarization:** At $+5\text{ dB}$ SNR, the Cross-Encoder retains **90.0%** of clean retrieval precision (0.7200 vs 0.8000 P@1), whereas AraBART summarization retains only 78.0% of ROUGE-L.
-3. **Cross-Encoder Acoustic Shield:** While single-vector Bi-Encoder retrieval collapses rapidly (dropping to 0.3600 P@1 at 0 dB), the Cross-Encoder sustains **0.6000 P@1 (+24.0 pp lift)**, demonstrating that joint token-level cross-attention provides active shielding against ambient acoustic corruption.
-4. **Model Capacity as Acoustic Armor:** Whisper-Medium (769M) sustains 24.60% WER at $+10\text{ dB}$, outperforming Whisper-Small at the same noise tier (31.80% WER).
+*[Noise sweep table removed — legacy, unverified; pending Phase 2 re-evaluation]*
 
 #### 5.4.8 Whisper-Large-v3-Turbo: Downstream Evaluation & Quantization Suite
 
@@ -399,21 +349,43 @@ To empirically evaluate how audio completeness impacts retrieval vs. transcripti
 | **Truncation Stress-Test (250 chars / 55 chunks)** | 0.6200 | 0.5400 | **87.1%** | Severe input clipping (~55% text omitted from audio); yet Cross-Encoder maintains 87.1% retention. |
 | **Full-Passage Parity (~121 chunks, 1:1 Parity)** | **0.6200** | **0.6400** | **103.2%** | **Surpasses Clean Oracle**: Spoken ASR reaches 0.64 P@1 (103.2% retention), 0.80 P@3, and 0.7390 MRR with $p=1.0$ on paired McNemar. |
 
-##### 4. Master Cross-Model Downstream Comparison
+##### 4. Master Cross-Model Downstream Comparison (Canonical Final Benchmark)
 
-| ASR Model Architecture | Parameters | Common Voice WER ↓ | Real-Time Throughput ↑ | Summarization ROUGE-L ↑ | Summary Retention (%) | Speech-RAG P@1 ↑ | Speech-RAG Retention (%) |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| **Whisper-Small** (Fine-tuned) | 244M | 20.61% | **12.4×** | 20.54 | 70.7% | 0.7400 | 84.1% |
-| **Whisper-Medium** (Stage 2 Ours) | 769M | 18.16% | 8.8× | 23.98 | **76.9%** | 0.8000 | 90.9% |
-| **Whisper-Large-v3-Turbo** (Fine-tuned QLoRA) | 809M | 18.26% (18.46% FP16) | 6.2× (12.8× PyTorch) | 23.56 | 71.0% | **0.6400** | **103.2%** |
-| **Whisper-Large-v3** (Fine-tuned QLoRA) | 1,550M | **12.51%** (17.63% INT8 / 16.80% FP16) | 4.6× (CT2 INT8) | **23.77** (N=50) / 23.05 (N=25) | **71.6%** | 0.5600 (P@3: **0.86**) | 90.3% |
+Below is the consolidated cross-pipeline evaluation across all 4 Whisper CT2 INT8 models, evaluated over 150 synthesized neural audio clips (222.7 minutes of audio), 50 XL-Sum articles with the official `csebuetnlp/xl-sum` multilingual scorer, and 50 ARCD passages (121 chunks) with CAMeL-BERT and mMARCO cross-encoder reranking:
+
+###### A. Acoustic Transcription & Downstream Abstractive Summarization (XL-Sum, N=50)
+
+| Pipeline Configuration | Model Architecture | Params | CT2 INT8 Disk (MB) | XL-Sum ASR WER ↓ | Throughput ↑ | ROUGE-1 ↑ | ROUGE-2 ↑ | ROUGE-L ↑ | 95% Bootstrap CI | Quality Retention (%) |
+|---|---|---:|---:|---:|---:|---:|---:|---:|:---:|---:|
+| **Clean Oracle (Reference)** | Text-only (No ASR) | – | – | 0.00% | – | **39.03** | **18.64** | **33.85** | [30.07, 37.70] | **100.00%** |
+| **Spoken Cascade: Large-v3** | Whisper-Large-v3 | 1550M | 1550 MB | **12.01%** | 12.22× | 30.84 | 11.21 | **25.35** | [22.54, 28.19] | **74.87%** |
+| **Spoken Cascade: Turbo** | Whisper-Large-v3-Turbo | 809M | 819 MB | 12.65% | **34.84×** | 30.35 | 10.85 | 25.32 | [22.26, 28.69] | **74.80%** |
+| **Spoken Cascade: Medium** | Whisper-Medium | 769M | 770 MB | 16.58% | 19.28× | 29.30 | 9.73 | 24.37 | [21.53, 27.20] | 71.97% |
+| **Spoken Cascade: Small** | Whisper-Small | 244M | 245 MB | 23.99% | 36.12× | 26.53 | 8.33 | 22.32 | [19.23, 25.54] | 65.92% |
+
+###### B. Spoken Document Retrieval / Speech-RAG (ARCD, N=50 Queries, 121 Chunks)
+
+| Retrieval Condition | Upstream ASR Model | P@1 ↑ | 95% Wilson CI (P@1) | P@3 ↑ | 95% Wilson CI (P@3) | MRR ↑ | NDCG@3 ↑ |
+|---|---|---:|:---:|---:|:---:|---:|---:|
+| **Oracle (Clean Q → Clean P)** | Reference (No ASR) | 0.6400 | [0.5014, 0.7586] | 0.7800 | [0.6476, 0.8725] | 0.7117 | 0.7800 |
+| **Set (i): Clean Q → Spoken P** | Whisper-Large-v3 | 0.6000 | [0.4618, 0.7239] | 0.8000 | [0.6696, 0.8876] | 0.7017 | 0.8000 |
+| | Whisper-Turbo | 0.6200 | [0.4815, 0.7414] | 0.8200 | [0.6920, 0.9023] | 0.7330 | 0.8200 |
+| | Whisper-Medium | 0.6400 | [0.5014, 0.7586] | 0.8000 | [0.6696, 0.8876] | 0.7262 | 0.8000 |
+| | Whisper-Small | 0.6200 | [0.4815, 0.7414] | 0.8000 | [0.6696, 0.8876] | 0.7210 | 0.8000 |
+| **Set (ii): Spoken Q → Clean P** | Whisper-Large-v3 | 0.6200 | [0.4815, 0.7414] | 0.7600 | [0.6259, 0.8570] | 0.6800 | 0.7600 |
+| | Whisper-Turbo | **0.6800** | [0.5419, 0.7924] | **0.8400** | [0.7149, 0.9166] | **0.7617** | **0.8400** |
+| | Whisper-Medium | 0.6000 | [0.4618, 0.7239] | 0.7600 | [0.6259, 0.8570] | 0.6817 | 0.7600 |
+| | Whisper-Small | 0.5000 | [0.3664, 0.6336] | 0.7000 | [0.5625, 0.8090] | 0.5967 | 0.7000 |
+| **Set (iii): Spoken Q → Spoken P**| Whisper-Large-v3 | **0.7000** | [0.5625, 0.8090] | **0.8800** | [0.7620, 0.9438] | **0.7900** | **0.8800** |
+| | Whisper-Turbo | 0.6400 | [0.5014, 0.7586] | **0.8800** | [0.7620, 0.9438] | 0.7608 | **0.8800** |
+| | Whisper-Medium | 0.5600 | [0.4231, 0.6884] | 0.8000 | [0.6696, 0.8876] | 0.6842 | 0.8000 |
+| | Whisper-Small | 0.5600 | [0.4231, 0.6884] | 0.7800 | [0.6476, 0.8725] | 0.6790 | 0.7800 |
 
 ##### 5. Empirical Takeaways Across the 4-Model Scaling Suite:
-1. **The Abstractive Summarization Ceiling:** Downstream AraBART summarization stabilizes between **23.56 and 23.98 ROUGE-L** across Medium (23.98), Turbo (23.56), and Large-v3 (23.77 on N=50). Once ASR Word Error Rate drops below ~18%, upstream acoustic errors cease to be the primary bottleneck—the ceiling is determined by AraBART's own generative compression capacity on BBC Arabic news.
-2. **Cross-Encoder Acoustic Shield Universality:** In both Turbo and Large-v3, cross-encoder reranking provides substantial recovery against upstream ASR noise:
-   - In Large-v3: P@1 improves from **0.42 $\rightarrow$ 0.56 (+14.0 pp)**, and P@3 improves from **0.58 $\rightarrow$ 0.86 (+28.0 pp)**, beating the clean text Top-3 baseline (0.78). Paired McNemar test vs. Clean Oracle yields $p = 0.5811$ ($\text{significant} = \text{False}$), confirming no statistically significant difference from clean text retrieval.
-   - In Turbo: P@1 reaches **0.64 (103.2% retention)**, and P@3 reaches **0.80 (+2.0 pp over clean)** with $p=1.0$ on paired McNemar.
-3. **The Deployment Recommendation:** Whisper-Large-v3-Turbo (809M, 4-layer decoder) emerges as the optimal production choice—achieving **12.8× throughput in PyTorch FP16 Greedy** and **6.2× throughput in CT2 INT8** at an **819.1 MB INT8 footprint** with zero degradation in downstream semantic search (103.2% retention) and comparable summarization quality (23.56 vs 23.77 ROUGE-L) to the 1.55B parameter flagship.
+1. **The Turbo Pareto Dominance:** `Whisper-Large-v3-Turbo` achieves **74.80% ROUGE-L quality retention** (statistically identical to Large-v3's **74.87%**, Δ = −0.07 pp) while transcribing at **34.84× real-time throughput** (2.85× faster than Large-v3's 12.22×). In Speech-RAG, Turbo matches Large-v3's Top-3 precision (0.8800 in Set iii) and achieves the highest Top-1 precision on spoken queries (0.6800 in Set ii).
+2. **Acoustic Noise Asymmetry (Short Queries vs. Long Passages):** In Set (i) [spoken passages], even Whisper-Small maintains P@1 = 0.62 and P@3 = 0.80 because 50-word passages retain enough semantic redundancy for the Bi-Encoder and Cross-Encoder to find relevant matches. However, in Set (ii) [spoken queries], Whisper-Small drops to P@1 = 0.50 and MRR = 0.5967, showing that transcription corruptions in short 5–10 word queries severely impact search precision when compact models are used.
+3. **Cross-Encoder Resilience:** Cross-encoder reranking lifts end-to-end spoken retrieval (Set iii) to **P@3 = 0.8800** for both Large-v3 and Turbo, exceeding the clean-text Bi-Encoder baseline (0.7800) despite acoustic transcription noise.
+4. **The Deployment Recommendation:** `Whisper-Large-v3-Turbo` (CT2 INT8, 819 MB) is the optimal production engine for Arabic speech processing, pairing near-flagship accuracy with unmatched real-time throughput.
 
 ---
 
@@ -435,7 +407,7 @@ The three components are exposed through two equivalent interfaces:
 - A **Gradio web app** (`app.py`) built around the *Smart Lecture Assistant* concept: audio upload → automated cheat-sheet (PDF + Markdown) + 3–5 clickable takeaways → drill-down to the exact transcript chunk via cross-encoder rerank.
 - A **FastAPI REST backend** (`api.py`) exposing `/transcribe`, `/analyze`, `/drill-down`, and `/cheat-sheet/{sid}.pdf` for programmatic clients.
 
-Both are thin layers over a shared `pipeline.py` module that performs all model loading lazily; the test suite (`pytest`, 44 tests) verifies the helpers and the API surface without requiring any model weights to be present.
+Both are thin layers over a shared `pipeline.py` module that performs all model loading lazily; the test suite (`pytest`, 68 tests) verifies the helpers, API surface, dual-normalization parity, evalkit metrics, and canonical ARCD retrieval without requiring full fine-tuned model weights to be present.
 
 ---
 
@@ -450,3 +422,15 @@ The system meets every deliverable in §10 of the project specification:
 - **Demo interface**: the Gradio app described in §5.5, with a FastAPI alternative for non-browser clients.
 
 The most important methodological finding is that **evaluation infrastructure matters as much as model quality**: switching from the default HuggingFace ROUGE implementation to the official multilingual_rouge_scoring (csebuetnlp/xl-sum) package (Arabic Snowball stemmer) shifted the same predictions from R-1 ≈ 26 to R-1 ≈ 35 — a 9-point gap explained entirely by the metric tokenizer. Reporting the paper's official scorer is what makes our numbers directly comparable to prior work.
+
+---
+
+## 7. Limitations
+
+1. **Synthetic Acoustic Simulation:** Cascading summarization and spoken document retrieval benchmarks utilize synthetic neural text-to-speech audio generated via Microsoft Edge TTS (`ar-SA-HamedNeural`, Modern Standard Arabic / MSA). This standardizes acoustic inputs across tests but does not capture conversational dialectal variation, spontaneous hesitations, or overlapping acoustics found in real-world lecture recordings.
+2. **Evaluation Sample Sizes:** Downstream cascading summarization is evaluated on $N=50$ articles (sequential, unfiltered from XL-Sum Arabic test split). Canonical Speech-RAG retrieval is evaluated on $N=50$ queries and 50 passages (121 chunks) alongside full-corpus evaluations ($N=76$ passages, all available questions). Full pool Common Voice benchmarks evaluate all $N=10,506$ valid clips.
+3. **Execution Environments & Hardware:** Headline results are recorded from reproducible Kaggle GPU environments documented in `Results/env/`:
+   - Full Pool Common Voice & PyTorch FP16 greedy evaluations: Kaggle T4 / P100 GPU (`final_01_cv_full_pool.ipynb`).
+   - Neural TTS generation & CT2 INT8 transcription: Kaggle GPU (`final_02_tts_asr.ipynb`).
+   - Cascading summarization & Speech-RAG retrieval: Kaggle GPU (`final_03_summarization_retrieval.ipynb`).
+   - Pure local execution benchmarks are explicitly labeled as CPU hardware-sensitivity checks.

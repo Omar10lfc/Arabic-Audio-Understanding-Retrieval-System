@@ -1,0 +1,5 @@
+Model,XL-Sum WER (%),ARCD Passages WER (%),Throughput (xRT)
+Whisper-Large-v3,12.01,20.17,12.22
+Whisper-Large-v3-Turbo,12.65,24.27,34.84
+Whisper-Medium,16.58,30.30,19.28
+Whisper-Small,23.99,39.66,36.12
