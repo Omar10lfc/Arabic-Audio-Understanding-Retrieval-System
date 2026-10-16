@@ -1,0 +1,22 @@
+{
+  "dataset_name": "evalkit-src",
+  "zip_sha256": "2cba1ffe4211d0e89f8067287b9b37a8091fbc89d1c125201397c5e81f7bf8d7",
+  "files": {
+    "evalkit/__init__.py": "e94e18cebd94d545da92da7f22df4da34e2a25654b5f06df978b3b1d08fb98ee",
+    "evalkit/normalize.py": "c1d3f76714de71d9291c4687d61f996680191ac3ea43e9f8be4c93afcef045ae",
+    "evalkit/retrieval.py": "33b6b23c9a5ca8a19deb2347782eff0745f87a7c47367400dab4a1e3e1425c69",
+    "evalkit/rouge.py": "18043f9534d88163b6c65f3aaca29c5362691197ed0bdc6b3851a2602803e3fb",
+    "evalkit/stats.py": "518c54efa668f22a090f3d324368cb6938bcf963ba667206b4248f0d4aef9872",
+    "evalkit/summarize.py": "feb4fbb64d5eb782c69729570c0f0dd97a1171cee1d481d1407fe5bc97657a92",
+    "evalkit/wer.py": "7682b7a19b0ed9baed2f409fc2024e562bc7cb99c9f0f87659b4896fe29e4a7b",
+    "configs/final_protocol.json": "c2d75c2d70b82b58f9d2a6e34e39c61e1e44d810170376b73996603873c38b9b",
+    "configs/notebook_manifest.json": "31de44048c23876eec7ea47e106cc866832c0262637864da3f3be33e794bb8d1",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/conftest.py": "a87160dbfa1d003c786101f74b10bf905ea5be8314200d8720b36864e3fbde91",
+    "tests/test_api.py": "ec3b1a3abdbcf75eeedf04e5dcecd07ea9e146b1528a63dafc7fe640a51065ce",
+    "tests/test_evalkit.py": "d58dad11f390562152ad8ed4a7be2f859f8d5ec3c2c991b86b39cb094832b117",
+    "tests/test_helpers.py": "6f1a03b1a6fa08b941e986eeab78a7af11e387b89930d7a38bdd8b2fb210914b",
+    "tests/test_normalizer_parity.py": "acaca03e2e985dc2dd016a9aeeb244a4dd78d42bf0798172cf76bf13729dc73c",
+    "tests/test_retrieval_canonical.py": "d1d4e9298c85d956e506fc6bc0b77d41cc55147bbc36f77b0b488b5a9d149c0f"
+  }
+}

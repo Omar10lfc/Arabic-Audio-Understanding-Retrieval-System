@@ -211,25 +211,17 @@ clean_idx.add(clean_embs)
 c_bi = evaluate_retrieval(query_embs, queries, clean_chunks, clean_chunk_to_passage, clean_idx, use_rerank=False)
 c_rr = evaluate_retrieval(query_embs, queries, clean_chunks, clean_chunk_to_passage, clean_idx, use_rerank=True)
 
-# Enforce Canonical GPU Baseline reference (P@1 = 0.6200, MRR = 0.7017)
-# On CPU, query Q0 had a 0.0140 logit margin that ranked #1 instead of #2 on GPU.
-if c_rr['P@1'] == 0.6400:
-    c_rr['hits1'][0] = 0
-    c_rr['P@1'] = 0.6200
-    c_rr['MRR'] = 0.7017
-    c_rr['ci_p1'] = wilson_ci(sum(c_rr['hits1']), len(queries))
-
 print(f"Clean Oracle (Bi-Encoder): P@1={c_bi['P@1']:.4f}, P@3={c_bi['P@3']:.4f}, MRR={c_bi['MRR']:.4f}, CI_P1={c_bi['ci_p1']}")
-print(f"Clean Oracle (+ Re-Rank): P@1={c_rr['P@1']:.4f}, P@3={c_rr['P@3']:.4f}, MRR={c_rr['MRR']:.4f}, CI_P1={c_rr['ci_p1']} [GPU-Canonical Baseline]")
+print(f"Clean Oracle (+ Re-Rank): P@1={c_rr['P@1']:.4f}, P@3={c_rr['P@3']:.4f}, MRR={c_rr['MRR']:.4f}, CI_P1={c_rr['ci_p1']}")
 
 for seed in SEEDS:
     set_all_seeds(seed)
     
-    # 1. Spoken Turbo (WER ~18.26%)
-    sp_turbo = create_spoken_passages(passages, target_wer=0.1826, seed=seed)
+    # Synthetic word corruption (~18%), superseded - not ASR output
+    sp_synth = create_spoken_passages(passages, target_wer=0.18, seed=seed)
     st_chunks = []
     st_c2p = []
-    for p in sp_turbo:
+    for p in sp_synth:
         for ch in split_into_chunks(p['text'], 50):
             st_chunks.append(ch)
             st_c2p.append(p['id'])
@@ -239,19 +231,17 @@ for seed in SEEDS:
     t_bi = evaluate_retrieval(query_embs, queries, st_chunks, st_c2p, st_idx, use_rerank=False)
     t_rr = evaluate_retrieval(query_embs, queries, st_chunks, st_c2p, st_idx, use_rerank=True)
 
-    # 2. Spoken Large-v3 (WER ~17.63%)
-    sp_large = create_spoken_passages(passages, target_wer=0.1763, seed=seed)
-    sl_chunks = []
-    sl_c2p = []
-    for p in sp_large:
-        for ch in split_into_chunks(p['text'], 50):
-            sl_chunks.append(ch)
-            sl_c2p.append(p['id'])
-    sl_embs = embed_texts(sl_chunks)
-    sl_idx = faiss.IndexFlatIP(sl_embs.shape[1])
-    sl_idx.add(sl_embs)
-    l_bi = evaluate_retrieval(query_embs, queries, sl_chunks, sl_c2p, sl_idx, use_rerank=False)
-    l_rr = evaluate_retrieval(query_embs, queries, sl_chunks, sl_c2p, sl_idx, use_rerank=True)
+    mc_bi = mcnemar_paired(c_bi['hits1'], t_bi['hits1'])
+    mc_rr = mcnemar_paired(c_rr['hits1'], t_rr['hits1'])
+    
+    rows.append({
+        'seed': seed,
+        'condition': 'Synthetic Word Corruption (18%, superseded)',
+        'bi_p1': t_bi['P@1'], 'bi_p3': t_bi['P@3'], 'bi_mrr': t_bi['MRR'], 'bi_p1_ci': str(t_bi['ci_p1']),
+        'bi_mc_p': mc_bi['p'], 'bi_sig': mc_bi['significant'],
+        'rr_p1': t_rr['P@1'], 'rr_p3': t_rr['P@3'], 'rr_mrr': t_rr['MRR'], 'rr_p1_ci': str(t_rr['ci_p1']),
+        'rr_mc_p': mc_rr['p'], 'rr_sig': mc_rr['significant']
+    })
 
     # McNemar tests vs Clean Reference
     mcn_t_bi_vs_clean = mcnemar_test(c_bi['hits1'], t_bi['hits1'])

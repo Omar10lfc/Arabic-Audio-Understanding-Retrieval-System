@@ -1,0 +1,4262 @@
+[
+  {
+    "file": "audit_cv_sampling_isolation.ipynb",
+    "line": 12,
+    "target": "12.51",
+    "snippet": "\"- **12.51% WER** (Training Evaluation Protocol: 400 randomly sampled clips, seed 42, PyTorch FP16 Greedy)\\n\","
+  },
+  {
+    "file": "audit_cv_sampling_isolation.ipynb",
+    "line": 13,
+    "target": "17.63",
+    "snippet": "\"- **17.63% WER** (Downstream Evaluation Protocol: first 100 sequential clips, CTranslate2 Static INT8)\\n\","
+  },
+  {
+    "file": "audit_cv_sampling_isolation.ipynb",
+    "line": 16,
+    "target": "12.51",
+    "snippet": "\"- **Subset A (400 Random, Seed 42):** Direct replication of training evaluation protocol (~12.51%).\\n\","
+  },
+  {
+    "file": "audit_cv_sampling_isolation.ipynb",
+    "line": 360,
+    "target": "12.51",
+    "snippet": "\"# Sanity-check check for Subset A baseline replication (~12.51%)\\n\","
+  },
+  {
+    "file": "audit_cv_sampling_isolation.ipynb",
+    "line": 361,
+    "target": "12.51",
+    "snippet": "\"expected_baseline = 12.51\\n\","
+  },
+  {
+    "file": "benchmark_whisper_large.ipynb",
+    "line": 138,
+    "target": "20.61",
+    "snippet": "\"        \\\"Clean WER (%)\\\": 20.61,\\n\","
+  },
+  {
+    "file": "evaluate_error_propagation.ipynb",
+    "line": 915,
+    "target": "in locals() else",
+    "snippet": "\"eval_tiers = tiers_primary if \\\"tiers_primary\\\" in locals() else tiers_25\\n\","
+  },
+  {
+    "file": "evaluate_noise_sweep.ipynb",
+    "line": 173,
+    "target": "20.61",
+    "snippet": "\"    {\\\"snr_db\\\": float(\\\"inf\\\"), \\\"label\\\": \\\"Clean (Inf dB)\\\", \\\"wer_small\\\": 20.61, \\\"wer_med\\\": 18.16, \\\"cer_med\\\": "
+  },
+  {
+    "file": "evaluate_noise_sweep.ipynb",
+    "line": 175,
+    "target": "0.6200",
+    "snippet": "\"    {\\\"snr_db\\\": 10.0,         \\\"label\\\": \\\"+10 dB (Moderate HVAC)\\\", \\\"wer_small\\\": 31.80, \\\"wer_med\\\": 24.60, \\\"cer_m"
+  },
+  {
+    "file": "evaluate_whisper_large_downstream.ipynb",
+    "line": 40,
+    "target": "12.51",
+    "snippet": "\"Following the fine-tuning of **`openai/whisper-large-v3` (1.55B parameters)** on Arabic speech (**12.51% WER**, achievi"
+  },
+  {
+    "file": "evaluate_whisper_large_downstream.ipynb",
+    "line": 49,
+    "target": "12.51",
+    "snippet": "\"   - Quantifies how much Whisper-Large-v3's lower WER (12.51% vs Medium's 18.16%) narrows the gap to the **Oracle Clean"
+  },
+  {
+    "file": "evaluate_whisper_large_downstream.ipynb",
+    "line": 1232,
+    "target": "0.6200",
+    "snippet": "\"        'Clean Oracle P@1': 0.6200,\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_downstream.ipynb",
+    "line": 1249,
+    "target": "17.63",
+    "snippet": "\"large_wer = '17.63%'\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_downstream.ipynb",
+    "line": 1262,
+    "target": "20.61",
+    "snippet": "\"        'Common Voice WER': '20.61%',\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_downstream.ipynb",
+    "line": 1286,
+    "target": "0.6200",
+    "snippet": "\"        'Speech-RAG P@1': '0.6200',\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_downstream.ipynb",
+    "line": 1307,
+    "target": "in locals() else",
+    "snippet": "\"        'asr_quantization': quant_results if 'quant_results' in locals() else [],\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_downstream.ipynb",
+    "line": 1308,
+    "target": "in locals() else",
+    "snippet": "\"        'cascading_summarization': summary_table if 'summary_table' in locals() else [],\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_downstream.ipynb",
+    "line": 1309,
+    "target": "in locals() else",
+    "snippet": "\"        'spoken_retrieval': retrieval_table if 'retrieval_table' in locals() else [],\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1256,
+    "target": "0.6200",
+    "snippet": "\"        'Clean Oracle P@1': 0.6200,\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1286,
+    "target": "20.61",
+    "snippet": "\"        'Common Voice WER': '20.61%',\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1316,
+    "target": "17.63",
+    "snippet": "\"        'Common Voice WER': '17.63%',\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1331,
+    "target": "in locals() else",
+    "snippet": "\"        'asr_quantization': quant_results if 'quant_results' in locals() else [],\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1332,
+    "target": "in locals() else",
+    "snippet": "\"        'cascading_summarization': summary_table if 'summary_table' in locals() else [],\\n\","
+  },
+  {
+    "file": "evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1333,
+    "target": "in locals() else",
+    "snippet": "\"        'spoken_retrieval': retrieval_table if 'retrieval_table' in locals() else [],\\n\","
+  },
+  {
+    "file": "README.md",
+    "line": 9,
+    "target": "12.51",
+    "snippet": "| **Speech-to-Text (Large-v3 SOTA)** | **Whisper-large-v3 Arabic (QLoRA)** | **1550M** / 3.09 GB | Common Voice 25.0 ar "
+  },
+  {
+    "file": "README.md",
+    "line": 13,
+    "target": "42.69",
+    "snippet": "| Speech-to-Text (Small) | [Whisper-small Arabic (fine-tuned)](https://huggingface.co/Omar10lfc/whisper-small-arabic) | "
+  },
+  {
+    "file": "README.md",
+    "line": 13,
+    "target": "20.61",
+    "snippet": "| Speech-to-Text (Small) | [Whisper-small Arabic (fine-tuned)](https://huggingface.co/Omar10lfc/whisper-small-arabic) | "
+  },
+  {
+    "file": "README.md",
+    "line": 14,
+    "target": "29.56",
+    "snippet": "| Summarization | [AraBART-XLSum Arabic (fine-tuned)](https://huggingface.co/Omar10lfc/arabart-xlsum-arabic) | **139M** "
+  },
+  {
+    "file": "README.md",
+    "line": 14,
+    "target": "13.48",
+    "snippet": "| Summarization | [AraBART-XLSum Arabic (fine-tuned)](https://huggingface.co/Omar10lfc/arabart-xlsum-arabic) | **139M** "
+  },
+  {
+    "file": "README.md",
+    "line": 40,
+    "target": "29.56",
+    "snippet": "- Fine-tuning AraBART on 37,454 Arabic pairs lifted ROUGE-L from **13.48 to 29.56 (+16.08 points)**, outperforming Googl"
+  },
+  {
+    "file": "README.md",
+    "line": 40,
+    "target": "13.48",
+    "snippet": "- Fine-tuning AraBART on 37,454 Arabic pairs lifted ROUGE-L from **13.48 to 29.56 (+16.08 points)**, outperforming Googl"
+  },
+  {
+    "file": "README.md",
+    "line": 151,
+    "target": "12.51",
+    "snippet": "\u251c\u2500\u2500 whisper-large-v3-qlora.ipynb        # Whisper-Large-v3 QLoRA fine-tuning (1,000 steps, 12.51% WER)"
+  },
+  {
+    "file": "README.md",
+    "line": 178,
+    "target": "20.61",
+    "snippet": "\u2502   \u251c\u2500\u2500 results-Whisper-finetuned.json        # Legacy Whisper-small (20.61% WER)"
+  },
+  {
+    "file": "README.md",
+    "line": 310,
+    "target": "42.69",
+    "snippet": "| WER \u2193 | 42.69% | **20.61%** | \u221222.08 abs / \u221251.7% rel |"
+  },
+  {
+    "file": "README.md",
+    "line": 310,
+    "target": "20.61",
+    "snippet": "| WER \u2193 | 42.69% | **20.61%** | \u221222.08 abs / \u221251.7% rel |"
+  },
+  {
+    "file": "README.md",
+    "line": 318,
+    "target": "13.48",
+    "snippet": "| AraBART (no fine-tuning) | 20.25 | 5.08 | 13.48 | 1.83 |"
+  },
+  {
+    "file": "README.md",
+    "line": 320,
+    "target": "29.56",
+    "snippet": "| **AraBART (fine-tuned)** | **34.99** | **15.77** | **29.56** | **8.26** |"
+  },
+  {
+    "file": "README.md",
+    "line": 428,
+    "target": "20.61",
+    "snippet": "| **Clean Baseline** | $\\infty\\text{ dB}$ | 20.61% | **18.16%** | **8.12%** | **23.98** | 0.7000 | **0.8000** | **0.8367"
+  },
+  {
+    "file": "README.md",
+    "line": 430,
+    "target": "0.6200",
+    "snippet": "| **Moderate HVAC / Chatter** | $+10\\text{ dB}$ | 31.80% | 24.60% | 12.15% | 21.45 | 0.6200 | 0.7800 | 0.8125 | 97.5% |"
+  },
+  {
+    "file": "README_SPACE.md",
+    "line": 23,
+    "target": "42.69",
+    "snippet": "| Speech-to-Text | [Whisper-small Arabic (fine-tuned)](https://huggingface.co/Omar10lfc/whisper-small-arabic) | Common V"
+  },
+  {
+    "file": "README_SPACE.md",
+    "line": 23,
+    "target": "20.61",
+    "snippet": "| Speech-to-Text | [Whisper-small Arabic (fine-tuned)](https://huggingface.co/Omar10lfc/whisper-small-arabic) | Common V"
+  },
+  {
+    "file": "README_SPACE.md",
+    "line": 24,
+    "target": "29.56",
+    "snippet": "| Summarization  | [AraBART-XLSum Arabic (fine-tuned)](https://huggingface.co/Omar10lfc/arabart-xlsum-arabic) | XL-Sum a"
+  },
+  {
+    "file": "README_SPACE.md",
+    "line": 24,
+    "target": "13.48",
+    "snippet": "| Summarization  | [AraBART-XLSum Arabic (fine-tuned)](https://huggingface.co/Omar10lfc/arabart-xlsum-arabic) | XL-Sum a"
+  },
+  {
+    "file": "README_SPACE.md",
+    "line": 47,
+    "target": "42.69",
+    "snippet": "- **ASR** \u2014 `openai/whisper-small` fine-tuned on Common Voice Arabic (two-stage LR schedule, 4000 steps, fp16 on T4). WE"
+  },
+  {
+    "file": "README_SPACE.md",
+    "line": 47,
+    "target": "20.61",
+    "snippet": "- **ASR** \u2014 `openai/whisper-small` fine-tuned on Common Voice Arabic (two-stage LR schedule, 4000 steps, fp16 on T4). WE"
+  },
+  {
+    "file": "README_SPACE.md",
+    "line": 48,
+    "target": "29.56",
+    "snippet": "- **Summarization** \u2014 `moussaKam/AraBART` fine-tuned on the full Arabic XL-Sum train split. ROUGE-L 29.56 vs 13.48 basel"
+  },
+  {
+    "file": "README_SPACE.md",
+    "line": 48,
+    "target": "13.48",
+    "snippet": "- **Summarization** \u2014 `moussaKam/AraBART` fine-tuned on the full Arabic XL-Sum train split. ROUGE-L 29.56 vs 13.48 basel"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 47,
+    "target": "42.69",
+    "snippet": "| Whisper-small (baseline) | 244M | Zero-shot | 42.69% | \u2013 | \u2013 |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 48,
+    "target": "20.61",
+    "snippet": "| Whisper-small (fine-tuned) | 244M | Full fine-tuning (4,000 steps) | 20.61% | \u221222.08 | \u221251.7% |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 55,
+    "target": "12.51",
+    "snippet": "| **Whisper-large-v3 (fine-tuned)** | **1550M** | **QLoRA (1,000 steps, SDPA, LR 1e-4)** | **12.51%** | **\u22125.84** | **\u22123"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 61,
+    "target": "12.51",
+    "snippet": "Fine-tuning flagship **Whisper-Large-v3 (1.55B)** with 4-bit QLoRA and FlashAttention over 1,000 steps achieved state-of"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 88,
+    "target": "20.61",
+    "snippet": "| **Whisper-Small (Fine-tuned)** | 244M | 483 MB | Full Fine-Tuning | 20.61% | 9.45% | **12.4\u00d7** | **0.0806** | **2.1 GB"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 93,
+    "target": "12.51",
+    "snippet": "| **Whisper-Large-v3 (Fine-tuned SOTA)**| **1550M**| **1,550 MB (INT8)**| **QLoRA (1,000 steps)** | **12.51%** | **5.48%"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 100,
+    "target": "12.51",
+    "snippet": "3. **Flagship SOTA with Whisper-Large-v3 (12.51%):** Fine-tuned Whisper-Large-v3 reaches the absolute project-best **12."
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 101,
+    "target": "12.51",
+    "snippet": "4. **Universal Numeral Verbalization Gap:** Even fine-tuned Whisper-Large-v3 incurs an elevated WER on ARCD (24.10% vs 1"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 116,
+    "target": "12.51",
+    "snippet": "- Setting `max_steps = 1000` (1.28 epochs / 32,000 clips) for Large-v3 converged cleanly to **12.51% WER in 9.22 hours**"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 118,
+    "target": "17.63",
+    "snippet": "#### 5.1.4 Empirical Attribution of the Common Voice Evaluation Discrepancy (12.51% vs. 17.63% WER)"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 118,
+    "target": "12.51",
+    "snippet": "#### 5.1.4 Empirical Attribution of the Common Voice Evaluation Discrepancy (12.51% vs. 17.63% WER)"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 120,
+    "target": "17.63",
+    "snippet": "An audit of the experimental results revealed an apparent discrepancy between the training evaluation Word Error Rate (*"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 120,
+    "target": "12.51",
+    "snippet": "An audit of the experimental results revealed an apparent discrepancy between the training evaluation Word Error Rate (*"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 124,
+    "target": "13.03",
+    "snippet": "| **A: Training Protocol Replica** | 400 | Random ($seed=42$) | PyTorch FP16 Greedy | **13.03%** | 0.00 pp (Ref) |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 128,
+    "target": "17.63",
+    "snippet": "| **E: Downstream Production** | 100 | First $N$ Sequential | CT2 Static INT8 | **17.63%** | +4.60 pp |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 131,
+    "target": "12.51",
+    "snippet": "1. **Baseline Replica Sanity Check:** Observed Subset A WER is **13.03%**, successfully replicating the 12.51% training "
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 131,
+    "target": "13.03",
+    "snippet": "1. **Baseline Replica Sanity Check:** Observed Subset A WER is **13.03%**, successfully replicating the 12.51% training "
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 134,
+    "target": "17.63",
+    "snippet": "4. **Decoding Engine / Quantization Effect ($E - D = +0.62\\text{ pp}$, 13.4% of gap):** On the exact same 100 sequential"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 137,
+    "target": "17.63",
+    "snippet": "**Definitive Scientific Conclusion:** The gap between the 12.51% training result and the 17.63% downstream result is **n"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 137,
+    "target": "12.51",
+    "snippet": "**Definitive Scientific Conclusion:** The gap between the 12.51% training result and the 17.63% downstream result is **n"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 141,
+    "target": "13.03",
+    "snippet": "| Evaluation Draw | Random Seed | Clips ($N$) | Empirical WER (%) | Delta vs. 400-Clip Baseline ($A = 13.03\\%$) |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 155,
+    "target": "13.48",
+    "snippet": "| AraBART (no fine-tuning)            | 20.25 |  5.08 | 13.48 | 1.83 |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 157,
+    "target": "29.56",
+    "snippet": "| **AraBART (fine-tuned, ours)**      | **34.99** | **15.77** | **29.56** | **8.26** |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 164,
+    "target": "29.56",
+    "snippet": "2. **Fine-tuning effect (R-L 13.48 \u2192 29.56).** Three epochs on the full Arabic train split lift AraBART by **+16.08 abso"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 164,
+    "target": "13.48",
+    "snippet": "2. **Fine-tuning effect (R-L 13.48 \u2192 29.56).** Three epochs on the full Arabic train split lift AraBART by **+16.08 abso"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 253,
+    "target": "33.85",
+    "snippet": "- Standardizing article selection to sequential unfiltered loading and setting `no_repeat_ngram_size=3` aligns the Oracl"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 340,
+    "target": "20.61",
+    "snippet": "| **Clean Baseline** | $\\infty\\text{ dB}$ | 20.61% | **18.16%** | **8.12%** | **23.98** | 0.7000 | **0.8000** | **0.8367"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 342,
+    "target": "0.6200",
+    "snippet": "| **Moderate HVAC / Chatter** | $+10\\text{ dB}$ | 31.80% | 24.60% | 12.15% | 21.45 | 0.6200 | 0.7800 | 0.8125 | 97.5% |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 390,
+    "target": "0.6200",
+    "snippet": "| 2. Clean Oracle (+ Re-Rank) | Clean Text (0% WER) | mMARCO | 0.6200 | [0.4815, 0.7414] | 0.7800 | [0.6476, 0.8725] | 0"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 390,
+    "target": "0.7017",
+    "snippet": "| 2. Clean Oracle (+ Re-Rank) | Clean Text (0% WER) | mMARCO | 0.6200 | [0.4815, 0.7414] | 0.7800 | [0.6476, 0.8725] | 0"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 399,
+    "target": "0.6200",
+    "snippet": "| **Truncation Stress-Test (250 chars / 55 chunks)** | 0.6200 | 0.5400 | **87.1%** | Severe input clipping (~55% text om"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 400,
+    "target": "0.6200",
+    "snippet": "| **Full-Passage Parity (~121 chunks, 1:1 Parity)** | **0.6200** | **0.6400** | **103.2%** | **Surpasses Clean Oracle**:"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 406,
+    "target": "20.61",
+    "snippet": "| **Whisper-Small** (Fine-tuned) | 244M | 20.61% | **12.4\u00d7** | 20.54 | 70.7% | 0.7400 | 84.1% |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 409,
+    "target": "17.63",
+    "snippet": "| **Whisper-Large-v3** (Fine-tuned QLoRA) | 1,550M | **12.51%** (17.63% INT8 / 16.80% FP16) | 4.6\u00d7 (CT2 INT8) | **23.77*"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 409,
+    "target": "12.51",
+    "snippet": "| **Whisper-Large-v3** (Fine-tuned QLoRA) | 1,550M | **12.51%** (17.63% INT8 / 16.80% FP16) | 4.6\u00d7 (CT2 INT8) | **23.77*"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 425,
+    "target": "42.69",
+    "snippet": "| Speech-to-Text (Small)  | WER \u2193    | 42.69% | 20.61% | \u221222.08 abs / \u221251.7% rel |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 425,
+    "target": "20.61",
+    "snippet": "| Speech-to-Text (Small)  | WER \u2193    | 42.69% | 20.61% | \u221222.08 abs / \u221251.7% rel |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 426,
+    "target": "29.56",
+    "snippet": "| Summarization           | ROUGE-L \u2191| 13.48% | **29.56%** | +16.08 abs |"
+  },
+  {
+    "file": "REPORT_experiments_results.md",
+    "line": 426,
+    "target": "13.48",
+    "snippet": "| Summarization           | ROUGE-L \u2191| 13.48% | **29.56%** | +16.08 abs |"
+  },
+  {
+    "file": "whisper-large-v3-qlora.ipynb",
+    "line": 499,
+    "target": "in locals() else",
+    "snippet": "\"    train_dataset=dataset['train'] if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "whisper-large-v3-qlora.ipynb",
+    "line": 500,
+    "target": "in locals() else",
+    "snippet": "\"    eval_dataset=dataset['test']   if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "whisper-large-v3-turbo-qlora.ipynb",
+    "line": 500,
+    "target": "in locals() else",
+    "snippet": "\"    train_dataset=dataset['train'] if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "whisper-large-v3-turbo-qlora.ipynb",
+    "line": 501,
+    "target": "in locals() else",
+    "snippet": "\"    eval_dataset=dataset['test']   if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "whisper-medium-qlora-stage2.ipynb",
+    "line": 438,
+    "target": "in locals() else",
+    "snippet": "\"    train_dataset=dataset['train'] if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "whisper-medium-qlora-stage2.ipynb",
+    "line": 439,
+    "target": "in locals() else",
+    "snippet": "\"    eval_dataset=dataset['test']   if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "whisper-medium-qlora.ipynb",
+    "line": 457,
+    "target": "in locals() else",
+    "snippet": "\"    train_dataset=dataset['train'] if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "whisper-medium-qlora.ipynb",
+    "line": 458,
+    "target": "in locals() else",
+    "snippet": "\"    eval_dataset=dataset['test']   if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\matplotlib\\_cm_listed.py",
+    "line": 116,
+    "target": "0.6200",
+    "snippet": "[0.620005, 0.183840, 0.497524],"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\matplotlib\\_cm_listed.py",
+    "line": 613,
+    "target": "0.5855",
+    "snippet": "[0.665129, 0.138566, 0.585582],"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\matplotlib\\_cm_listed.py",
+    "line": 621,
+    "target": "0.7017",
+    "snippet": "[0.701769, 0.174005, 0.557296],"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\matplotlib\\_cm_listed.py",
+    "line": 1475,
+    "target": "0.5855",
+    "snippet": "[0.35641381143126327, 0.18837119869242164,  0.5855320765920552],"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\matplotlib\\_cm_listed.py",
+    "line": 2586,
+    "target": "0.7017",
+    "snippet": "[0.94539, 0.70177, 0.91756],"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\mpmath\\function_docs.py",
+    "line": 6785,
+    "target": "17.84",
+    "snippet": "17.84559954041086081682634"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\mpmath\\function_docs.py",
+    "line": 6807,
+    "target": "17.84",
+    "snippet": "17.84559954041086081682634"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\mpmath\\tests\\test_fp.py",
+    "line": 330,
+    "target": "12.51",
+    "snippet": "assert ae(fp.lambertw(1e100, 2), (224.84156762724875878 + 12.510785262632255672j))"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\mpmath\\tests\\test_functions2.py",
+    "line": 2073,
+    "target": "33.85",
+    "snippet": "33.859683872746356,"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\numpy\\random\\tests\\test_random.py",
+    "line": 840,
+    "target": "13.48",
+    "snippet": "[13.484222138963087, 14.377255424602957]])"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\numpy\\random\\tests\\test_randomstate.py",
+    "line": 1073,
+    "target": "13.48",
+    "snippet": "[13.484222138963087, 14.377255424602957]])"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\pandas\\core\\window\\rolling.py",
+    "line": 2907,
+    "target": "0.5855",
+    "snippet": "3   -0.585583"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\pandas\\tests\\window\\test_win_type.py",
+    "line": 179,
+    "target": "12.51",
+    "snippet": "12.516,"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\pandas\\tests\\window\\test_win_type.py",
+    "line": 200,
+    "target": "12.51",
+    "snippet": "12.516,"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\scipy\\linalg\\tests\\test_lapack.py",
+    "line": 316,
+    "target": "13.03",
+    "snippet": "np.array([13.035514762572043, 4.337666985231382],"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\scipy\\linalg\\tests\\test_lapack.py",
+    "line": 372,
+    "target": "13.03",
+    "snippet": "assert_allclose(s, np.array([13.035514762572043,"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\scipy\\special\\tests\\test_basic.py",
+    "line": 4245,
+    "target": "12.51",
+    "snippet": "12.514462]),"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\scipy\\stats\\tests\\test_distributions.py",
+    "line": 8772,
+    "target": "13.48",
+    "snippet": "-4613.48339520, -5005.52420869, -5413.56342187, -5837.60115548,"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\seaborn\\cm.py",
+    "line": 797,
+    "target": "0.6200",
+    "snippet": "[ 0.62000484, 0.81991069, 0.82876741],"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\transformers\\integrations\\higgs.py",
+    "line": 335,
+    "target": "0.5855",
+    "snippet": "[-0.5855047702789307, 2.56172513961792],"
+  },
+  {
+    "file": ".venv\\Lib\\site-packages\\yt_dlp\\extractor\\nbc.py",
+    "line": 766,
+    "target": "12.51",
+    "snippet": "'duration': 112.513,"
+  },
+  {
+    "file": "external\\xl-sum\\README.md",
+    "line": 111,
+    "target": "29.56",
+    "snippet": "Bengali | 29.5653 / 12.1095 / 25.1315"
+  },
+  {
+    "file": "external\\xl-sum\\seq2seq\\transformers\\notebooks\\05-benchmark.ipynb",
+    "line": 1981,
+    "target": "17.84",
+    "snippet": "\"2020-06-26 12:13:17.849561: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic"
+  },
+  {
+    "file": "external\\xl-sum\\seq2seq\\transformers\\tests\\test_modeling_tapas.py",
+    "line": 842,
+    "target": "17.63",
+    "snippet": "17.6355762,"
+  },
+  {
+    "file": "external\\xl-sum\\seq2seq\\transformers\\tests\\test_modeling_tapas.py",
+    "line": 843,
+    "target": "17.63",
+    "snippet": "17.6355762,"
+  },
+  {
+    "file": "external\\xl-sum\\seq2seq\\transformers\\tests\\test_modeling_tapas.py",
+    "line": 844,
+    "target": "17.63",
+    "snippet": "17.6355762,"
+  },
+  {
+    "file": "Notebooks\\audit_cv_sampling_isolation.ipynb",
+    "line": 12,
+    "target": "12.51",
+    "snippet": "\"- **12.51% WER** (Training Evaluation Protocol: 400 randomly sampled clips, seed 42, PyTorch FP16 Greedy)\\n\","
+  },
+  {
+    "file": "Notebooks\\audit_cv_sampling_isolation.ipynb",
+    "line": 13,
+    "target": "17.63",
+    "snippet": "\"- **17.63% WER** (Downstream Evaluation Protocol: first 100 sequential clips, CTranslate2 Static INT8)\\n\","
+  },
+  {
+    "file": "Notebooks\\audit_cv_sampling_isolation.ipynb",
+    "line": 16,
+    "target": "12.51",
+    "snippet": "\"- **Subset A (400 Random, Seed 42):** Direct replication of training evaluation protocol (~12.51%).\\n\","
+  },
+  {
+    "file": "Notebooks\\audit_cv_sampling_isolation.ipynb",
+    "line": 360,
+    "target": "12.51",
+    "snippet": "\"# Sanity-check check for Subset A baseline replication (~12.51%)\\n\","
+  },
+  {
+    "file": "Notebooks\\audit_cv_sampling_isolation.ipynb",
+    "line": 361,
+    "target": "12.51",
+    "snippet": "\"expected_baseline = 12.51\\n\","
+  },
+  {
+    "file": "Notebooks\\benchmark_whisper_large.ipynb",
+    "line": 138,
+    "target": "20.61",
+    "snippet": "\"        \\\"Clean WER (%)\\\": 20.61,\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_error_propagation.ipynb",
+    "line": 915,
+    "target": "in locals() else",
+    "snippet": "\"eval_tiers = tiers_primary if \\\"tiers_primary\\\" in locals() else tiers_25\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_noise_sweep.ipynb",
+    "line": 173,
+    "target": "20.61",
+    "snippet": "\"    {\\\"snr_db\\\": float(\\\"inf\\\"), \\\"label\\\": \\\"Clean (Inf dB)\\\", \\\"wer_small\\\": 20.61, \\\"wer_med\\\": 18.16, \\\"cer_med\\\": "
+  },
+  {
+    "file": "Notebooks\\evaluate_noise_sweep.ipynb",
+    "line": 175,
+    "target": "0.6200",
+    "snippet": "\"    {\\\"snr_db\\\": 10.0,         \\\"label\\\": \\\"+10 dB (Moderate HVAC)\\\", \\\"wer_small\\\": 31.80, \\\"wer_med\\\": 24.60, \\\"cer_m"
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_downstream.ipynb",
+    "line": 40,
+    "target": "12.51",
+    "snippet": "\"Following the fine-tuning of **`openai/whisper-large-v3` (1.55B parameters)** on Arabic speech (**12.51% WER**, achievi"
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_downstream.ipynb",
+    "line": 49,
+    "target": "12.51",
+    "snippet": "\"   - Quantifies how much Whisper-Large-v3's lower WER (12.51% vs Medium's 18.16%) narrows the gap to the **Oracle Clean"
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_downstream.ipynb",
+    "line": 1232,
+    "target": "0.6200",
+    "snippet": "\"        'Clean Oracle P@1': 0.6200,\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_downstream.ipynb",
+    "line": 1249,
+    "target": "17.63",
+    "snippet": "\"large_wer = '17.63%'\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_downstream.ipynb",
+    "line": 1262,
+    "target": "20.61",
+    "snippet": "\"        'Common Voice WER': '20.61%',\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_downstream.ipynb",
+    "line": 1286,
+    "target": "0.6200",
+    "snippet": "\"        'Speech-RAG P@1': '0.6200',\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_downstream.ipynb",
+    "line": 1307,
+    "target": "in locals() else",
+    "snippet": "\"        'asr_quantization': quant_results if 'quant_results' in locals() else [],\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_downstream.ipynb",
+    "line": 1308,
+    "target": "in locals() else",
+    "snippet": "\"        'cascading_summarization': summary_table if 'summary_table' in locals() else [],\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_downstream.ipynb",
+    "line": 1309,
+    "target": "in locals() else",
+    "snippet": "\"        'spoken_retrieval': retrieval_table if 'retrieval_table' in locals() else [],\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1256,
+    "target": "0.6200",
+    "snippet": "\"        'Clean Oracle P@1': 0.6200,\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1286,
+    "target": "20.61",
+    "snippet": "\"        'Common Voice WER': '20.61%',\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1316,
+    "target": "17.63",
+    "snippet": "\"        'Common Voice WER': '17.63%',\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1331,
+    "target": "in locals() else",
+    "snippet": "\"        'asr_quantization': quant_results if 'quant_results' in locals() else [],\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1332,
+    "target": "in locals() else",
+    "snippet": "\"        'cascading_summarization': summary_table if 'summary_table' in locals() else [],\\n\","
+  },
+  {
+    "file": "Notebooks\\evaluate_whisper_large_turbo_downstream.ipynb",
+    "line": 1333,
+    "target": "in locals() else",
+    "snippet": "\"        'spoken_retrieval': retrieval_table if 'retrieval_table' in locals() else [],\\n\","
+  },
+  {
+    "file": "Notebooks\\nlp-fine-tune-edit-1.ipynb",
+    "line": 3232,
+    "target": "42.69",
+    "snippet": "\"  BASELINE WER : 42.69%\\n\","
+  },
+  {
+    "file": "Notebooks\\nlp-fine-tune-edit-1.ipynb",
+    "line": 3561,
+    "target": "42.69",
+    "snippet": "\"  BASELINE WER   : 42.69%\\n\","
+  },
+  {
+    "file": "Notebooks\\nlp-fine-tune-edit-1.ipynb",
+    "line": 3863,
+    "target": "42.69",
+    "snippet": "\"| Baseline WER         | 42.69%                    |\\n\","
+  },
+  {
+    "file": "Notebooks\\nlp-fine-tune-edit-2.ipynb",
+    "line": 3232,
+    "target": "42.69",
+    "snippet": "\"  BASELINE WER : 42.69%\\n\","
+  },
+  {
+    "file": "Notebooks\\nlp-fine-tune-edit-2.ipynb",
+    "line": 3561,
+    "target": "42.69",
+    "snippet": "\"  BASELINE WER   : 42.69%\\n\","
+  },
+  {
+    "file": "Notebooks\\nlp-fine-tune-edit-2.ipynb",
+    "line": 3863,
+    "target": "42.69",
+    "snippet": "\"| Baseline WER         | 42.69%                    |\\n\","
+  },
+  {
+    "file": "Notebooks\\summarization.ipynb",
+    "line": 466,
+    "target": "42.69",
+    "snippet": "\"Before the fine-tuned numbers, we record a third baseline: **vanilla AraBART** as it ships from `moussaKam/AraBART`, ev"
+  },
+  {
+    "file": "Notebooks\\summarization.ipynb",
+    "line": 466,
+    "target": "20.61",
+    "snippet": "\"Before the fine-tuned numbers, we record a third baseline: **vanilla AraBART** as it ships from `moussaKam/AraBART`, ev"
+  },
+  {
+    "file": "Notebooks\\summarization.ipynb",
+    "line": 761,
+    "target": "42.69",
+    "snippet": "\"* **`final-model-2/`** \u2014 the fine-tuned Whisper checkpoint (test WER 20.61, vs 42.69 baseline; see `results-Whisper-fin"
+  },
+  {
+    "file": "Notebooks\\summarization.ipynb",
+    "line": 761,
+    "target": "20.61",
+    "snippet": "\"* **`final-model-2/`** \u2014 the fine-tuned Whisper checkpoint (test WER 20.61, vs 42.69 baseline; see `results-Whisper-fin"
+  },
+  {
+    "file": "Notebooks\\summarization.ipynb",
+    "line": 923,
+    "target": "20.61",
+    "snippet": "\"| **Task 1** \u2014 Speech-to-Text (Arabic) | Fine-tuned Whisper in `final-model-2/` (WER 20.61, see `results-Whisper-finetu"
+  },
+  {
+    "file": "Notebooks\\whisper-large-v3-qlora.ipynb",
+    "line": 499,
+    "target": "in locals() else",
+    "snippet": "\"    train_dataset=dataset['train'] if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "Notebooks\\whisper-large-v3-qlora.ipynb",
+    "line": 500,
+    "target": "in locals() else",
+    "snippet": "\"    eval_dataset=dataset['test']   if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "Notebooks\\whisper-large-v3-turbo-qlora.ipynb",
+    "line": 500,
+    "target": "in locals() else",
+    "snippet": "\"    train_dataset=dataset['train'] if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "Notebooks\\whisper-large-v3-turbo-qlora.ipynb",
+    "line": 501,
+    "target": "in locals() else",
+    "snippet": "\"    eval_dataset=dataset['test']   if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "Notebooks\\whisper-medium-qlora-stage2.ipynb",
+    "line": 438,
+    "target": "in locals() else",
+    "snippet": "\"    train_dataset=dataset['train'] if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "Notebooks\\whisper-medium-qlora-stage2.ipynb",
+    "line": 439,
+    "target": "in locals() else",
+    "snippet": "\"    eval_dataset=dataset['test']   if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "Notebooks\\whisper-medium-qlora.ipynb",
+    "line": 458,
+    "target": "in locals() else",
+    "snippet": "\"    train_dataset=dataset['train'] if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "Notebooks\\whisper-medium-qlora.ipynb",
+    "line": 459,
+    "target": "in locals() else",
+    "snippet": "\"    eval_dataset=dataset['test']   if 'dataset' in locals() else None,\\n\","
+  },
+  {
+    "file": "Results\\cv_wer_gap_isolation_results.json",
+    "line": 7,
+    "target": "17.63",
+    "snippet": "\"subset_e_ct2_int8_wer\": 17.63"
+  },
+  {
+    "file": "Results\\noise_sweep_results.json",
+    "line": 21,
+    "target": "20.61",
+    "snippet": "\"wer_small\": 20.61,"
+  },
+  {
+    "file": "Results\\results-Whisper-finetuned.json",
+    "line": 6,
+    "target": "42.69",
+    "snippet": "\"baseline_wer\": 42.69,"
+  },
+  {
+    "file": "Results\\results-Whisper-finetuned.json",
+    "line": 7,
+    "target": "20.61",
+    "snippet": "\"finetuned_wer\": 20.61,"
+  },
+  {
+    "file": "Results\\results-Whisper-large-v3-qlora.json",
+    "line": 8,
+    "target": "12.51",
+    "snippet": "\"finetuned_wer\": 12.51,"
+  },
+  {
+    "file": "Results\\whisper_large_benchmark_results.json",
+    "line": 21,
+    "target": "20.61",
+    "snippet": "\"Clean WER (%)\": 20.61,"
+  },
+  {
+    "file": "Results\\whisper_large_downstream_results.json",
+    "line": 23,
+    "target": "17.84",
+    "snippet": "\"WER (%)\": 17.84"
+  },
+  {
+    "file": "Results\\whisper_large_downstream_results.json",
+    "line": 33,
+    "target": "17.63",
+    "snippet": "\"WER (%)\": 17.63"
+  },
+  {
+    "file": "Results\\whisper_large_downstream_results.json",
+    "line": 102,
+    "target": "0.7017",
+    "snippet": "\"MRR\": 0.7017,"
+  },
+  {
+    "file": "Results\\whisper_large_downstream_results.json",
+    "line": 148,
+    "target": "20.61",
+    "snippet": "\"Common Voice WER\": \"20.61%\","
+  },
+  {
+    "file": "Results\\whisper_large_downstream_results.json",
+    "line": 178,
+    "target": "17.63",
+    "snippet": "\"Common Voice WER\": \"17.63%\","
+  },
+  {
+    "file": "Results\\whisper_large_turbo_downstream_results.json",
+    "line": 102,
+    "target": "0.7017",
+    "snippet": "\"MRR\": 0.7017,"
+  },
+  {
+    "file": "Results\\whisper_large_turbo_downstream_results.json",
+    "line": 148,
+    "target": "20.61",
+    "snippet": "\"Common Voice WER\": \"20.61%\","
+  },
+  {
+    "file": "Results\\whisper_large_turbo_downstream_results.json",
+    "line": 178,
+    "target": "17.63",
+    "snippet": "\"Common Voice WER\": \"17.63%\","
+  },
+  {
+    "file": "scratch\\audit_all_retrieval_seeds.py",
+    "line": 234,
+    "target": "17.63",
+    "snippet": "# 2. Spoken Large-v3 (WER ~17.63%)"
+  },
+  {
+    "file": "scratch\\build_audit_cv_nb.py",
+    "line": 46,
+    "target": "12.51",
+    "snippet": "- **12.51% WER** (Training Evaluation Protocol: 400 randomly sampled clips, seed 42, PyTorch FP16 Greedy)"
+  },
+  {
+    "file": "scratch\\build_audit_cv_nb.py",
+    "line": 47,
+    "target": "17.63",
+    "snippet": "- **17.63% WER** (Downstream Evaluation Protocol: first 100 sequential clips, CTranslate2 Static INT8)"
+  },
+  {
+    "file": "scratch\\build_audit_cv_nb.py",
+    "line": 50,
+    "target": "12.51",
+    "snippet": "- **Subset A (400 Random, Seed 42):** Direct replication of training evaluation protocol (~12.51%)."
+  },
+  {
+    "file": "scratch\\build_audit_cv_nb.py",
+    "line": 364,
+    "target": "12.51",
+    "snippet": "# Sanity-check check for Subset A baseline replication (~12.51%)"
+  },
+  {
+    "file": "scratch\\build_audit_cv_nb.py",
+    "line": 365,
+    "target": "12.51",
+    "snippet": "expected_baseline = 12.51"
+  },
+  {
+    "file": "scratch\\build_error_propagation_nb.py",
+    "line": 890,
+    "target": "in locals() else",
+    "snippet": "eval_tiers = tiers_primary if \"tiers_primary\" in locals() else tiers_25"
+  },
+  {
+    "file": "scratch\\build_noise_sweep_nb.py",
+    "line": 178,
+    "target": "20.61",
+    "snippet": "{\"snr_db\": float(\"inf\"), \"label\": \"Clean (Inf dB)\", \"wer_small\": 20.61, \"wer_med\": 18.16, \"cer_med\": 8.12, \"rouge_l\": 23"
+  },
+  {
+    "file": "scratch\\build_noise_sweep_nb.py",
+    "line": 180,
+    "target": "0.6200",
+    "snippet": "{\"snr_db\": 10.0,         \"label\": \"+10 dB (Moderate HVAC)\", \"wer_small\": 31.80, \"wer_med\": 24.60, \"cer_med\": 12.15, \"rou"
+  },
+  {
+    "file": "scratch\\build_whisper_large_benchmark_nb.py",
+    "line": 143,
+    "target": "20.61",
+    "snippet": "\"Clean WER (%)\": 20.61,"
+  },
+  {
+    "file": "scratch\\build_whisper_large_downstream_nb.py",
+    "line": 81,
+    "target": "12.51",
+    "snippet": "Following the fine-tuning of **`openai/whisper-large-v3` (1.55B parameters)** on Arabic speech (**12.51% WER**, achievin"
+  },
+  {
+    "file": "scratch\\build_whisper_large_downstream_nb.py",
+    "line": 90,
+    "target": "12.51",
+    "snippet": "- Quantifies how much Whisper-Large-v3's lower WER (12.51% vs Medium's 18.16%) narrows the gap to the **Oracle Clean Tex"
+  },
+  {
+    "file": "scratch\\build_whisper_large_downstream_nb.py",
+    "line": 1201,
+    "target": "0.6200",
+    "snippet": "'Clean Oracle P@1': 0.6200,"
+  },
+  {
+    "file": "scratch\\build_whisper_large_downstream_nb.py",
+    "line": 1218,
+    "target": "17.63",
+    "snippet": "large_wer = '17.63%'"
+  },
+  {
+    "file": "scratch\\build_whisper_large_downstream_nb.py",
+    "line": 1231,
+    "target": "20.61",
+    "snippet": "'Common Voice WER': '20.61%',"
+  },
+  {
+    "file": "scratch\\build_whisper_large_downstream_nb.py",
+    "line": 1255,
+    "target": "0.6200",
+    "snippet": "'Speech-RAG P@1': '0.6200',"
+  },
+  {
+    "file": "scratch\\build_whisper_large_downstream_nb.py",
+    "line": 1276,
+    "target": "in locals() else",
+    "snippet": "'asr_quantization': quant_results if 'quant_results' in locals() else [],"
+  },
+  {
+    "file": "scratch\\build_whisper_large_downstream_nb.py",
+    "line": 1277,
+    "target": "in locals() else",
+    "snippet": "'cascading_summarization': summary_table if 'summary_table' in locals() else [],"
+  },
+  {
+    "file": "scratch\\build_whisper_large_downstream_nb.py",
+    "line": 1278,
+    "target": "in locals() else",
+    "snippet": "'spoken_retrieval': retrieval_table if 'retrieval_table' in locals() else [],"
+  },
+  {
+    "file": "scratch\\build_whisper_large_qlora_nb.py",
+    "line": 480,
+    "target": "in locals() else",
+    "snippet": "train_dataset=dataset['train'] if 'dataset' in locals() else None,"
+  },
+  {
+    "file": "scratch\\build_whisper_large_qlora_nb.py",
+    "line": 481,
+    "target": "in locals() else",
+    "snippet": "eval_dataset=dataset['test']   if 'dataset' in locals() else None,"
+  },
+  {
+    "file": "scratch\\build_whisper_large_turbo_downstream_nb.py",
+    "line": 1225,
+    "target": "0.6200",
+    "snippet": "'Clean Oracle P@1': 0.6200,"
+  },
+  {
+    "file": "scratch\\build_whisper_large_turbo_downstream_nb.py",
+    "line": 1255,
+    "target": "20.61",
+    "snippet": "'Common Voice WER': '20.61%',"
+  },
+  {
+    "file": "scratch\\build_whisper_large_turbo_downstream_nb.py",
+    "line": 1285,
+    "target": "17.63",
+    "snippet": "'Common Voice WER': '17.63%',"
+  },
+  {
+    "file": "scratch\\build_whisper_large_turbo_downstream_nb.py",
+    "line": 1300,
+    "target": "in locals() else",
+    "snippet": "'asr_quantization': quant_results if 'quant_results' in locals() else [],"
+  },
+  {
+    "file": "scratch\\build_whisper_large_turbo_downstream_nb.py",
+    "line": 1301,
+    "target": "in locals() else",
+    "snippet": "'cascading_summarization': summary_table if 'summary_table' in locals() else [],"
+  },
+  {
+    "file": "scratch\\build_whisper_large_turbo_downstream_nb.py",
+    "line": 1302,
+    "target": "in locals() else",
+    "snippet": "'spoken_retrieval': retrieval_table if 'retrieval_table' in locals() else [],"
+  },
+  {
+    "file": "scratch\\build_whisper_large_turbo_qlora_nb.py",
+    "line": 481,
+    "target": "in locals() else",
+    "snippet": "train_dataset=dataset['train'] if 'dataset' in locals() else None,"
+  },
+  {
+    "file": "scratch\\build_whisper_large_turbo_qlora_nb.py",
+    "line": 482,
+    "target": "in locals() else",
+    "snippet": "eval_dataset=dataset['test']   if 'dataset' in locals() else None,"
+  },
+  {
+    "file": "scratch\\isolate_wer_gap.py",
+    "line": 4,
+    "target": "17.63",
+    "snippet": "effects explaining the 12.51% (training eval) vs 17.63% (downstream eval) WER gap."
+  },
+  {
+    "file": "scratch\\isolate_wer_gap.py",
+    "line": 4,
+    "target": "12.51",
+    "snippet": "effects explaining the 12.51% (training eval) vs 17.63% (downstream eval) WER gap."
+  },
+  {
+    "file": "scratch\\isolate_wer_gap.py",
+    "line": 7,
+    "target": "12.51",
+    "snippet": "A) 400 random clips (seed=42)       [PyTorch FP16 Greedy] -> Baseline reproduction (~12.51%)"
+  },
+  {
+    "file": "scratch\\isolate_wer_gap.py",
+    "line": 10,
+    "target": "17.63",
+    "snippet": "D) 100 sequential clips             [PyTorch FP16 Greedy] -> Downstream replica (16.80% PyTorch vs CT2 INT8 17.63%)"
+  },
+  {
+    "file": "scratch\\isolate_wer_gap.py",
+    "line": 278,
+    "target": "12.51",
+    "snippet": "# Sanity-check check for Subset A baseline replication (~12.51%)"
+  },
+  {
+    "file": "scratch\\isolate_wer_gap.py",
+    "line": 279,
+    "target": "12.51",
+    "snippet": "expected_baseline = 12.51"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 5,
+    "target": "in locals() else",
+    "snippet": "'in locals() else',"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 6,
+    "target": "0.6200",
+    "snippet": "'0.6200', '0.7017', '0.5855', '17.63', '17.84',"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 6,
+    "target": "0.7017",
+    "snippet": "'0.6200', '0.7017', '0.5855', '17.63', '17.84',"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 6,
+    "target": "0.5855",
+    "snippet": "'0.6200', '0.7017', '0.5855', '17.63', '17.84',"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 6,
+    "target": "17.63",
+    "snippet": "'0.6200', '0.7017', '0.5855', '17.63', '17.84',"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 6,
+    "target": "17.84",
+    "snippet": "'0.6200', '0.7017', '0.5855', '17.63', '17.84',"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 7,
+    "target": "12.51",
+    "snippet": "'12.51', '13.03', '42.69', '20.61', '29.56', '13.48', '33.85'"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 7,
+    "target": "13.03",
+    "snippet": "'12.51', '13.03', '42.69', '20.61', '29.56', '13.48', '33.85'"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 7,
+    "target": "42.69",
+    "snippet": "'12.51', '13.03', '42.69', '20.61', '29.56', '13.48', '33.85'"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 7,
+    "target": "20.61",
+    "snippet": "'12.51', '13.03', '42.69', '20.61', '29.56', '13.48', '33.85'"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 7,
+    "target": "29.56",
+    "snippet": "'12.51', '13.03', '42.69', '20.61', '29.56', '13.48', '33.85'"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 7,
+    "target": "13.48",
+    "snippet": "'12.51', '13.03', '42.69', '20.61', '29.56', '13.48', '33.85'"
+  },
+  {
+    "file": "scratch\\run_hardcode_audit.py",
+    "line": 7,
+    "target": "33.85",
+    "snippet": "'12.51', '13.03', '42.69', '20.61', '29.56', '13.48', '33.85'"
+  },
+  {
+    "file": "Summarizer\\README.md",
+    "line": 40,
+    "target": "29.56",
+    "snippet": "value: 29.56"
+  },
+  {
+    "file": "Summarizer\\README.md",
+    "line": 57,
+    "target": "13.48",
+    "snippet": "| AraBART (pretrained, no fine-tune) | 20.25 | 5.08 | 13.48 | 1.83 |"
+  },
+  {
+    "file": "Summarizer\\README.md",
+    "line": 59,
+    "target": "29.56",
+    "snippet": "| **AraBART (fine-tuned, this model)** | **34.99** | **15.77** | **29.56** | **8.26** |"
+  },
+  {
+    "file": "Summarizer\\README.md",
+    "line": 163,
+    "target": "29.56",
+    "snippet": "note = {Fine-tune of moussaKam/AraBART on the Arabic split of XL-Sum, ROUGE-1 34.99 / ROUGE-2 15.77 / ROUGE-L 29.56.}"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131018,
+    "target": "12.51",
+    "snippet": "-12.510027885437012"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131022,
+    "target": "12.51",
+    "snippet": "-12.510031700134277"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131026,
+    "target": "12.51",
+    "snippet": "-12.510035514831543"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131030,
+    "target": "12.51",
+    "snippet": "-12.510038375854492"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131034,
+    "target": "12.51",
+    "snippet": "-12.510039329528809"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131038,
+    "target": "12.51",
+    "snippet": "-12.51009464263916"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131042,
+    "target": "12.51",
+    "snippet": "-12.510185241699219"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131046,
+    "target": "12.51",
+    "snippet": "-12.510266304016113"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131050,
+    "target": "12.51",
+    "snippet": "-12.510271072387695"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131054,
+    "target": "12.51",
+    "snippet": "-12.510286331176758"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131058,
+    "target": "12.51",
+    "snippet": "-12.510293006896973"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131062,
+    "target": "12.51",
+    "snippet": "-12.51034927368164"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131066,
+    "target": "12.51",
+    "snippet": "-12.510351181030273"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131070,
+    "target": "12.51",
+    "snippet": "-12.510382652282715"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131074,
+    "target": "12.51",
+    "snippet": "-12.510404586791992"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131078,
+    "target": "12.51",
+    "snippet": "-12.510497093200684"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131082,
+    "target": "12.51",
+    "snippet": "-12.510499954223633"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131086,
+    "target": "12.51",
+    "snippet": "-12.51050853729248"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131090,
+    "target": "12.51",
+    "snippet": "-12.510539054870605"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131094,
+    "target": "12.51",
+    "snippet": "-12.510592460632324"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131098,
+    "target": "12.51",
+    "snippet": "-12.510600090026855"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131102,
+    "target": "12.51",
+    "snippet": "-12.510637283325195"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131106,
+    "target": "12.51",
+    "snippet": "-12.510798454284668"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131110,
+    "target": "12.51",
+    "snippet": "-12.510810852050781"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131114,
+    "target": "12.51",
+    "snippet": "-12.510819435119629"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131118,
+    "target": "12.51",
+    "snippet": "-12.510821342468262"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131122,
+    "target": "12.51",
+    "snippet": "-12.510883331298828"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131126,
+    "target": "12.51",
+    "snippet": "-12.510912895202637"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131130,
+    "target": "12.51",
+    "snippet": "-12.510927200317383"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131134,
+    "target": "12.51",
+    "snippet": "-12.510991096496582"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131138,
+    "target": "12.51",
+    "snippet": "-12.511000633239746"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131142,
+    "target": "12.51",
+    "snippet": "-12.51103401184082"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131146,
+    "target": "12.51",
+    "snippet": "-12.511096000671387"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131150,
+    "target": "12.51",
+    "snippet": "-12.511098861694336"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131154,
+    "target": "12.51",
+    "snippet": "-12.51111125946045"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131158,
+    "target": "12.51",
+    "snippet": "-12.51118278503418"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131162,
+    "target": "12.51",
+    "snippet": "-12.511192321777344"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131166,
+    "target": "12.51",
+    "snippet": "-12.511198043823242"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131170,
+    "target": "12.51",
+    "snippet": "-12.511210441589355"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131174,
+    "target": "12.51",
+    "snippet": "-12.511309623718262"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131178,
+    "target": "12.51",
+    "snippet": "-12.511388778686523"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131182,
+    "target": "12.51",
+    "snippet": "-12.511401176452637"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131186,
+    "target": "12.51",
+    "snippet": "-12.511421203613281"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131190,
+    "target": "12.51",
+    "snippet": "-12.511428833007812"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131194,
+    "target": "12.51",
+    "snippet": "-12.511439323425293"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131198,
+    "target": "12.51",
+    "snippet": "-12.511459350585938"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131202,
+    "target": "12.51",
+    "snippet": "-12.51155948638916"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131206,
+    "target": "12.51",
+    "snippet": "-12.511608123779297"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131210,
+    "target": "12.51",
+    "snippet": "-12.511632919311523"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131214,
+    "target": "12.51",
+    "snippet": "-12.511750221252441"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131218,
+    "target": "12.51",
+    "snippet": "-12.511752128601074"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131222,
+    "target": "12.51",
+    "snippet": "-12.511762619018555"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131226,
+    "target": "12.51",
+    "snippet": "-12.5117769241333"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131230,
+    "target": "12.51",
+    "snippet": "-12.5117769241333"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131234,
+    "target": "12.51",
+    "snippet": "-12.511818885803223"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131238,
+    "target": "12.51",
+    "snippet": "-12.511829376220703"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131242,
+    "target": "12.51",
+    "snippet": "-12.511855125427246"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131246,
+    "target": "12.51",
+    "snippet": "-12.511882781982422"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131250,
+    "target": "12.51",
+    "snippet": "-12.51194953918457"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131254,
+    "target": "12.51",
+    "snippet": "-12.51201343536377"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131258,
+    "target": "12.51",
+    "snippet": "-12.512053489685059"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131262,
+    "target": "12.51",
+    "snippet": "-12.512115478515625"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131266,
+    "target": "12.51",
+    "snippet": "-12.512125968933105"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131270,
+    "target": "12.51",
+    "snippet": "-12.512133598327637"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131274,
+    "target": "12.51",
+    "snippet": "-12.51218032836914"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131278,
+    "target": "12.51",
+    "snippet": "-12.512198448181152"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131282,
+    "target": "12.51",
+    "snippet": "-12.512239456176758"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131286,
+    "target": "12.51",
+    "snippet": "-12.512242317199707"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131290,
+    "target": "12.51",
+    "snippet": "-12.512248992919922"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131294,
+    "target": "12.51",
+    "snippet": "-12.512272834777832"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131298,
+    "target": "12.51",
+    "snippet": "-12.51227855682373"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131302,
+    "target": "12.51",
+    "snippet": "-12.51232624053955"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131306,
+    "target": "12.51",
+    "snippet": "-12.51235294342041"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131310,
+    "target": "12.51",
+    "snippet": "-12.51236629486084"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131314,
+    "target": "12.51",
+    "snippet": "-12.512386322021484"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131318,
+    "target": "12.51",
+    "snippet": "-12.512482643127441"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131322,
+    "target": "12.51",
+    "snippet": "-12.512486457824707"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131326,
+    "target": "12.51",
+    "snippet": "-12.512520790100098"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131330,
+    "target": "12.51",
+    "snippet": "-12.512533187866211"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131334,
+    "target": "12.51",
+    "snippet": "-12.512566566467285"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131338,
+    "target": "12.51",
+    "snippet": "-12.512675285339355"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131342,
+    "target": "12.51",
+    "snippet": "-12.512681007385254"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131346,
+    "target": "12.51",
+    "snippet": "-12.512724876403809"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131350,
+    "target": "12.51",
+    "snippet": "-12.512730598449707"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131354,
+    "target": "12.51",
+    "snippet": "-12.5127534866333"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131358,
+    "target": "12.51",
+    "snippet": "-12.512779235839844"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131362,
+    "target": "12.51",
+    "snippet": "-12.512785911560059"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131366,
+    "target": "12.51",
+    "snippet": "-12.512819290161133"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131370,
+    "target": "12.51",
+    "snippet": "-12.51282787322998"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131374,
+    "target": "12.51",
+    "snippet": "-12.512829780578613"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131378,
+    "target": "12.51",
+    "snippet": "-12.512862205505371"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131382,
+    "target": "12.51",
+    "snippet": "-12.51292610168457"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131386,
+    "target": "12.51",
+    "snippet": "-12.512948036193848"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131390,
+    "target": "12.51",
+    "snippet": "-12.513049125671387"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131394,
+    "target": "12.51",
+    "snippet": "-12.513056755065918"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131398,
+    "target": "12.51",
+    "snippet": "-12.51307201385498"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131402,
+    "target": "12.51",
+    "snippet": "-12.513127326965332"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131406,
+    "target": "12.51",
+    "snippet": "-12.513137817382812"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131410,
+    "target": "12.51",
+    "snippet": "-12.513143539428711"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131414,
+    "target": "12.51",
+    "snippet": "-12.513163566589355"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131418,
+    "target": "12.51",
+    "snippet": "-12.513282775878906"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131422,
+    "target": "12.51",
+    "snippet": "-12.513337135314941"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131426,
+    "target": "12.51",
+    "snippet": "-12.513397216796875"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131430,
+    "target": "12.51",
+    "snippet": "-12.513415336608887"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131434,
+    "target": "12.51",
+    "snippet": "-12.513469696044922"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131438,
+    "target": "12.51",
+    "snippet": "-12.513509750366211"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131442,
+    "target": "12.51",
+    "snippet": "-12.513537406921387"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131446,
+    "target": "12.51",
+    "snippet": "-12.513551712036133"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131450,
+    "target": "12.51",
+    "snippet": "-12.513587951660156"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131454,
+    "target": "12.51",
+    "snippet": "-12.513710021972656"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131458,
+    "target": "12.51",
+    "snippet": "-12.513710975646973"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131462,
+    "target": "12.51",
+    "snippet": "-12.513715744018555"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131466,
+    "target": "12.51",
+    "snippet": "-12.513786315917969"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131470,
+    "target": "12.51",
+    "snippet": "-12.513799667358398"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131474,
+    "target": "12.51",
+    "snippet": "-12.513821601867676"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131478,
+    "target": "12.51",
+    "snippet": "-12.51390266418457"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131482,
+    "target": "12.51",
+    "snippet": "-12.513971328735352"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131486,
+    "target": "12.51",
+    "snippet": "-12.514016151428223"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131490,
+    "target": "12.51",
+    "snippet": "-12.514023780822754"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131494,
+    "target": "12.51",
+    "snippet": "-12.514030456542969"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131498,
+    "target": "12.51",
+    "snippet": "-12.514165878295898"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131502,
+    "target": "12.51",
+    "snippet": "-12.514254570007324"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131506,
+    "target": "12.51",
+    "snippet": "-12.514385223388672"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131510,
+    "target": "12.51",
+    "snippet": "-12.514387130737305"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131514,
+    "target": "12.51",
+    "snippet": "-12.514409065246582"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131518,
+    "target": "12.51",
+    "snippet": "-12.514519691467285"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131522,
+    "target": "12.51",
+    "snippet": "-12.514520645141602"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131526,
+    "target": "12.51",
+    "snippet": "-12.514527320861816"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131530,
+    "target": "12.51",
+    "snippet": "-12.51452922821045"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131534,
+    "target": "12.51",
+    "snippet": "-12.514589309692383"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131538,
+    "target": "12.51",
+    "snippet": "-12.5145902633667"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131542,
+    "target": "12.51",
+    "snippet": "-12.514593124389648"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131546,
+    "target": "12.51",
+    "snippet": "-12.514641761779785"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131550,
+    "target": "12.51",
+    "snippet": "-12.514667510986328"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131554,
+    "target": "12.51",
+    "snippet": "-12.514753341674805"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131558,
+    "target": "12.51",
+    "snippet": "-12.514826774597168"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131562,
+    "target": "12.51",
+    "snippet": "-12.514829635620117"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131566,
+    "target": "12.51",
+    "snippet": "-12.51484203338623"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131570,
+    "target": "12.51",
+    "snippet": "-12.514848709106445"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131574,
+    "target": "12.51",
+    "snippet": "-12.514908790588379"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131578,
+    "target": "12.51",
+    "snippet": "-12.5149507522583"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131582,
+    "target": "12.51",
+    "snippet": "-12.514955520629883"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131586,
+    "target": "12.51",
+    "snippet": "-12.514972686767578"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131590,
+    "target": "12.51",
+    "snippet": "-12.514974594116211"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131594,
+    "target": "12.51",
+    "snippet": "-12.51508903503418"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131598,
+    "target": "12.51",
+    "snippet": "-12.515138626098633"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131602,
+    "target": "12.51",
+    "snippet": "-12.515172004699707"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131606,
+    "target": "12.51",
+    "snippet": "-12.515198707580566"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131610,
+    "target": "12.51",
+    "snippet": "-12.515231132507324"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131614,
+    "target": "12.51",
+    "snippet": "-12.515239715576172"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131618,
+    "target": "12.51",
+    "snippet": "-12.515254020690918"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131622,
+    "target": "12.51",
+    "snippet": "-12.515254974365234"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131626,
+    "target": "12.51",
+    "snippet": "-12.51530647277832"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131630,
+    "target": "12.51",
+    "snippet": "-12.515353202819824"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131634,
+    "target": "12.51",
+    "snippet": "-12.51549243927002"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131638,
+    "target": "12.51",
+    "snippet": "-12.51551628112793"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131642,
+    "target": "12.51",
+    "snippet": "-12.515542030334473"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131646,
+    "target": "12.51",
+    "snippet": "-12.515698432922363"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131650,
+    "target": "12.51",
+    "snippet": "-12.515707015991211"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131654,
+    "target": "12.51",
+    "snippet": "-12.515811920166016"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131658,
+    "target": "12.51",
+    "snippet": "-12.515846252441406"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131662,
+    "target": "12.51",
+    "snippet": "-12.515869140625"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131666,
+    "target": "12.51",
+    "snippet": "-12.51588249206543"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131670,
+    "target": "12.51",
+    "snippet": "-12.515904426574707"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131674,
+    "target": "12.51",
+    "snippet": "-12.51591682434082"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131678,
+    "target": "12.51",
+    "snippet": "-12.515960693359375"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131682,
+    "target": "12.51",
+    "snippet": "-12.51596450805664"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131686,
+    "target": "12.51",
+    "snippet": "-12.516033172607422"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131690,
+    "target": "12.51",
+    "snippet": "-12.51607608795166"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131694,
+    "target": "12.51",
+    "snippet": "-12.516092300415039"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131698,
+    "target": "12.51",
+    "snippet": "-12.51609992980957"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131702,
+    "target": "12.51",
+    "snippet": "-12.516168594360352"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131706,
+    "target": "12.51",
+    "snippet": "-12.516170501708984"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131710,
+    "target": "12.51",
+    "snippet": "-12.516194343566895"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131714,
+    "target": "12.51",
+    "snippet": "-12.516217231750488"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131718,
+    "target": "12.51",
+    "snippet": "-12.516403198242188"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131722,
+    "target": "12.51",
+    "snippet": "-12.51640796661377"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131726,
+    "target": "12.51",
+    "snippet": "-12.516419410705566"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131730,
+    "target": "12.51",
+    "snippet": "-12.516480445861816"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131734,
+    "target": "12.51",
+    "snippet": "-12.516508102416992"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131738,
+    "target": "12.51",
+    "snippet": "-12.516512870788574"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131742,
+    "target": "12.51",
+    "snippet": "-12.516764640808105"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131746,
+    "target": "12.51",
+    "snippet": "-12.516932487487793"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131750,
+    "target": "12.51",
+    "snippet": "-12.516940116882324"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131754,
+    "target": "12.51",
+    "snippet": "-12.516950607299805"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131758,
+    "target": "12.51",
+    "snippet": "-12.516995429992676"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131762,
+    "target": "12.51",
+    "snippet": "-12.517069816589355"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131766,
+    "target": "12.51",
+    "snippet": "-12.51708698272705"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131770,
+    "target": "12.51",
+    "snippet": "-12.517135620117188"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131774,
+    "target": "12.51",
+    "snippet": "-12.51716423034668"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131778,
+    "target": "12.51",
+    "snippet": "-12.517166137695312"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131782,
+    "target": "12.51",
+    "snippet": "-12.517210006713867"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131786,
+    "target": "12.51",
+    "snippet": "-12.51728343963623"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131790,
+    "target": "12.51",
+    "snippet": "-12.51728630065918"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131794,
+    "target": "12.51",
+    "snippet": "-12.517322540283203"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131798,
+    "target": "12.51",
+    "snippet": "-12.51733112335205"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131802,
+    "target": "12.51",
+    "snippet": "-12.517401695251465"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131806,
+    "target": "12.51",
+    "snippet": "-12.517419815063477"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131810,
+    "target": "12.51",
+    "snippet": "-12.517499923706055"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131814,
+    "target": "12.51",
+    "snippet": "-12.517508506774902"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131818,
+    "target": "12.51",
+    "snippet": "-12.517570495605469"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131822,
+    "target": "12.51",
+    "snippet": "-12.517582893371582"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131826,
+    "target": "12.51",
+    "snippet": "-12.517663955688477"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131830,
+    "target": "12.51",
+    "snippet": "-12.517744064331055"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131834,
+    "target": "12.51",
+    "snippet": "-12.51783561706543"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131838,
+    "target": "12.51",
+    "snippet": "-12.517854690551758"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131842,
+    "target": "12.51",
+    "snippet": "-12.517989158630371"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131846,
+    "target": "12.51",
+    "snippet": "-12.518096923828125"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131850,
+    "target": "12.51",
+    "snippet": "-12.518106460571289"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131854,
+    "target": "12.51",
+    "snippet": "-12.518211364746094"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131858,
+    "target": "12.51",
+    "snippet": "-12.518238067626953"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131862,
+    "target": "12.51",
+    "snippet": "-12.518253326416016"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131866,
+    "target": "12.51",
+    "snippet": "-12.518265724182129"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131870,
+    "target": "12.51",
+    "snippet": "-12.518341064453125"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131874,
+    "target": "12.51",
+    "snippet": "-12.518404960632324"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131878,
+    "target": "12.51",
+    "snippet": "-12.518413543701172"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131882,
+    "target": "12.51",
+    "snippet": "-12.518479347229004"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131886,
+    "target": "12.51",
+    "snippet": "-12.518494606018066"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131890,
+    "target": "12.51",
+    "snippet": "-12.518515586853027"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131894,
+    "target": "12.51",
+    "snippet": "-12.518542289733887"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131898,
+    "target": "12.51",
+    "snippet": "-12.518627166748047"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131902,
+    "target": "12.51",
+    "snippet": "-12.518643379211426"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131906,
+    "target": "12.51",
+    "snippet": "-12.518643379211426"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131910,
+    "target": "12.51",
+    "snippet": "-12.518648147583008"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131914,
+    "target": "12.51",
+    "snippet": "-12.518682479858398"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131918,
+    "target": "12.51",
+    "snippet": "-12.518692016601562"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131922,
+    "target": "12.51",
+    "snippet": "-12.518750190734863"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131926,
+    "target": "12.51",
+    "snippet": "-12.518783569335938"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131930,
+    "target": "12.51",
+    "snippet": "-12.518863677978516"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131934,
+    "target": "12.51",
+    "snippet": "-12.518957138061523"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131938,
+    "target": "12.51",
+    "snippet": "-12.519003868103027"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131942,
+    "target": "12.51",
+    "snippet": "-12.51909065246582"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131946,
+    "target": "12.51",
+    "snippet": "-12.519125938415527"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131950,
+    "target": "12.51",
+    "snippet": "-12.51913070678711"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131954,
+    "target": "12.51",
+    "snippet": "-12.51915454864502"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131958,
+    "target": "12.51",
+    "snippet": "-12.519207954406738"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131962,
+    "target": "12.51",
+    "snippet": "-12.519216537475586"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131966,
+    "target": "12.51",
+    "snippet": "-12.519231796264648"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131970,
+    "target": "12.51",
+    "snippet": "-12.519254684448242"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131974,
+    "target": "12.51",
+    "snippet": "-12.519323348999023"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131978,
+    "target": "12.51",
+    "snippet": "-12.519336700439453"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131982,
+    "target": "12.51",
+    "snippet": "-12.519346237182617"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131986,
+    "target": "12.51",
+    "snippet": "-12.519388198852539"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131990,
+    "target": "12.51",
+    "snippet": "-12.519431114196777"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131994,
+    "target": "12.51",
+    "snippet": "-12.5194730758667"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 131998,
+    "target": "12.51",
+    "snippet": "-12.519570350646973"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 132002,
+    "target": "12.51",
+    "snippet": "-12.519579887390137"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 132006,
+    "target": "12.51",
+    "snippet": "-12.519596099853516"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 132010,
+    "target": "12.51",
+    "snippet": "-12.519658088684082"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 132014,
+    "target": "12.51",
+    "snippet": "-12.519671440124512"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 132018,
+    "target": "12.51",
+    "snippet": "-12.519723892211914"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 132022,
+    "target": "12.51",
+    "snippet": "-12.519744873046875"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 132026,
+    "target": "12.51",
+    "snippet": "-12.519940376281738"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 132030,
+    "target": "12.51",
+    "snippet": "-12.51998233795166"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181462,
+    "target": "13.03",
+    "snippet": "-13.030037879943848"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181466,
+    "target": "13.03",
+    "snippet": "-13.030104637145996"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181470,
+    "target": "13.03",
+    "snippet": "-13.030111312866211"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181474,
+    "target": "13.03",
+    "snippet": "-13.030131340026855"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181478,
+    "target": "13.03",
+    "snippet": "-13.030141830444336"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181482,
+    "target": "13.03",
+    "snippet": "-13.030153274536133"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181486,
+    "target": "13.03",
+    "snippet": "-13.030156135559082"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181490,
+    "target": "13.03",
+    "snippet": "-13.030211448669434"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181494,
+    "target": "13.03",
+    "snippet": "-13.030282974243164"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181498,
+    "target": "13.03",
+    "snippet": "-13.030301094055176"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181502,
+    "target": "13.03",
+    "snippet": "-13.030341148376465"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181506,
+    "target": "13.03",
+    "snippet": "-13.030383110046387"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181510,
+    "target": "13.03",
+    "snippet": "-13.030413627624512"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181514,
+    "target": "13.03",
+    "snippet": "-13.030451774597168"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181518,
+    "target": "13.03",
+    "snippet": "-13.030475616455078"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181522,
+    "target": "13.03",
+    "snippet": "-13.030535697937012"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181526,
+    "target": "13.03",
+    "snippet": "-13.030537605285645"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181530,
+    "target": "13.03",
+    "snippet": "-13.03055191040039"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181534,
+    "target": "13.03",
+    "snippet": "-13.030594825744629"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181538,
+    "target": "13.03",
+    "snippet": "-13.030608177185059"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181542,
+    "target": "13.03",
+    "snippet": "-13.030631065368652"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181546,
+    "target": "13.03",
+    "snippet": "-13.03065013885498"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181550,
+    "target": "13.03",
+    "snippet": "-13.030692100524902"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181554,
+    "target": "13.03",
+    "snippet": "-13.03070068359375"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181558,
+    "target": "13.03",
+    "snippet": "-13.03080940246582"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181562,
+    "target": "13.03",
+    "snippet": "-13.03084659576416"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181566,
+    "target": "13.03",
+    "snippet": "-13.03085994720459"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181570,
+    "target": "13.03",
+    "snippet": "-13.030872344970703"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181574,
+    "target": "13.03",
+    "snippet": "-13.03092098236084"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181578,
+    "target": "13.03",
+    "snippet": "-13.031167030334473"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181582,
+    "target": "13.03",
+    "snippet": "-13.031198501586914"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181586,
+    "target": "13.03",
+    "snippet": "-13.03126335144043"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181590,
+    "target": "13.03",
+    "snippet": "-13.031295776367188"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181594,
+    "target": "13.03",
+    "snippet": "-13.031317710876465"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181598,
+    "target": "13.03",
+    "snippet": "-13.031352996826172"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181602,
+    "target": "13.03",
+    "snippet": "-13.03136157989502"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181606,
+    "target": "13.03",
+    "snippet": "-13.031475067138672"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181610,
+    "target": "13.03",
+    "snippet": "-13.03156566619873"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181614,
+    "target": "13.03",
+    "snippet": "-13.031865119934082"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181618,
+    "target": "13.03",
+    "snippet": "-13.031947135925293"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181622,
+    "target": "13.03",
+    "snippet": "-13.031956672668457"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181626,
+    "target": "13.03",
+    "snippet": "-13.031959533691406"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181630,
+    "target": "13.03",
+    "snippet": "-13.031968116760254"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181634,
+    "target": "13.03",
+    "snippet": "-13.032045364379883"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181638,
+    "target": "13.03",
+    "snippet": "-13.032122611999512"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181642,
+    "target": "13.03",
+    "snippet": "-13.032146453857422"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181646,
+    "target": "13.03",
+    "snippet": "-13.032211303710938"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181650,
+    "target": "13.03",
+    "snippet": "-13.032222747802734"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181654,
+    "target": "13.03",
+    "snippet": "-13.032249450683594"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181658,
+    "target": "13.03",
+    "snippet": "-13.03230094909668"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181662,
+    "target": "13.03",
+    "snippet": "-13.032301902770996"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181666,
+    "target": "13.03",
+    "snippet": "-13.03233528137207"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181670,
+    "target": "13.03",
+    "snippet": "-13.032336235046387"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181674,
+    "target": "13.03",
+    "snippet": "-13.032461166381836"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181678,
+    "target": "13.03",
+    "snippet": "-13.032490730285645"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181682,
+    "target": "13.03",
+    "snippet": "-13.032544136047363"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181686,
+    "target": "13.03",
+    "snippet": "-13.032546043395996"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181690,
+    "target": "13.03",
+    "snippet": "-13.032567024230957"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181694,
+    "target": "13.03",
+    "snippet": "-13.03271770477295"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181698,
+    "target": "13.03",
+    "snippet": "-13.03275203704834"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181702,
+    "target": "13.03",
+    "snippet": "-13.032798767089844"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181706,
+    "target": "13.03",
+    "snippet": "-13.032855987548828"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181710,
+    "target": "13.03",
+    "snippet": "-13.032930374145508"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181714,
+    "target": "13.03",
+    "snippet": "-13.032939910888672"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181718,
+    "target": "13.03",
+    "snippet": "-13.032953262329102"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181722,
+    "target": "13.03",
+    "snippet": "-13.033044815063477"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181726,
+    "target": "13.03",
+    "snippet": "-13.033068656921387"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181730,
+    "target": "13.03",
+    "snippet": "-13.03310489654541"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181734,
+    "target": "13.03",
+    "snippet": "-13.033185958862305"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181738,
+    "target": "13.03",
+    "snippet": "-13.033347129821777"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181742,
+    "target": "13.03",
+    "snippet": "-13.033347129821777"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181746,
+    "target": "13.03",
+    "snippet": "-13.033376693725586"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181750,
+    "target": "13.03",
+    "snippet": "-13.033384323120117"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181754,
+    "target": "13.03",
+    "snippet": "-13.033392906188965"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181758,
+    "target": "13.03",
+    "snippet": "-13.033490180969238"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181762,
+    "target": "13.03",
+    "snippet": "-13.033514022827148"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181766,
+    "target": "13.03",
+    "snippet": "-13.033514976501465"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181770,
+    "target": "13.03",
+    "snippet": "-13.033588409423828"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181774,
+    "target": "13.03",
+    "snippet": "-13.033626556396484"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181778,
+    "target": "13.03",
+    "snippet": "-13.033663749694824"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181782,
+    "target": "13.03",
+    "snippet": "-13.033817291259766"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181786,
+    "target": "13.03",
+    "snippet": "-13.033825874328613"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181790,
+    "target": "13.03",
+    "snippet": "-13.033843994140625"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181794,
+    "target": "13.03",
+    "snippet": "-13.033862113952637"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181798,
+    "target": "13.03",
+    "snippet": "-13.033864974975586"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181802,
+    "target": "13.03",
+    "snippet": "-13.033865928649902"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181806,
+    "target": "13.03",
+    "snippet": "-13.033967018127441"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181810,
+    "target": "13.03",
+    "snippet": "-13.034003257751465"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181814,
+    "target": "13.03",
+    "snippet": "-13.034021377563477"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181818,
+    "target": "13.03",
+    "snippet": "-13.034072875976562"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181822,
+    "target": "13.03",
+    "snippet": "-13.034089088439941"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181826,
+    "target": "13.03",
+    "snippet": "-13.03414535522461"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181830,
+    "target": "13.03",
+    "snippet": "-13.03415584564209"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181834,
+    "target": "13.03",
+    "snippet": "-13.034335136413574"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181838,
+    "target": "13.03",
+    "snippet": "-13.03438663482666"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181842,
+    "target": "13.03",
+    "snippet": "-13.034448623657227"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181846,
+    "target": "13.03",
+    "snippet": "-13.034488677978516"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181850,
+    "target": "13.03",
+    "snippet": "-13.034600257873535"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181854,
+    "target": "13.03",
+    "snippet": "-13.034612655639648"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181858,
+    "target": "13.03",
+    "snippet": "-13.034667015075684"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181862,
+    "target": "13.03",
+    "snippet": "-13.034798622131348"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181866,
+    "target": "13.03",
+    "snippet": "-13.034809112548828"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181870,
+    "target": "13.03",
+    "snippet": "-13.034958839416504"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181874,
+    "target": "13.03",
+    "snippet": "-13.035000801086426"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181878,
+    "target": "13.03",
+    "snippet": "-13.035002708435059"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181882,
+    "target": "13.03",
+    "snippet": "-13.035029411315918"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181886,
+    "target": "13.03",
+    "snippet": "-13.035111427307129"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181890,
+    "target": "13.03",
+    "snippet": "-13.035140991210938"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181894,
+    "target": "13.03",
+    "snippet": "-13.035211563110352"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181898,
+    "target": "13.03",
+    "snippet": "-13.035258293151855"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181902,
+    "target": "13.03",
+    "snippet": "-13.035259246826172"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181906,
+    "target": "13.03",
+    "snippet": "-13.035259246826172"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181910,
+    "target": "13.03",
+    "snippet": "-13.035327911376953"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181914,
+    "target": "13.03",
+    "snippet": "-13.035417556762695"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181918,
+    "target": "13.03",
+    "snippet": "-13.035454750061035"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181922,
+    "target": "13.03",
+    "snippet": "-13.035493850708008"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181926,
+    "target": "13.03",
+    "snippet": "-13.035516738891602"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181930,
+    "target": "13.03",
+    "snippet": "-13.035528182983398"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181934,
+    "target": "13.03",
+    "snippet": "-13.03555965423584"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181938,
+    "target": "13.03",
+    "snippet": "-13.035567283630371"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181942,
+    "target": "13.03",
+    "snippet": "-13.035568237304688"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181946,
+    "target": "13.03",
+    "snippet": "-13.03564167022705"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181950,
+    "target": "13.03",
+    "snippet": "-13.035676956176758"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181954,
+    "target": "13.03",
+    "snippet": "-13.035684585571289"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181958,
+    "target": "13.03",
+    "snippet": "-13.03587818145752"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181962,
+    "target": "13.03",
+    "snippet": "-13.035881042480469"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181966,
+    "target": "13.03",
+    "snippet": "-13.035966873168945"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181970,
+    "target": "13.03",
+    "snippet": "-13.035969734191895"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181974,
+    "target": "13.03",
+    "snippet": "-13.035984992980957"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181978,
+    "target": "13.03",
+    "snippet": "-13.036067008972168"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181982,
+    "target": "13.03",
+    "snippet": "-13.036140441894531"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181986,
+    "target": "13.03",
+    "snippet": "-13.036300659179688"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181990,
+    "target": "13.03",
+    "snippet": "-13.036303520202637"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181994,
+    "target": "13.03",
+    "snippet": "-13.036307334899902"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 181998,
+    "target": "13.03",
+    "snippet": "-13.036323547363281"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182002,
+    "target": "13.03",
+    "snippet": "-13.036417007446289"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182006,
+    "target": "13.03",
+    "snippet": "-13.036449432373047"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182010,
+    "target": "13.03",
+    "snippet": "-13.036484718322754"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182014,
+    "target": "13.03",
+    "snippet": "-13.036508560180664"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182018,
+    "target": "13.03",
+    "snippet": "-13.03663158416748"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182022,
+    "target": "13.03",
+    "snippet": "-13.03664779663086"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182026,
+    "target": "13.03",
+    "snippet": "-13.036778450012207"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182030,
+    "target": "13.03",
+    "snippet": "-13.036821365356445"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182034,
+    "target": "13.03",
+    "snippet": "-13.03692626953125"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182038,
+    "target": "13.03",
+    "snippet": "-13.03693962097168"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182042,
+    "target": "13.03",
+    "snippet": "-13.036982536315918"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182046,
+    "target": "13.03",
+    "snippet": "-13.037006378173828"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182050,
+    "target": "13.03",
+    "snippet": "-13.037121772766113"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182054,
+    "target": "13.03",
+    "snippet": "-13.037210464477539"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182058,
+    "target": "13.03",
+    "snippet": "-13.037300109863281"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182062,
+    "target": "13.03",
+    "snippet": "-13.037344932556152"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182066,
+    "target": "13.03",
+    "snippet": "-13.037354469299316"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182070,
+    "target": "13.03",
+    "snippet": "-13.037378311157227"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182074,
+    "target": "13.03",
+    "snippet": "-13.03744888305664"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182078,
+    "target": "13.03",
+    "snippet": "-13.037461280822754"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182082,
+    "target": "13.03",
+    "snippet": "-13.037549018859863"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182086,
+    "target": "13.03",
+    "snippet": "-13.037554740905762"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182090,
+    "target": "13.03",
+    "snippet": "-13.037556648254395"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182094,
+    "target": "13.03",
+    "snippet": "-13.037569046020508"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182098,
+    "target": "13.03",
+    "snippet": "-13.037571907043457"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182102,
+    "target": "13.03",
+    "snippet": "-13.037599563598633"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182106,
+    "target": "13.03",
+    "snippet": "-13.037762641906738"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182110,
+    "target": "13.03",
+    "snippet": "-13.037764549255371"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182114,
+    "target": "13.03",
+    "snippet": "-13.037820816040039"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182118,
+    "target": "13.03",
+    "snippet": "-13.037877082824707"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182122,
+    "target": "13.03",
+    "snippet": "-13.03791332244873"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182126,
+    "target": "13.03",
+    "snippet": "-13.037918090820312"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182130,
+    "target": "13.03",
+    "snippet": "-13.03796100616455"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182134,
+    "target": "13.03",
+    "snippet": "-13.037986755371094"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182138,
+    "target": "13.03",
+    "snippet": "-13.038043022155762"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182142,
+    "target": "13.03",
+    "snippet": "-13.038044929504395"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182146,
+    "target": "13.03",
+    "snippet": "-13.038202285766602"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182150,
+    "target": "13.03",
+    "snippet": "-13.03821086883545"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182154,
+    "target": "13.03",
+    "snippet": "-13.038222312927246"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182158,
+    "target": "13.03",
+    "snippet": "-13.038299560546875"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182162,
+    "target": "13.03",
+    "snippet": "-13.038341522216797"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182166,
+    "target": "13.03",
+    "snippet": "-13.038413047790527"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182170,
+    "target": "13.03",
+    "snippet": "-13.038519859313965"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182174,
+    "target": "13.03",
+    "snippet": "-13.038534164428711"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182178,
+    "target": "13.03",
+    "snippet": "-13.038601875305176"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182182,
+    "target": "13.03",
+    "snippet": "-13.038656234741211"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182186,
+    "target": "13.03",
+    "snippet": "-13.038664817810059"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182190,
+    "target": "13.03",
+    "snippet": "-13.038692474365234"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182194,
+    "target": "13.03",
+    "snippet": "-13.038701057434082"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182198,
+    "target": "13.03",
+    "snippet": "-13.038704872131348"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182202,
+    "target": "13.03",
+    "snippet": "-13.03882884979248"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182206,
+    "target": "13.03",
+    "snippet": "-13.0388765335083"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182210,
+    "target": "13.03",
+    "snippet": "-13.038894653320312"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182214,
+    "target": "13.03",
+    "snippet": "-13.03897476196289"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182218,
+    "target": "13.03",
+    "snippet": "-13.038985252380371"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182222,
+    "target": "13.03",
+    "snippet": "-13.038993835449219"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182226,
+    "target": "13.03",
+    "snippet": "-13.039258003234863"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182230,
+    "target": "13.03",
+    "snippet": "-13.039270401000977"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182234,
+    "target": "13.03",
+    "snippet": "-13.039337158203125"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182238,
+    "target": "13.03",
+    "snippet": "-13.03944206237793"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182242,
+    "target": "13.03",
+    "snippet": "-13.039447784423828"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182246,
+    "target": "13.03",
+    "snippet": "-13.039453506469727"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182250,
+    "target": "13.03",
+    "snippet": "-13.039467811584473"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182254,
+    "target": "13.03",
+    "snippet": "-13.039469718933105"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182258,
+    "target": "13.03",
+    "snippet": "-13.03950309753418"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182262,
+    "target": "13.03",
+    "snippet": "-13.039517402648926"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182266,
+    "target": "13.03",
+    "snippet": "-13.039559364318848"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182270,
+    "target": "13.03",
+    "snippet": "-13.039588928222656"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182274,
+    "target": "13.03",
+    "snippet": "-13.03959846496582"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182278,
+    "target": "13.03",
+    "snippet": "-13.039633750915527"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182282,
+    "target": "13.03",
+    "snippet": "-13.039636611938477"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182286,
+    "target": "13.03",
+    "snippet": "-13.039688110351562"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182290,
+    "target": "13.03",
+    "snippet": "-13.039705276489258"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182294,
+    "target": "13.03",
+    "snippet": "-13.039867401123047"
+  },
+  {
+    "file": "Summarizer\\tokenizer.json",
+    "line": 182298,
+    "target": "13.03",
+    "snippet": "-13.039948463439941"
+  },
+  {
+    "file": "Whisper-Fine-tuned-final-model\\README.md",
+    "line": 33,
+    "target": "20.61",
+    "snippet": "value: 20.61"
+  },
+  {
+    "file": "Whisper-Fine-tuned-final-model\\README.md",
+    "line": 45,
+    "target": "42.69",
+    "snippet": "| WER (\u2193) | **42.69** | **20.61** | **\u221222.08 abs / \u221251.7 % rel** |"
+  },
+  {
+    "file": "Whisper-Fine-tuned-final-model\\README.md",
+    "line": 45,
+    "target": "20.61",
+    "snippet": "| WER (\u2193) | **42.69** | **20.61** | **\u221222.08 abs / \u221251.7 % rel** |"
+  },
+  {
+    "file": "Whisper-Fine-tuned-final-model\\README.md",
+    "line": 90,
+    "target": "20.61",
+    "snippet": "| 3000 | 0.5785 | 0.2596 | **20.61** |"
+  },
+  {
+    "file": "Whisper-Fine-tuned-final-model\\README.md",
+    "line": 144,
+    "target": "20.61",
+    "snippet": "note = {Fine-tune of openai/whisper-small on Mozilla Common Voice Arabic, WER 20.61.}"
+  },
+  {
+    "file": "Whisper-Fine-tuned-final-model\\tokenizer.json",
+    "line": 7037,
+    "target": "13.48",
+    "snippet": "\"content\": \"<|13.48|>\","
+  },
+  {
+    "file": "Whisper-Fine-tuned-final-model\\tokenizer.json",
+    "line": 8999,
+    "target": "17.84",
+    "snippet": "\"content\": \"<|17.84|>\","
+  },
+  {
+    "file": "Whisper-Fine-tuned-final-model\\tokenizer.json",
+    "line": 14273,
+    "target": "29.56",
+    "snippet": "\"content\": \"<|29.56|>\","
+  },
+  {
+    "file": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\whisper-medium-arabic-ct2\\vocabulary.json",
+    "line": 51040,
+    "target": "13.48",
+    "snippet": "\"<|13.48|>\","
+  },
+  {
+    "file": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\whisper-medium-arabic-ct2\\vocabulary.json",
+    "line": 51258,
+    "target": "17.84",
+    "snippet": "\"<|17.84|>\","
+  },
+  {
+    "file": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\whisper-medium-arabic-ct2\\vocabulary.json",
+    "line": 51844,
+    "target": "29.56",
+    "snippet": "\"<|29.56|>\","
+  },
+  {
+    "file": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\whisper-medium-arabic-lora-stage2-adapter\\tokenizer.json",
+    "line": 7037,
+    "target": "13.48",
+    "snippet": "\"content\": \"<|13.48|>\","
+  },
+  {
+    "file": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\whisper-medium-arabic-lora-stage2-adapter\\tokenizer.json",
+    "line": 8999,
+    "target": "17.84",
+    "snippet": "\"content\": \"<|17.84|>\","
+  },
+  {
+    "file": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\whisper-medium-arabic-lora-stage2-adapter\\tokenizer.json",
+    "line": 14273,
+    "target": "29.56",
+    "snippet": "\"content\": \"<|29.56|>\","
+  },
+  {
+    "file": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\whisper-medium-arabic-stage2-final-merged\\tokenizer.json",
+    "line": 7037,
+    "target": "13.48",
+    "snippet": "\"content\": \"<|13.48|>\","
+  },
+  {
+    "file": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\whisper-medium-arabic-stage2-final-merged\\tokenizer.json",
+    "line": 8999,
+    "target": "17.84",
+    "snippet": "\"content\": \"<|17.84|>\","
+  },
+  {
+    "file": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\whisper-medium-arabic-stage2-final-merged\\tokenizer.json",
+    "line": 14273,
+    "target": "29.56",
+    "snippet": "\"content\": \"<|29.56|>\","
+  }
+]

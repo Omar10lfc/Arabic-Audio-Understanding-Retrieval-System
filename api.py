@@ -138,7 +138,7 @@ def health():
     return HealthResponse(
         status="ok",
         models_loaded={
-            "whisper":    pipeline._M.asr_pipeline is not None,
+            "whisper":    (pipeline._M.asr_pipeline is not None or pipeline._M.whisper_mdl is not None),
             "embedder":   pipeline._M.embed_mdl   is not None,
             "summarizer": pipeline._M.summ_mdl    is not None,
             "reranker":   pipeline._M.reranker    is not None,

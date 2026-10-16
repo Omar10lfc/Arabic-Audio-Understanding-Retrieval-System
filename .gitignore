@@ -34,3 +34,12 @@ README_SPACE.md
 whisper_medium_output/
 scratch/test.tsv
 scratch/audio_test/
+scratch/*.txt
+scratch/*.mp3
+scratch/venv*/
+evalkit-src.zip
+
+
+review_bundle.zip
+GPU_RERUN_RUNBOOK.md
+

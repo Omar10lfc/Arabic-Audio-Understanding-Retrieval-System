@@ -56,7 +56,7 @@ PROJECT_DIR        = Path(__file__).resolve().parent
 # clean machine). To use a local checkpoint instead, point these at a folder
 # path — `from_pretrained` accepts either form.
 WHISPER_DIR        = os.environ.get(
-    "WHISPER_MODEL_ID", "Omar10lfc/whisper-small-arabic")
+    "WHISPER_MODEL_ID", "large-v3-turbo")
 SUMMARIZER_DIR     = os.environ.get(
     "SUMMARIZER_MODEL_ID", "Omar10lfc/arabart-xlsum-arabic")
 
@@ -223,21 +223,38 @@ def _load_kwargs():
 
 
 def _load_whisper():
-    if _M.asr_pipeline is not None:
+    if _M.asr_pipeline is not None or _M.whisper_mdl is not None:
         return
+    # Check if faster_whisper can be loaded (CT2 INT8 high-throughput engine)
+    use_ct2 = os.environ.get("USE_CT2", "1") == "1"
+    if use_ct2:
+        try:
+            from faster_whisper import WhisperModel
+            model_target = str(WHISPER_DIR)
+            print(f"[pipeline] loading Whisper CT2 INT8 from {model_target} ...")
+            dev = "cuda" if _device() == "cuda" else "cpu"
+            _M.whisper_mdl = WhisperModel(model_target, device=dev, compute_type="int8")
+            return
+        except Exception as e:
+            print(f"[pipeline] faster-whisper load skipped/failed ({e!r}), falling back to transformers...")
+            _M.whisper_mdl = None
+
     from transformers import (
         WhisperFeatureExtractor, WhisperTokenizer, WhisperProcessor,
         WhisperForConditionalGeneration,
         pipeline as hf_pipeline,
     )
-    print(f"[pipeline] loading Whisper from {WHISPER_DIR} ...")
-    # Load the tokenizer/feature-extractor from the base model, not the
-    # fine-tuned repo. Fine-tuning didn't change the tokenizer, and the
-    # tokenizer.json saved alongside our fine-tuned weights was serialized
-    # with a newer `tokenizers` (>=0.20) than transformers 4.44.2 can parse.
-    # WhisperProcessor requires the slow WhisperTokenizer (not Fast), and the
-    # base repo ships vocab.json + merges.txt that the slow tokenizer needs.
-    _BASE = "openai/whisper-small"
+    print(f"[pipeline] loading Whisper transformers from {WHISPER_DIR} ...")
+    w_lower = str(WHISPER_DIR).lower()
+    if "turbo" in w_lower:
+        _BASE = "openai/whisper-large-v3-turbo"
+    elif "large-v3" in w_lower or "large" in w_lower:
+        _BASE = "openai/whisper-large-v3"
+    elif "medium" in w_lower:
+        _BASE = "openai/whisper-medium"
+    else:
+        _BASE = "openai/whisper-small"
+
     _feat = WhisperFeatureExtractor.from_pretrained(_BASE)
     _tok  = WhisperTokenizer.from_pretrained(_BASE)
     _M.whisper_proc = WhisperProcessor(feature_extractor=_feat, tokenizer=_tok)
@@ -377,21 +394,45 @@ def download_audio_from_url(url: str) -> str:
 
 
 def run_whisper(audio_path: str, *, return_segments: bool = False):
-    """Transcribe an Arabic audio file. Long-form audio is handled by HF's
-       pipeline via 30s chunks + 5s stride — no manual windowing needed.
-
-       We decode the file with librosa first (soundfile backend) and hand the
-       resulting numpy array to the pipeline. This avoids the pipeline's
-       default ffmpeg-shell-out, which is missing on most Windows installs and
-       blows up with `WinError 2` when transcribing uploads.
+    """Transcribe an Arabic audio file. Supports both faster-whisper (CT2 INT8)
+       and HuggingFace transformers pipelines.
 
        When `return_segments=True`, returns `(text, segments)` where segments
        is a list of `{"start": float, "end": float, "text": str}` — used by
        `build_index` to attach time ranges to each searchable chunk."""
     if not audio_path:
         return ("", []) if return_segments else ""
-    import librosa
     _load_whisper()
+
+    # Faster-whisper CT2 execution path
+    if hasattr(_M.whisper_mdl, "transcribe") and _M.asr_pipeline is None:
+        seg_gen, info = _M.whisper_mdl.transcribe(
+            audio_path,
+            language="ar",
+            task="transcribe",
+            beam_size=1,
+            best_of=1,
+            temperature=0.0,
+            vad_filter=False,
+            condition_on_previous_text=False,
+        )
+        segments: List[Dict] = []
+        raw_text_parts = []
+        for s in seg_gen:
+            clean_s = post_asr_fixups(s.text.strip())
+            raw_text_parts.append(clean_s)
+            segments.append({
+                "start": float(s.start) if s.start is not None else None,
+                "end":   float(s.end) if s.end is not None else None,
+                "text":  clean_s,
+            })
+        full_text = post_asr_fixups(" ".join(raw_text_parts).strip())
+        if not return_segments:
+            return full_text
+        return full_text, segments
+
+    # Transformers pipeline path
+    import librosa
     speech, _ = librosa.load(audio_path, sr=16000, mono=True)
     result = _M.asr_pipeline(
         speech,
