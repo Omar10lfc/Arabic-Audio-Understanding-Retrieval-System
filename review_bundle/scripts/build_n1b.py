@@ -38,8 +38,21 @@ def create_notebook(nb_path, cells_source):
 def build_n1b(evalkit_zip_sha=""):
     cells = [
         # Cell 1: Environment & evalkit check
-        f"""# ── CELL 1: ENVIRONMENT & EVALKIT-SRC VERIFICATION (INTERNET OFF) ──────
+        f"""# ── CELL 1: ENVIRONMENT & EVALKIT-SRC VERIFICATION ────────────────────────
 import os, sys, subprocess, json, hashlib, zipfile, shutil
+
+for pkg in ["ctranslate2", "faster-whisper", "soundfile"]:
+    try:
+        __import__(pkg.replace("-", "_"))
+    except ImportError:
+        print(f"Installing {{pkg}}...")
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", pkg])
+            print(f"[OK] Installed {{pkg}}.")
+        except Exception as e:
+            print(f"[ERROR] Could not install {{pkg}}: {{e}}")
+            print("Please toggle Internet: ON in Kaggle Notebook Settings (right sidebar) to allow pip install.")
+            raise
 
 RUN_MODE = os.environ.get("RUN_MODE", "full")
 OUT_DIR = "Results/smoke" if RUN_MODE == "smoke" else "Results/final"
@@ -47,7 +60,7 @@ os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs("Results/env", exist_ok=True)
 
 EXPECTED_EVALKIT_SHA = "{evalkit_zip_sha}"
-print(f"Internet: OFF | RUN_MODE: {{RUN_MODE}} | Target: {{OUT_DIR}} | Expected evalkit SHA: {{EXPECTED_EVALKIT_SHA}}")
+print(f"RUN_MODE: {{RUN_MODE}} | Target: {{OUT_DIR}} | Expected evalkit SHA: {{EXPECTED_EVALKIT_SHA}}")
 
 env_path = f"Results/env/final_01b_cv_pass2_beam5_{{RUN_MODE}}_env.txt"
 with open(env_path, 'w', encoding='utf-8') as f:
@@ -160,7 +173,8 @@ print(f"Common Voice Pool Size: {len(df_valid):,} clips")
 """,
         # Cell 3: Pass 2 CT2 INT8 Greedy Full Pool Evaluation
         """# ── CELL 3: PASS 2 CT2 INT8 GREEDY FULL POOL EVALUATION ────────────────────
-import os, time, gc, torch, soundfile as sf, numpy as np
+import os, time, gc, torch, soundfile as sf, numpy as np, librosa
+import pandas as pd
 from faster_whisper import WhisperModel
 from faster_whisper.feature_extractor import FeatureExtractor
 from evalkit.normalize import normalize_arabic_legacy, normalize_arabic_v2
@@ -180,25 +194,43 @@ try:
 except Exception:
     pass
 
-clips_dir = os.path.join(os.path.dirname(tsv_path), "clips")
+# Universal recursive audio index across all mounted directories in /kaggle/input
+print("Indexing audio files across all mounted directories in /kaggle/input...")
+t0_idx = time.time()
 audio_index = {}
-if os.path.exists(clips_dir):
-    for fname in os.listdir(clips_dir):
-        if fname.endswith(('.mp3', '.wav', '.ogg', '.m4a')):
-            audio_index[fname] = os.path.join(clips_dir, fname)
-            audio_index[os.path.splitext(fname)[0]] = os.path.join(clips_dir, fname)
+if os.path.exists("/kaggle/input"):
+    for root, _, files in os.walk("/kaggle/input"):
+        for f in files:
+            if f.endswith(('.mp3', '.wav', '.ogg', '.m4a')):
+                full_p = os.path.join(root, f)
+                audio_index[f] = full_p
+                audio_index[os.path.splitext(f)[0]] = full_p
+print(f"[OK] Indexed {len(audio_index)//2:,} audio clips across all shards in {time.time()-t0_idx:.2f}s.")
 
 def resolve_audio(p):
     fname = os.path.basename(str(p))
     stem = os.path.splitext(fname)[0]
-    return audio_index.get(fname) or audio_index.get(stem) or os.path.join(clips_dir, fname)
+    return audio_index.get(fname) or audio_index.get(stem) or (p if os.path.exists(p) else None)
 
 pass2_out_file = os.path.join(OUT_DIR, "cv_pass2_ct2_int8.json")
 pass2_clips_csv = os.path.join(OUT_DIR, "cv_pass2_clips.csv")
+ckpt_p2_file = os.path.join(OUT_DIR, "cv_pass2_checkpoint.csv")
 
 active_pool = df_valid.iloc[:8].copy() if RUN_MODE == "smoke" else df_valid.copy()
 total_pool = len(active_pool)
 print(f"Pass 2 Active Pool: {total_pool:,} clips")
+
+# Checkpoint resumption
+processed_paths = set()
+checkpoint_rows = []
+if os.path.exists(ckpt_p2_file):
+    try:
+        df_prev = pd.read_csv(ckpt_p2_file)
+        processed_paths = set(df_prev['path'].astype(str))
+        checkpoint_rows = df_prev.to_dict(orient='records')
+        print(f"[RESUME] Loaded {len(processed_paths):,} existing rows from {ckpt_p2_file}")
+    except Exception:
+        checkpoint_rows = []
 
 # Load CT2 INT8 Model
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -208,20 +240,34 @@ model_ct2.feature_extractor = FeatureExtractor(feature_size=128)
 print("[OK] CT2 INT8 Whisper model loaded successfully.")
 
 t0_p2 = time.time()
-pass2_rows = []
+pass2_rows = list(checkpoint_rows)
 
 for idx, (_, row) in enumerate(active_pool.iterrows()):
     p_str = str(row['path'])
+    if p_str in processed_paths:
+        continue
+        
     cp = resolve_audio(p_str)
+    assert cp is not None and os.path.exists(cp), f"FATAL: Clip not found in any mounted directory: {p_str}"
     
     t0_clip = time.time()
-    segments, info = model_ct2.transcribe(
-        cp, language="ar", task="transcribe",
-        beam_size=1, best_of=1, temperature=0.0,
-        vad_filter=False, condition_on_previous_text=False
-    )
-    raw_hyp = " ".join([seg.text for seg in segments]).strip()
-    dur = info.duration if hasattr(info, 'duration') and info.duration else 0.0
+    try:
+        segments, info = model_ct2.transcribe(
+            cp, language="ar", task="transcribe",
+            beam_size=1, best_of=1, temperature=0.0,
+            vad_filter=False, condition_on_previous_text=False
+        )
+        raw_hyp = " ".join([seg.text for seg in segments]).strip()
+        dur = info.duration if hasattr(info, 'duration') and info.duration else 0.0
+    except Exception:
+        audio_np, _ = librosa.load(cp, sr=16000, mono=True)
+        dur = float(len(audio_np) / 16000.0)
+        segments, info = model_ct2.transcribe(
+            audio_np, language="ar", task="transcribe",
+            beam_size=1, best_of=1, temperature=0.0,
+            vad_filter=False, condition_on_previous_text=False
+        )
+        raw_hyp = " ".join([seg.text for seg in segments]).strip()
     
     rec = compute_dual_wer_record(row['sentence'], raw_hyp)
     leg_b = rec['legacy_breakdown']
@@ -248,15 +294,18 @@ for idx, (_, row) in enumerate(active_pool.iterrows()):
         'v2_H': v2_b['hits'],
         'v2_N': v2_b['words']
     })
+    processed_paths.add(p_str)
     
     if (len(pass2_rows) % 100 == 0) or (len(pass2_rows) == total_pool):
         df_cur = pd.DataFrame(pass2_rows)
+        df_cur.to_csv(ckpt_p2_file, index=False, encoding="utf-8")
         w_cur = (df_cur['S'].sum() + df_cur['D'].sum() + df_cur['I'].sum()) / df_cur['N'].sum() * 100.0
         elapsed = time.time() - t0_p2
         print(f"  [Pass 2] Processed {len(pass2_rows):,}/{total_pool:,} clips | Running WER: {w_cur:.2f}% | Elapsed: {elapsed/60:.1f}m")
 
 df_pass2 = pd.DataFrame(pass2_rows)
 df_pass2.to_csv(pass2_clips_csv, index=False, encoding="utf-8")
+df_pass2.to_csv(ckpt_p2_file, index=False, encoding="utf-8")
 print(f"[OK] Saved Pass 2 per-clip CSV to {pass2_clips_csv} ({len(df_pass2)} rows)")
 assert len(df_pass2) == total_pool, f"FATAL: Dropped clips during Pass 2! Got {len(df_pass2)}, expected {total_pool}"
 
@@ -329,14 +378,25 @@ pass3_rows = []
 for idx, (_, row) in enumerate(pass3_pool.iterrows()):
     p_str = str(row['path'])
     cp = resolve_audio(p_str)
+    assert cp is not None and os.path.exists(cp), f"FATAL: Clip not found in any mounted directory: {p_str}"
     
-    segments, info = model_ct2.transcribe(
-        cp, language="ar", task="transcribe",
-        beam_size=5, best_of=5, temperature=0.0,
-        vad_filter=True, condition_on_previous_text=False
-    )
-    raw_hyp = " ".join([seg.text for seg in segments]).strip()
-    dur = info.duration if hasattr(info, 'duration') and info.duration else 0.0
+    try:
+        segments, info = model_ct2.transcribe(
+            cp, language="ar", task="transcribe",
+            beam_size=5, best_of=5, temperature=0.0,
+            vad_filter=True, condition_on_previous_text=False
+        )
+        raw_hyp = " ".join([seg.text for seg in segments]).strip()
+        dur = info.duration if hasattr(info, 'duration') and info.duration else 0.0
+    except Exception:
+        audio_np, _ = librosa.load(cp, sr=16000, mono=True)
+        dur = float(len(audio_np) / 16000.0)
+        segments, info = model_ct2.transcribe(
+            audio_np, language="ar", task="transcribe",
+            beam_size=5, best_of=5, temperature=0.0,
+            vad_filter=True, condition_on_previous_text=False
+        )
+        raw_hyp = " ".join([seg.text for seg in segments]).strip()
     
     rec = compute_dual_wer_record(row['sentence'], raw_hyp)
     leg_b = rec['legacy_breakdown']

@@ -41,8 +41,21 @@ def create_notebook(nb_path, cells_source):
 def build_n1c(evalkit_zip_sha=""):
     cells = [
         # Cell 1: Environment & evalkit check
-        f"""# ── CELL 1: ENVIRONMENT & EVALKIT-SRC VERIFICATION (INTERNET OFF) ──────
+        f"""# ── CELL 1: ENVIRONMENT & EVALKIT-SRC VERIFICATION ────────────────────────
 import os, sys, subprocess, json, hashlib, zipfile, shutil
+
+for pkg in ["ctranslate2", "faster-whisper", "soundfile"]:
+    try:
+        __import__(pkg.replace("-", "_"))
+    except ImportError:
+        print(f"Installing {{pkg}}...")
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", pkg])
+            print(f"[OK] Installed {{pkg}}.")
+        except Exception as e:
+            print(f"[ERROR] Could not install {{pkg}}: {{e}}")
+            print("Please toggle Internet: ON in Kaggle Notebook Settings (right sidebar) to allow pip install.")
+            raise
 
 RUN_MODE = os.environ.get("RUN_MODE", "full")
 OUT_DIR = "Results/smoke" if RUN_MODE == "smoke" else "Results/final"
@@ -50,7 +63,7 @@ os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs("Results/env", exist_ok=True)
 
 EXPECTED_EVALKIT_SHA = "{evalkit_zip_sha}"
-print(f"Internet: OFF | RUN_MODE: {{RUN_MODE}} | Target: {{OUT_DIR}} | Expected evalkit SHA: {{EXPECTED_EVALKIT_SHA}}")
+print(f"RUN_MODE: {{RUN_MODE}} | Target: {{OUT_DIR}} | Expected evalkit SHA: {{EXPECTED_EVALKIT_SHA}}")
 
 env_path = f"Results/env/final_01c_cv_wer_matrix_{{RUN_MODE}}_env.txt"
 with open(env_path, 'w', encoding='utf-8') as f:
@@ -156,18 +169,23 @@ from evalkit.wer import wer_breakdown
 device = "cuda" if torch.cuda.is_available() else "cpu"
 dtype = torch.float16 if device == "cuda" else torch.float32
 
-clips_dir = os.path.join(os.path.dirname(tsv_path), "clips")
+# Universal recursive audio index across all mounted directories in /kaggle/input
+print("Indexing audio files across all mounted directories in /kaggle/input...")
+t0_idx = time.time()
 audio_index = {}
-if os.path.exists(clips_dir):
-    for fname in os.listdir(clips_dir):
-        if fname.endswith(('.mp3', '.wav', '.ogg', '.m4a')):
-            audio_index[fname] = os.path.join(clips_dir, fname)
-            audio_index[os.path.splitext(fname)[0]] = os.path.join(clips_dir, fname)
+if os.path.exists("/kaggle/input"):
+    for root, _, files in os.walk("/kaggle/input"):
+        for f in files:
+            if f.endswith(('.mp3', '.wav', '.ogg', '.m4a')):
+                full_p = os.path.join(root, f)
+                audio_index[f] = full_p
+                audio_index[os.path.splitext(f)[0]] = full_p
+print(f"[OK] Indexed {len(audio_index)//2:,} audio clips across all shards in {time.time()-t0_idx:.2f}s.")
 
 def resolve_audio(p):
     fname = os.path.basename(str(p))
     stem = os.path.splitext(fname)[0]
-    return audio_index.get(fname) or audio_index.get(stem) or os.path.join(clips_dir, fname)
+    return audio_index.get(fname) or audio_index.get(stem) or (p if os.path.exists(p) else None)
 
 diag_sample = pass4_subset.iloc[:20]
 print(f"=== ZERO-SHOT BASELINE DIAGNOSTIC ON {len(diag_sample)} CLIPS ===")
@@ -284,14 +302,25 @@ for m in ct2_models:
     for idx, (_, row) in enumerate(pass4_subset.iterrows()):
         p_str = str(row['path'])
         cp = resolve_audio(p_str)
+        assert cp is not None and os.path.exists(cp), f"FATAL: Clip not found in any mounted directory: {p_str}"
         
-        segments, info = model.transcribe(
-            cp, language="ar", task="transcribe",
-            beam_size=1, best_of=1, temperature=0.0,
-            vad_filter=False, condition_on_previous_text=False
-        )
-        raw_hyp = " ".join([seg.text for seg in segments]).strip()
-        dur = info.duration if hasattr(info, 'duration') and info.duration else 0.0
+        try:
+            segments, info = model.transcribe(
+                cp, language="ar", task="transcribe",
+                beam_size=1, best_of=1, temperature=0.0,
+                vad_filter=False, condition_on_previous_text=False
+            )
+            raw_hyp = " ".join([seg.text for seg in segments]).strip()
+            dur = info.duration if hasattr(info, 'duration') and info.duration else 0.0
+        except Exception:
+            audio_np, _ = librosa.load(cp, sr=16000, mono=True)
+            dur = float(len(audio_np) / 16000.0)
+            segments, info = model.transcribe(
+                audio_np, language="ar", task="transcribe",
+                beam_size=1, best_of=1, temperature=0.0,
+                vad_filter=False, condition_on_previous_text=False
+            )
+            raw_hyp = " ".join([seg.text for seg in segments]).strip()
         
         rec = compute_dual_wer_record(row['sentence'], raw_hyp)
         leg_b = rec['legacy_breakdown']
