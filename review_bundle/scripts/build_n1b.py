@@ -270,8 +270,25 @@ for idx, (_, row) in enumerate(active_pool.iterrows()):
         raw_hyp = " ".join([seg.text for seg in segments]).strip()
     
     rec = compute_dual_wer_record(row['sentence'], raw_hyp)
-    leg_b = rec['legacy_breakdown']
-    v2_b = rec['v2_breakdown']
+    leg_b = rec.get('legacy_breakdown', {})
+    v2_b = rec.get('v2_breakdown', {})
+    
+    leg_s = leg_b.get('substitutions', rec.get('legacy_s', 0))
+    leg_d = leg_b.get('deletions', rec.get('legacy_d', 0))
+    leg_i = leg_b.get('insertions', rec.get('legacy_i', 0))
+    leg_h = leg_b.get('hits', rec.get('legacy_h', 0))
+    leg_n = leg_b.get('words', rec.get('legacy_n', 0))
+    leg_wer = leg_b.get('wer', rec.get('legacy_wer', 0.0))
+    
+    v2_s = v2_b.get('substitutions', rec.get('v2_s', 0))
+    v2_d = v2_b.get('deletions', rec.get('v2_d', 0))
+    v2_i = v2_b.get('insertions', rec.get('v2_i', 0))
+    v2_h = v2_b.get('hits', rec.get('v2_h', 0))
+    v2_n = v2_b.get('words', rec.get('v2_n', 0))
+    v2_wer = v2_b.get('wer', rec.get('v2_wer', 0.0))
+    
+    hyp_leg = rec.get('hyp_legacy', rec.get('normalized_hyp_legacy', ''))
+    hyp_v2 = rec.get('hyp_v2', rec.get('normalized_hyp_v2', ''))
     
     pass2_rows.append({
         'client_id': row.get('client_id', 'unknown'),
@@ -279,20 +296,20 @@ for idx, (_, row) in enumerate(active_pool.iterrows()):
         'duration': round(dur, 3),
         'ref': row['sentence'],
         'hyp_unnorm': raw_hyp,
-        'hyp_norm': rec['normalized_hyp_legacy'],
-        'hyp_norm_v2': rec['normalized_hyp_v2'],
-        'S': leg_b['substitutions'],
-        'D': leg_b['deletions'],
-        'I': leg_b['insertions'],
-        'H': leg_b['hits'],
-        'N': leg_b['words'],
-        'wer': round(rec['legacy_wer'], 4),
-        'v2_wer': round(rec['v2_wer'], 4),
-        'v2_S': v2_b['substitutions'],
-        'v2_D': v2_b['deletions'],
-        'v2_I': v2_b['insertions'],
-        'v2_H': v2_b['hits'],
-        'v2_N': v2_b['words']
+        'hyp_norm': hyp_leg,
+        'hyp_norm_v2': hyp_v2,
+        'S': leg_s,
+        'D': leg_d,
+        'I': leg_i,
+        'H': leg_h,
+        'N': leg_n,
+        'wer': round(leg_wer, 4),
+        'v2_wer': round(v2_wer, 4),
+        'v2_S': v2_s,
+        'v2_D': v2_d,
+        'v2_I': v2_i,
+        'v2_H': v2_h,
+        'v2_N': v2_n
     })
     processed_paths.add(p_str)
     
@@ -399,7 +416,14 @@ for idx, (_, row) in enumerate(pass3_pool.iterrows()):
         raw_hyp = " ".join([seg.text for seg in segments]).strip()
     
     rec = compute_dual_wer_record(row['sentence'], raw_hyp)
-    leg_b = rec['legacy_breakdown']
+    leg_b = rec.get('legacy_breakdown', {})
+    leg_s = leg_b.get('substitutions', rec.get('legacy_s', 0))
+    leg_d = leg_b.get('deletions', rec.get('legacy_d', 0))
+    leg_i = leg_b.get('insertions', rec.get('legacy_i', 0))
+    leg_h = leg_b.get('hits', rec.get('legacy_h', 0))
+    leg_n = leg_b.get('words', rec.get('legacy_n', 0))
+    leg_wer = leg_b.get('wer', rec.get('legacy_wer', 0.0))
+    hyp_leg = rec.get('hyp_legacy', rec.get('normalized_hyp_legacy', ''))
     
     pass3_rows.append({
         'client_id': row.get('client_id', 'unknown'),
@@ -407,13 +431,13 @@ for idx, (_, row) in enumerate(pass3_pool.iterrows()):
         'duration': round(dur, 3),
         'ref': row['sentence'],
         'hyp_unnorm': raw_hyp,
-        'hyp_norm': rec['normalized_hyp_legacy'],
-        'S': leg_b['substitutions'],
-        'D': leg_b['deletions'],
-        'I': leg_b['insertions'],
-        'H': leg_b['hits'],
-        'N': leg_b['words'],
-        'wer': round(rec['legacy_wer'], 4)
+        'hyp_norm': hyp_leg,
+        'S': leg_s,
+        'D': leg_d,
+        'I': leg_i,
+        'H': leg_h,
+        'N': leg_n,
+        'wer': round(leg_wer, 4)
     })
     
     if (len(pass3_rows) % 100 == 0) or (len(pass3_rows) == total_p3):

@@ -323,7 +323,14 @@ for m in ct2_models:
             raw_hyp = " ".join([seg.text for seg in segments]).strip()
         
         rec = compute_dual_wer_record(row['sentence'], raw_hyp)
-        leg_b = rec['legacy_breakdown']
+        leg_b = rec.get('legacy_breakdown', {})
+        leg_s = leg_b.get('substitutions', rec.get('legacy_s', 0))
+        leg_d = leg_b.get('deletions', rec.get('legacy_d', 0))
+        leg_i = leg_b.get('insertions', rec.get('legacy_i', 0))
+        leg_h = leg_b.get('hits', rec.get('legacy_h', 0))
+        leg_n = leg_b.get('words', rec.get('legacy_n', 0))
+        leg_wer = leg_b.get('wer', rec.get('legacy_wer', 0.0))
+        hyp_leg = rec.get('hyp_legacy', rec.get('normalized_hyp_legacy', ''))
         
         m_rows.append({
             'client_id': row.get('client_id', 'unknown'),
@@ -331,13 +338,13 @@ for m in ct2_models:
             'duration': round(dur, 3),
             'ref': row['sentence'],
             'hyp_unnorm': raw_hyp,
-            'hyp_norm': rec['normalized_hyp_legacy'],
-            'S': leg_b['substitutions'],
-            'D': leg_b['deletions'],
-            'I': leg_b['insertions'],
-            'H': leg_b['hits'],
-            'N': leg_b['words'],
-            'wer': round(rec['legacy_wer'], 4)
+            'hyp_norm': hyp_leg,
+            'S': leg_s,
+            'D': leg_d,
+            'I': leg_i,
+            'H': leg_h,
+            'N': leg_n,
+            'wer': round(leg_wer, 4)
         })
         
     df_m = pd.DataFrame(m_rows)

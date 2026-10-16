@@ -152,18 +152,36 @@ def compute_dual_wer_record(raw_ref: str, raw_hyp: str, **kwargs) -> Dict[str, A
         'raw_hyp': raw_hyp,
         'ref_legacy': ref_leg,
         'hyp_legacy': hyp_leg,
+        'normalized_hyp_legacy': hyp_leg,
         'legacy_s': s_leg,
         'legacy_d': d_leg,
         'legacy_i': i_leg,
         'legacy_h': h_leg,
         'legacy_n': n_leg,
         'legacy_wer': round(wer_leg, 6),
+        'legacy_breakdown': {
+            'substitutions': s_leg,
+            'deletions': d_leg,
+            'insertions': i_leg,
+            'hits': h_leg,
+            'words': n_leg,
+            'wer': round(wer_leg, 6)
+        },
         'ref_v2': ref_v2,
         'hyp_v2': hyp_v2,
+        'normalized_hyp_v2': hyp_v2,
         'v2_s': s_v2,
         'v2_d': d_v2,
         'v2_i': i_v2,
         'v2_h': h_v2,
         'v2_n': n_v2,
         'v2_wer': round(wer_v2, 6),
+        'v2_breakdown': {
+            'substitutions': s_v2,
+            'deletions': d_v2,
+            'insertions': i_v2,
+            'hits': h_v2,
+            'words': n_v2,
+            'wer': round(wer_v2, 6)
+        }
     }

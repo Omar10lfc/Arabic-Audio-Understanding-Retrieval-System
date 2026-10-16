@@ -1,6 +1,6 @@
 {
   "dataset_name": "evalkit-src",
-  "zip_sha256": "575029a3cdfb8d49b13184214dfe5e8f273d73153742dbb83ba3526501ef4788",
+  "zip_sha256": "e326301baf98f1670db0a7c720bbc11724f58588e0e16190eda13879a074b8a7",
   "files": {
     "evalkit/__init__.py": "e94e18cebd94d545da92da7f22df4da34e2a25654b5f06df978b3b1d08fb98ee",
     "evalkit/normalize.py": "c1d3f76714de71d9291c4687d61f996680191ac3ea43e9f8be4c93afcef045ae",
@@ -8,7 +8,7 @@
     "evalkit/rouge.py": "0e13bfc3aa7a162758d606d6e092e6a04caa1c33ded64471a0f0a6804b036e15",
     "evalkit/stats.py": "518c54efa668f22a090f3d324368cb6938bcf963ba667206b4248f0d4aef9872",
     "evalkit/summarize.py": "feb4fbb64d5eb782c69729570c0f0dd97a1171cee1d481d1407fe5bc97657a92",
-    "evalkit/wer.py": "7682b7a19b0ed9baed2f409fc2024e562bc7cb99c9f0f87659b4896fe29e4a7b",
+    "evalkit/wer.py": "29c7b03421acd331c19b0d3fef8e66d7be5d5f0502e9437b4dc42fadc13ba40e",
     "configs/final_protocol.json": "c2d75c2d70b82b58f9d2a6e34e39c61e1e44d810170376b73996603873c38b9b",
     "configs/notebook_manifest.json": "31de44048c23876eec7ea47e106cc866832c0262637864da3f3be33e794bb8d1",
     "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
