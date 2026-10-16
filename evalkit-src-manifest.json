@@ -1,11 +1,11 @@
 {
   "dataset_name": "evalkit-src",
-  "zip_sha256": "2cba1ffe4211d0e89f8067287b9b37a8091fbc89d1c125201397c5e81f7bf8d7",
+  "zip_sha256": "575029a3cdfb8d49b13184214dfe5e8f273d73153742dbb83ba3526501ef4788",
   "files": {
     "evalkit/__init__.py": "e94e18cebd94d545da92da7f22df4da34e2a25654b5f06df978b3b1d08fb98ee",
     "evalkit/normalize.py": "c1d3f76714de71d9291c4687d61f996680191ac3ea43e9f8be4c93afcef045ae",
     "evalkit/retrieval.py": "33b6b23c9a5ca8a19deb2347782eff0745f87a7c47367400dab4a1e3e1425c69",
-    "evalkit/rouge.py": "18043f9534d88163b6c65f3aaca29c5362691197ed0bdc6b3851a2602803e3fb",
+    "evalkit/rouge.py": "0e13bfc3aa7a162758d606d6e092e6a04caa1c33ded64471a0f0a6804b036e15",
     "evalkit/stats.py": "518c54efa668f22a090f3d324368cb6938bcf963ba667206b4248f0d4aef9872",
     "evalkit/summarize.py": "feb4fbb64d5eb782c69729570c0f0dd97a1171cee1d481d1407fe5bc97657a92",
     "evalkit/wer.py": "7682b7a19b0ed9baed2f409fc2024e562bc7cb99c9f0f87659b4896fe29e4a7b",

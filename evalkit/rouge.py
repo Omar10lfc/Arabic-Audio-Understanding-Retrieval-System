@@ -30,7 +30,7 @@ if not _init_xlsum_scorer():
         subprocess.check_call([
             sys.executable, "-m", "pip", "install", "-q",
             "git+https://github.com/csebuetnlp/xl-sum.git#subdirectory=multilingual_rouge_scoring"
-        ])
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         for mod_name in list(sys.modules.keys()):
             if mod_name.startswith("rouge_score"):
                 del sys.modules[mod_name]
