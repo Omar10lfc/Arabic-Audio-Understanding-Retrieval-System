@@ -1,16 +1,16 @@
 {
   "metadata": {
-    "timestamp": "2026-10-10 19:07:38 UTC",
+    "timestamp": "2026-10-17 12:50:50 UTC",
     "git_commit": "unknown",
     "device": "cuda",
     "evalkit_sha256": {
       "__init__.py": "e94e18cebd94d545da92da7f22df4da34e2a25654b5f06df978b3b1d08fb98ee",
       "normalize.py": "c1d3f76714de71d9291c4687d61f996680191ac3ea43e9f8be4c93afcef045ae",
-      "retrieval.py": "915ddb28861b4f50d4f172843dc0618f6125938adacd8da57937d7e975fd7619",
-      "rouge.py": "5d72ac5cad2e298945c69c7174db6128eb9bf14122af6848c255b26199919fed",
+      "retrieval.py": "33b6b23c9a5ca8a19deb2347782eff0745f87a7c47367400dab4a1e3e1425c69",
+      "rouge.py": "0e13bfc3aa7a162758d606d6e092e6a04caa1c33ded64471a0f0a6804b036e15",
       "stats.py": "518c54efa668f22a090f3d324368cb6938bcf963ba667206b4248f0d4aef9872",
       "summarize.py": "feb4fbb64d5eb782c69729570c0f0dd97a1171cee1d481d1407fe5bc97657a92",
-      "wer.py": "1f13a9528d8cfc26912f74d9de3e9d60b0a0b3874643b0b7d3a1814da8bec0fb"
+      "wer.py": "29c7b03421acd331c19b0d3fef8e66d7be5d5f0502e9437b4dc42fadc13ba40e"
     },
     "config_sha256": "c2d75c2d70b82b58f9d2a6e34e39c61e1e44d810170376b73996603873c38b9b",
     "config_copy": {
@@ -117,240 +117,41 @@
     }
   },
   "results": {
-    "pass": "Pass 4: Multi-Model Architecture Comparison Matrix (1,000 clips)",
-    "models": [
-      {
-        "model_name": "Whisper-Large-v3 (Fine-Tuned QLoRA CT2 INT8)",
-        "engine": "ct2_int8",
-        "tier": "merged",
-        "num_clips": 1000,
-        "total_audio_seconds": 4434.25,
-        "total_compute_seconds": 769.41,
-        "throughput_realtime": 5.76,
-        "rtf": 0.1735,
-        "legacy_corpus_wer": 19.4,
-        "v2_corpus_wer": 17.33,
-        "legacy_substitutions": 685,
-        "legacy_deletions": 107,
-        "legacy_insertions": 150,
-        "legacy_hits": 4063,
-        "legacy_total_words": 4855,
-        "clip_level_bootstrap_ci_legacy": {
-          "mean": 19.8084,
-          "se": 1.7558,
-          "ci_lower": 17.0012,
-          "ci_upper": 23.7607
-        },
-        "clip_level_bootstrap_ci_v2": {
-          "mean": 17.4815,
-          "se": 1.733,
-          "ci_lower": 14.7017,
-          "ci_upper": 21.2956
-        }
-      },
-      {
-        "model_name": "Whisper-Large-v3-Turbo (Fine-Tuned CT2 INT8)",
-        "engine": "ct2_int8",
-        "tier": "merged",
-        "num_clips": 1000,
-        "total_audio_seconds": 4434.25,
-        "total_compute_seconds": 582.04,
-        "throughput_realtime": 7.62,
-        "rtf": 0.1313,
-        "legacy_corpus_wer": 21.38,
-        "v2_corpus_wer": 19.07,
-        "legacy_substitutions": 722,
-        "legacy_deletions": 105,
-        "legacy_insertions": 211,
-        "legacy_hits": 4028,
-        "legacy_total_words": 4855,
-        "clip_level_bootstrap_ci_legacy": {
-          "mean": 22.1845,
-          "se": 2.9371,
-          "ci_lower": 17.9279,
-          "ci_upper": 28.7784
-        },
-        "clip_level_bootstrap_ci_v2": {
-          "mean": 19.7278,
-          "se": 2.9187,
-          "ci_lower": 15.6102,
-          "ci_upper": 26.1096
-        }
-      },
-      {
-        "model_name": "Whisper-Medium (Stage-2 Fine-Tuned CT2 INT8)",
-        "engine": "ct2_int8",
-        "tier": "merged",
-        "num_clips": 1000,
-        "total_audio_seconds": 4434.25,
-        "total_compute_seconds": 553.07,
-        "throughput_realtime": 8.02,
-        "rtf": 0.1247,
-        "legacy_corpus_wer": 22.25,
-        "v2_corpus_wer": 20.25,
-        "legacy_substitutions": 877,
-        "legacy_deletions": 129,
-        "legacy_insertions": 74,
-        "legacy_hits": 3849,
-        "legacy_total_words": 4855,
-        "clip_level_bootstrap_ci_legacy": {
-          "mean": 22.4627,
-          "se": 0.857,
-          "ci_lower": 20.7641,
-          "ci_upper": 24.0819
-        },
-        "clip_level_bootstrap_ci_v2": {
-          "mean": 20.1782,
-          "se": 0.83,
-          "ci_lower": 18.5805,
-          "ci_upper": 21.8431
-        }
-      },
-      {
-        "model_name": "Whisper-Small (Arabic Fine-Tuned CT2 INT8)",
-        "engine": "ct2_int8",
-        "tier": "merged",
-        "num_clips": 1000,
-        "total_audio_seconds": 4434.25,
-        "total_compute_seconds": 407.42,
-        "throughput_realtime": 10.88,
-        "rtf": 0.0919,
-        "legacy_corpus_wer": 33.8,
-        "v2_corpus_wer": 31.72,
-        "legacy_substitutions": 1177,
-        "legacy_deletions": 117,
-        "legacy_insertions": 347,
-        "legacy_hits": 3561,
-        "legacy_total_words": 4855,
-        "clip_level_bootstrap_ci_legacy": {
-          "mean": 33.5634,
-          "se": 3.2459,
-          "ci_lower": 28.6477,
-          "ci_upper": 41.0809
-        },
-        "clip_level_bootstrap_ci_v2": {
-          "mean": 30.9738,
-          "se": 3.1919,
-          "ci_lower": 26.2026,
-          "ci_upper": 38.4225
-        }
-      },
-      {
-        "model_name": "Whisper-Large-v3 (Zero-Shot Base FP16)",
-        "engine": "pytorch_fp16",
-        "tier": "base",
-        "num_clips": 1000,
-        "total_audio_seconds": 4434.25,
-        "total_compute_seconds": 737.67,
-        "throughput_realtime": 6.01,
-        "rtf": 0.1664,
-        "legacy_corpus_wer": 123.65,
-        "v2_corpus_wer": 124.26,
-        "legacy_substitutions": 2907,
-        "legacy_deletions": 1222,
-        "legacy_insertions": 1874,
-        "legacy_hits": 726,
-        "legacy_total_words": 4855,
-        "clip_level_bootstrap_ci_legacy": {
-          "mean": 139.2883,
-          "se": 18.7971,
-          "ci_lower": 110.5228,
-          "ci_upper": 180.6153
-        },
-        "clip_level_bootstrap_ci_v2": {
-          "mean": 139.8045,
-          "se": 18.7932,
-          "ci_lower": 110.8171,
-          "ci_upper": 181.0113
-        }
-      },
-      {
-        "model_name": "Whisper-Large-v3-Turbo (Zero-Shot Base FP16)",
-        "engine": "pytorch_fp16",
-        "tier": "base",
-        "num_clips": 1000,
-        "total_audio_seconds": 4434.25,
-        "total_compute_seconds": 312.54,
-        "throughput_realtime": 14.19,
-        "rtf": 0.0705,
-        "legacy_corpus_wer": 135.3,
-        "v2_corpus_wer": 136.19,
-        "legacy_substitutions": 2814,
-        "legacy_deletions": 1454,
-        "legacy_insertions": 2301,
-        "legacy_hits": 587,
-        "legacy_total_words": 4855,
-        "clip_level_bootstrap_ci_legacy": {
-          "mean": 131.4646,
-          "se": 11.6388,
-          "ci_lower": 111.7178,
-          "ci_upper": 156.4941
-        },
-        "clip_level_bootstrap_ci_v2": {
-          "mean": 132.8649,
-          "se": 11.9462,
-          "ci_lower": 112.444,
-          "ci_upper": 158.3737
-        }
-      },
-      {
-        "model_name": "Whisper-Medium (Zero-Shot Base FP16)",
-        "engine": "pytorch_fp16",
-        "tier": "base",
-        "num_clips": 1000,
-        "total_audio_seconds": 4434.25,
-        "total_compute_seconds": 1502.07,
-        "throughput_realtime": 2.95,
-        "rtf": 0.3387,
-        "legacy_corpus_wer": 211.84,
-        "v2_corpus_wer": 210.22,
-        "legacy_substitutions": 3363,
-        "legacy_deletions": 958,
-        "legacy_insertions": 5964,
-        "legacy_hits": 534,
-        "legacy_total_words": 4855,
-        "clip_level_bootstrap_ci_legacy": {
-          "mean": 211.6302,
-          "se": 19.7614,
-          "ci_lower": 176.1284,
-          "ci_upper": 252.9529
-        },
-        "clip_level_bootstrap_ci_v2": {
-          "mean": 208.9547,
-          "se": 19.3311,
-          "ci_lower": 175.1894,
-          "ci_upper": 250.5104
-        }
-      },
-      {
-        "model_name": "Whisper-Small (Zero-Shot Base FP16)",
-        "engine": "pytorch_fp16",
-        "tier": "base",
-        "num_clips": 1000,
-        "total_audio_seconds": 4434.25,
-        "total_compute_seconds": 806.67,
-        "throughput_realtime": 5.5,
-        "rtf": 0.1819,
-        "legacy_corpus_wer": 339.59,
-        "v2_corpus_wer": 344.25,
-        "legacy_substitutions": 3351,
-        "legacy_deletions": 1248,
-        "legacy_insertions": 11888,
-        "legacy_hits": 256,
-        "legacy_total_words": 4855,
-        "clip_level_bootstrap_ci_legacy": {
-          "mean": 358.4626,
-          "se": 30.4493,
-          "ci_lower": 298.576,
-          "ci_upper": 417.8531
-        },
-        "clip_level_bootstrap_ci_v2": {
-          "mean": 365.2766,
-          "se": 31.2695,
-          "ci_lower": 304.8496,
-          "ci_upper": 426.9916
-        }
-      }
-    ]
+    "large_v3": {
+      "model_name": "Whisper-Large-v3",
+      "wer": 13.62,
+      "throughput_realtime": 8.13,
+      "substitutions": 571,
+      "deletions": 97,
+      "insertions": 42,
+      "words": 5214
+    },
+    "turbo": {
+      "model_name": "Whisper-Large-v3-Turbo",
+      "wer": 15.27,
+      "throughput_realtime": 12.67,
+      "substitutions": 639,
+      "deletions": 93,
+      "insertions": 64,
+      "words": 5214
+    },
+    "medium": {
+      "model_name": "Whisper-Medium",
+      "wer": 18.78,
+      "throughput_realtime": 13.74,
+      "substitutions": 796,
+      "deletions": 109,
+      "insertions": 74,
+      "words": 5214
+    },
+    "small": {
+      "model_name": "Whisper-Small",
+      "wer": 22.44,
+      "throughput_realtime": 28.3,
+      "substitutions": 982,
+      "deletions": 98,
+      "insertions": 90,
+      "words": 5214
+    }
   }
 }

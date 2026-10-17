@@ -276,6 +276,12 @@
     "mtime": 1792229429.239964
   },
   {
+    "path": "Results/env/final_01c_cv_wer_matrix_full_env.txt",
+    "sha256": "78feb5c507412604d7f14e0ee7178f32a2edb4c4f5128841afe60c39e64cd5a0",
+    "bytes": 183,
+    "mtime": 1792242519.4828963
+  },
+  {
     "path": "Results/env/local_smoke/final_01_cv_full_pool_env.txt",
     "sha256": "6fb9e87ac9f58c47c989e2d74dbea99630c842212f155d706af8bbe0c3b8d113",
     "bytes": 34535,
@@ -336,16 +342,40 @@
     "mtime": 1792229444.3393352
   },
   {
+    "path": "Results/final/cv_pass4_large_v3_clips.csv",
+    "sha256": "093fb746d0f4599cf5149b238cd4dfd4094e35d79dde66c5816a9613f0960a48",
+    "bytes": 328979,
+    "mtime": 1792242521.0948124
+  },
+  {
     "path": "Results/final/cv_pass4_matrix.json",
-    "sha256": "d957c302b8ae118418974e234f09c62bd0500ef21569b619111366345c8f3ff1",
-    "bytes": 11338,
-    "mtime": 1791659565.2064166
+    "sha256": "342020a8336dabf20803a9aff1573b9b3dbc0812574547dfb9d97782e758f3cc",
+    "bytes": 5051,
+    "mtime": 1792242521.6796575
   },
   {
     "path": "Results/final/cv_pass4_matrix_summary.csv",
-    "sha256": "44a6bbf8b10fa889a5f3dfc623f55c267fe5a0400d97a316deeabe64797af871",
-    "bytes": 2532,
-    "mtime": 1791659775.4842427
+    "sha256": "aaa910f04912cd5b7ebf76379c0ce4b709ebba61b707f855cdc9c018e95a23f0",
+    "bytes": 178,
+    "mtime": 1792242522.196386
+  },
+  {
+    "path": "Results/final/cv_pass4_medium_clips.csv",
+    "sha256": "26146c75160994c87d0fea7e25a9cd9baa74f605d37e6fbd2b0140ac72e80c3d",
+    "bytes": 329014,
+    "mtime": 1792242523.4282086
+  },
+  {
+    "path": "Results/final/cv_pass4_small_clips.csv",
+    "sha256": "2cb132edcd14cd19c42764033371d1c2094ce4e6c41cb0c70d88d3a9f9f94a68",
+    "bytes": 329161,
+    "mtime": 1792242524.7956867
+  },
+  {
+    "path": "Results/final/cv_pass4_turbo_clips.csv",
+    "sha256": "02cf03f671ef20ecb75c49653c9c6d980dc06b002c185a559bd06b7853fbcc14",
+    "bytes": 329443,
+    "mtime": 1792242526.0627244
   },
   {
     "path": "Results/final/downstream_retrieval_summarization.json",
@@ -358,6 +388,12 @@
     "sha256": "660d99ce3e5bd54378195e6a5c55bf5077a92cf391283398ae8dfb8f9581b055",
     "bytes": 471,
     "mtime": 1791886333.9549127
+  },
+  {
+    "path": "Results/final/pass4_clip_ids.json",
+    "sha256": "9d3b62b448e757b06437a34034f708ab31b41ddd16b02496e939132d282be74e",
+    "bytes": 36055,
+    "mtime": 1792242526.526012
   },
   {
     "path": "Results/final/spoken_retrieval_results.json",
@@ -376,6 +412,12 @@
     "sha256": "cfc1c51625b9235b0dad6d6366e16c69214b017a3da05b7407f699d220e028fb",
     "bytes": 206,
     "mtime": 1791886333.9590237
+  },
+  {
+    "path": "Results/final/zero_shot_diagnostic.json",
+    "sha256": "9c0eb3502130fe7da820b8dabd9b2d55269e87580a74d87a346ec67d7d7fc67b",
+    "bytes": 604,
+    "mtime": 1792242526.9954655
   },
   {
     "path": "Results/legacy/README.md",

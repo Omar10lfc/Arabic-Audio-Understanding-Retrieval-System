@@ -1,0 +1,5 @@
+Model,Clips,Clean WER (%),Throughput (xRT)
+Whisper-Large-v3,1000,13.62,8.13
+Whisper-Large-v3-Turbo,1000,15.27,12.67
+Whisper-Medium,1000,18.78,13.74
+Whisper-Small,1000,22.44,28.3
