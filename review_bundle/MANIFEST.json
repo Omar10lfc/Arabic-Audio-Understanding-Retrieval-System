@@ -282,6 +282,12 @@
     "mtime": 1792242519.4828963
   },
   {
+    "path": "Results/env/final_02_tts_asr_env.txt",
+    "sha256": "78feb5c507412604d7f14e0ee7178f32a2edb4c4f5128841afe60c39e64cd5a0",
+    "bytes": 183,
+    "mtime": 1792277127.5022826
+  },
+  {
     "path": "Results/env/local_smoke/final_01_cv_full_pool_env.txt",
     "sha256": "6fb9e87ac9f58c47c989e2d74dbea99630c842212f155d706af8bbe0c3b8d113",
     "bytes": 34535,
@@ -396,6 +402,12 @@
     "mtime": 1792242526.526012
   },
   {
+    "path": "Results/final/spoken_arcd_transcripts.json",
+    "sha256": "7a0a4d804811fb589a8309e3e0c1ab46199a80dfe3d39c4ddf54d693ae4fafd6",
+    "bytes": 863121,
+    "mtime": 1792277129.5044339
+  },
+  {
     "path": "Results/final/spoken_retrieval_results.json",
     "sha256": "600472d9a23f5c0ab0218ffd9b2b81015c19569a6e68d58a58ac454ba3232976",
     "bytes": 48359,
@@ -408,10 +420,22 @@
     "mtime": 1791886333.9488306
   },
   {
+    "path": "Results/final/tts_asr_propagation_results.json",
+    "sha256": "149946776e4b022e9fb525290aa41d4720387f76ad00f6ac837cd1cc8deb8c96",
+    "bytes": 2524722,
+    "mtime": 1792277133.1694722
+  },
+  {
     "path": "Results/final/tts_asr_summary.csv",
-    "sha256": "cfc1c51625b9235b0dad6d6366e16c69214b017a3da05b7407f699d220e028fb",
-    "bytes": 206,
-    "mtime": 1791886333.9590237
+    "sha256": "79f739bf7daf0e5978e310b82328fd15df7f6b3d240061fd5f2cbdc1a80d4ab3",
+    "bytes": 200,
+    "mtime": 1792277133.7201583
+  },
+  {
+    "path": "Results/final/tts_manifest.json",
+    "sha256": "3da1c33a0f78bb2b718bc332e1fb45f6fc759168973b6134bdf3778dc1714eb3",
+    "bytes": 48438,
+    "mtime": 1792277134.3098607
   },
   {
     "path": "Results/final/zero_shot_diagnostic.json",
