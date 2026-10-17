@@ -270,6 +270,12 @@
     "mtime": 1791629948.0514026
   },
   {
+    "path": "Results/env/final_01b_cv_pass2_beam5_full_env.txt",
+    "sha256": "78feb5c507412604d7f14e0ee7178f32a2edb4c4f5128841afe60c39e64cd5a0",
+    "bytes": 183,
+    "mtime": 1792229429.239964
+  },
+  {
     "path": "Results/env/local_smoke/final_01_cv_full_pool_env.txt",
     "sha256": "6fb9e87ac9f58c47c989e2d74dbea99630c842212f155d706af8bbe0c3b8d113",
     "bytes": 34535,
@@ -289,9 +295,9 @@
   },
   {
     "path": "Results/final/cv_beam5_vad_comparison.json",
-    "sha256": "b80c4c17412358f2080f91bd860b8f5026a52ef34f0593292ca3014cbf4a5e74",
-    "bytes": 5734,
-    "mtime": 1791649637.4147115
+    "sha256": "6c93f06376e2b503594616712e6318e812783a8318e69fff3a59f558325e6650",
+    "bytes": 4692,
+    "mtime": 1792229429.6417022
   },
   {
     "path": "Results/final/cv_pass1_checkpoint.csv",
@@ -306,10 +312,28 @@
     "mtime": 1792169552.3536289
   },
   {
+    "path": "Results/final/cv_pass2_checkpoint.csv",
+    "sha256": "c235c67da9923cf794dbbf12660a1d138490a722b2d8146bbcd674cafdea7db0",
+    "bytes": 4088962,
+    "mtime": 1792229435.7939675
+  },
+  {
+    "path": "Results/final/cv_pass2_clips.csv",
+    "sha256": "c235c67da9923cf794dbbf12660a1d138490a722b2d8146bbcd674cafdea7db0",
+    "bytes": 4088962,
+    "mtime": 1792229442.7332332
+  },
+  {
     "path": "Results/final/cv_pass2_ct2_int8.json",
-    "sha256": "37c1d7e2e0d0b8d4984bf5eafbfcd107d21e2e98f62301074360ce0702bb0312",
-    "bytes": 5329,
-    "mtime": 1791649379.3060484
+    "sha256": "74a44cdc95f2d10ede7e78c4c7b1100f7d64dd02006a284febbb6eea765fd988",
+    "bytes": 5027,
+    "mtime": 1792229443.237248
+  },
+  {
+    "path": "Results/final/cv_pass3_beam5_clips.csv",
+    "sha256": "5faf3faa0c61bac36c5cae431d74ea386938ce651b9ca9164c50d051d013169c",
+    "bytes": 443121,
+    "mtime": 1792229444.3393352
   },
   {
     "path": "Results/final/cv_pass4_matrix.json",

@@ -1,16 +1,16 @@
 {
   "metadata": {
-    "timestamp": "2026-10-10 15:52:50 UTC",
+    "timestamp": "2026-10-17 01:36:48 UTC",
     "git_commit": "unknown",
     "device": "cuda",
     "evalkit_sha256": {
       "__init__.py": "e94e18cebd94d545da92da7f22df4da34e2a25654b5f06df978b3b1d08fb98ee",
       "normalize.py": "c1d3f76714de71d9291c4687d61f996680191ac3ea43e9f8be4c93afcef045ae",
-      "retrieval.py": "915ddb28861b4f50d4f172843dc0618f6125938adacd8da57937d7e975fd7619",
-      "rouge.py": "5d72ac5cad2e298945c69c7174db6128eb9bf14122af6848c255b26199919fed",
+      "retrieval.py": "33b6b23c9a5ca8a19deb2347782eff0745f87a7c47367400dab4a1e3e1425c69",
+      "rouge.py": "0e13bfc3aa7a162758d606d6e092e6a04caa1c33ded64471a0f0a6804b036e15",
       "stats.py": "518c54efa668f22a090f3d324368cb6938bcf963ba667206b4248f0d4aef9872",
       "summarize.py": "feb4fbb64d5eb782c69729570c0f0dd97a1171cee1d481d1407fe5bc97657a92",
-      "wer.py": "1f13a9528d8cfc26912f74d9de3e9d60b0a0b3874643b0b7d3a1814da8bec0fb"
+      "wer.py": "29c7b03421acd331c19b0d3fef8e66d7be5d5f0502e9437b4dc42fadc13ba40e"
     },
     "config_sha256": "c2d75c2d70b82b58f9d2a6e34e39c61e1e44d810170376b73996603873c38b9b",
     "config_copy": {
@@ -123,25 +123,19 @@
     "precision": "CTranslate2 INT8",
     "decoder": "Greedy (beam_size=1, temperature=0.0)",
     "num_clips": 10506,
-    "total_audio_seconds": 45596.52,
-    "total_audio_hours": 12.666,
-    "total_compute_seconds": 7955.18,
-    "total_compute_hours": 2.21,
-    "throughput_realtime": 5.73,
-    "rtf": 0.1745,
+    "total_audio_seconds": 45587.96,
+    "total_audio_hours": 12.663,
+    "total_compute_seconds": 8503.43,
+    "total_compute_hours": 2.362,
+    "throughput_realtime": 5.36,
+    "rtf": 0.1865,
     "legacy_normalizer": {
       "corpus_wer": 14.12,
       "substitutions": 6103,
       "deletions": 1014,
       "insertions": 546,
       "hits": 47142,
-      "total_words": 54259,
-      "clip_level_bootstrap_ci_95": {
-        "mean": 14.9362,
-        "se": 0.2535,
-        "ci_lower": 14.4778,
-        "ci_upper": 15.4353
-      }
+      "total_words": 54259
     },
     "v2_normalizer": {
       "corpus_wer": 11.92,
@@ -149,13 +143,7 @@
       "deletions": 475,
       "insertions": 400,
       "hits": 47295,
-      "total_words": 53240,
-      "clip_level_bootstrap_ci_95": {
-        "mean": 12.4796,
-        "se": 0.2369,
-        "ci_lower": 12.0556,
-        "ci_upper": 12.9586
-      }
+      "total_words": 53240
     }
   }
 }
