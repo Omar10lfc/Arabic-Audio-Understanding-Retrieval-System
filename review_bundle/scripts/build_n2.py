@@ -350,11 +350,31 @@ print(f"Manifest with SHA-256 written to: {manifest_path}")
 """,
         # Cell 4: Multi-Model Whisper ASR Transcription
         """# ── CELL 4: MULTI-MODEL WHISPER ASR TRANSCRIPTION ────────────────────────
-import gc, torch, numpy as np
+import gc, torch, numpy as np, librosa
 from faster_whisper import WhisperModel
 from faster_whisper.feature_extractor import FeatureExtractor
 from evalkit.normalize import normalize_arabic_legacy, normalize_arabic_v2
 from evalkit.wer import compute_dual_wer_record
+
+# PyAV compatibility patch
+try:
+    import av, av.container.core
+    _c_open = av.container.core.open
+    def _safe_av_open(*args, **kwargs):
+        kwargs.pop('metadata_errors', None)
+        kwargs.pop('metadata_encoding', None)
+        return _c_open(*args, **kwargs)
+    av.container.core.open = _safe_av_open
+    av.open = _safe_av_open
+except Exception:
+    pass
+
+def safe_transcribe(model, audio_path, **kwargs):
+    try:
+        return model.transcribe(audio_path, **kwargs)
+    except Exception:
+        audio_np, _ = librosa.load(audio_path, sr=16000, mono=True)
+        return model.transcribe(audio_np, **kwargs)
 
 asr_out_file = os.path.join(OUT_DIR, "tts_asr_propagation_results.json")
 arcd_trans_file = os.path.join(OUT_DIR, "spoken_arcd_transcripts.json")
@@ -379,7 +399,7 @@ for m_info in ct2_models:
     m_key = m_info["key"]
     m_path = m_info["path"]
     
-    print(f"\\nTranscribing with: {m_name} from {m_path}...")
+    print(f"\nTranscribing with: {m_name} from {m_path}...")
     if not os.path.exists(m_path):
         print(f"[SKIP] Model path not found: {m_path}")
         continue
@@ -394,7 +414,7 @@ for m_info in ct2_models:
     t0_xl = time.time()
     tot_aud_xl = 0.0
     for idx, art in enumerate(xlsum_articles):
-        segments, info = whisper_model.transcribe(art['audio_path'], language="ar", task="transcribe", beam_size=1, best_of=1, temperature=0.0)
+        segments, info = safe_transcribe(whisper_model, art['audio_path'], language="ar", task="transcribe", beam_size=1, best_of=1, temperature=0.0)
         raw_t = " ".join([seg.text for seg in segments]).strip()
         dur = info.duration if hasattr(info, 'duration') and info.duration else 0.0
         tot_aud_xl += dur
@@ -415,7 +435,7 @@ for m_info in ct2_models:
     # 2. Transcribe ARCD Passages
     for p in passages:
         pid = p['id']
-        segments, info = whisper_model.transcribe(p['audio_path'], language="ar", task="transcribe", beam_size=1, best_of=1, temperature=0.0)
+        segments, info = safe_transcribe(whisper_model, p['audio_path'], language="ar", task="transcribe", beam_size=1, best_of=1, temperature=0.0)
         raw_t = " ".join([seg.text for seg in segments]).strip()
         dur = info.duration if hasattr(info, 'duration') and info.duration else 0.0
         rec = compute_dual_wer_record(p['text'], raw_t)
@@ -430,7 +450,7 @@ for m_info in ct2_models:
     # 3. Transcribe ARCD Queries
     for idx, q in enumerate(queries):
         qid = f"query_{idx:03d}"
-        segments, info = whisper_model.transcribe(q['audio_path'], language="ar", task="transcribe", beam_size=1, best_of=1, temperature=0.0)
+        segments, info = safe_transcribe(whisper_model, q['audio_path'], language="ar", task="transcribe", beam_size=1, best_of=1, temperature=0.0)
         raw_t = " ".join([seg.text for seg in segments]).strip()
         dur = info.duration if hasattr(info, 'duration') and info.duration else 0.0
         rec = compute_dual_wer_record(q['query'], raw_t)
