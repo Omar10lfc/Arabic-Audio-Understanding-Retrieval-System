@@ -405,11 +405,10 @@ for m_info in ct2_models:
             "audio_path": art['audio_path'],
             "clean_text": art['text'],
             "reference_summary": art['summary'],
-            "raw_transcript": raw_t,
-            "norm_legacy_transcript": rec['normalized_hyp_legacy'],
-            "norm_v2_transcript": rec['normalized_hyp_v2'],
-            "legacy_wer": rec['legacy_wer'],
-            "v2_wer": rec['v2_wer'],
+            "norm_legacy_transcript": rec.get('normalized_hyp_legacy', rec.get('hyp_legacy', '')),
+            "norm_v2_transcript": rec.get('normalized_hyp_v2', rec.get('hyp_v2', '')),
+            "legacy_wer": rec.get('legacy_wer', 0.0),
+            "v2_wer": rec.get('v2_wer', 0.0),
             "duration_s": dur
         })
     
@@ -422,9 +421,9 @@ for m_info in ct2_models:
         rec = compute_dual_wer_record(p['text'], raw_t)
         arcd_transcripts["passages"][pid]["models"][m_key] = {
             "raw": raw_t,
-            "norm_legacy": rec['normalized_hyp_legacy'],
-            "norm_v2": rec['normalized_hyp_v2'],
-            "legacy_wer": rec['legacy_wer'],
+            "norm_legacy": rec.get('normalized_hyp_legacy', rec.get('hyp_legacy', '')),
+            "norm_v2": rec.get('normalized_hyp_v2', rec.get('hyp_v2', '')),
+            "legacy_wer": rec.get('legacy_wer', 0.0),
             "duration_s": dur
         }
         
@@ -437,9 +436,9 @@ for m_info in ct2_models:
         rec = compute_dual_wer_record(q['query'], raw_t)
         arcd_transcripts["queries"][qid]["models"][m_key] = {
             "raw": raw_t,
-            "norm_legacy": rec['normalized_hyp_legacy'],
-            "norm_v2": rec['normalized_hyp_v2'],
-            "legacy_wer": rec['legacy_wer'],
+            "norm_legacy": rec.get('normalized_hyp_legacy', rec.get('hyp_legacy', '')),
+            "norm_v2": rec.get('normalized_hyp_v2', rec.get('hyp_v2', '')),
+            "legacy_wer": rec.get('legacy_wer', 0.0),
             "duration_s": dur
         }
         
