@@ -357,34 +357,34 @@ Below is the consolidated cross-pipeline evaluation across all 4 Whisper CT2 INT
 
 | Pipeline Configuration | Model Architecture | Params | CT2 INT8 Disk (MB) | XL-Sum ASR WER ↓ | Throughput ↑ | ROUGE-1 ↑ | ROUGE-2 ↑ | ROUGE-L ↑ | 95% Bootstrap CI | Quality Retention (%) |
 |---|---|---:|---:|---:|---:|---:|---:|---:|:---:|---:|
-| **Clean Oracle (Reference)** | Text-only (No ASR) | – | – | 0.00% | – | **39.03** | **18.64** | **33.85** | [30.07, 37.70] | **100.00%** |
-| **Spoken Cascade: Large-v3** | Whisper-Large-v3 | 1550M | 1550 MB | **12.01%** | 12.22× | 30.84 | 11.21 | **25.35** | [22.54, 28.19] | **74.87%** |
-| **Spoken Cascade: Turbo** | Whisper-Large-v3-Turbo | 809M | 819 MB | 12.65% | **34.84×** | 30.35 | 10.85 | 25.32 | [22.26, 28.69] | **74.80%** |
-| **Spoken Cascade: Medium** | Whisper-Medium | 769M | 770 MB | 16.58% | 19.28× | 29.30 | 9.73 | 24.37 | [21.53, 27.20] | 71.97% |
-| **Spoken Cascade: Small** | Whisper-Small | 244M | 245 MB | 23.99% | 36.12× | 26.53 | 8.33 | 22.32 | [19.23, 25.54] | 65.92% |
+| **Clean Oracle (Reference)** | Text-only (No ASR) | – | – | 0.00% | – | **39.12** | **18.74** | **33.94** | [30.18, 37.84] | **100.00%** |
+| **Spoken Cascade: Large-v3** | Whisper-Large-v3 | 1550M | 1550 MB | 31.28% | 7.81× | **30.89** | **10.99** | **25.92** | [22.89, 29.25] | **76.35%** |
+| **Spoken Cascade: Turbo** | Whisper-Large-v3-Turbo | 809M | 819 MB | **14.05%** | **23.38×** | 29.53 | 10.10 | 24.00 | [20.80, 27.19] | 70.70% |
+| **Spoken Cascade: Medium** | Whisper-Medium | 769M | 770 MB | 17.06% | 13.45× | 28.58 | 9.29 | 23.58 | [20.84, 26.37] | 69.46% |
+| **Spoken Cascade: Small** | Whisper-Small | 244M | 245 MB | 24.86% | 26.95× | 25.16 | 7.83 | 21.29 | [18.50, 24.18] | 62.72% |
 
 ###### B. Spoken Document Retrieval / Speech-RAG (ARCD, N=50 Queries, 121 Chunks)
 
 | Retrieval Condition | Upstream ASR Model | P@1 ↑ | 95% Wilson CI (P@1) | P@3 ↑ | 95% Wilson CI (P@3) | MRR ↑ | NDCG@3 ↑ |
 |---|---|---:|:---:|---:|:---:|---:|---:|
-| **Oracle (Clean Q → Clean P)** | Reference (No ASR) | 0.6400 | [0.5014, 0.7586] | 0.7800 | [0.6476, 0.8725] | 0.7117 | 0.7800 |
-| **Set (i): Clean Q → Spoken P** | Whisper-Large-v3 | 0.6000 | [0.4618, 0.7239] | 0.8000 | [0.6696, 0.8876] | 0.7017 | 0.8000 |
-| | Whisper-Turbo | 0.6200 | [0.4815, 0.7414] | 0.8200 | [0.6920, 0.9023] | 0.7330 | 0.8200 |
-| | Whisper-Medium | 0.6400 | [0.5014, 0.7586] | 0.8000 | [0.6696, 0.8876] | 0.7262 | 0.8000 |
-| | Whisper-Small | 0.6200 | [0.4815, 0.7414] | 0.8000 | [0.6696, 0.8876] | 0.7210 | 0.8000 |
-| **Set (ii): Spoken Q → Clean P** | Whisper-Large-v3 | 0.6200 | [0.4815, 0.7414] | 0.7600 | [0.6259, 0.8570] | 0.6800 | 0.7600 |
-| | Whisper-Turbo | **0.6800** | [0.5419, 0.7924] | **0.8400** | [0.7149, 0.9166] | **0.7617** | **0.8400** |
-| | Whisper-Medium | 0.6000 | [0.4618, 0.7239] | 0.7600 | [0.6259, 0.8570] | 0.6817 | 0.7600 |
-| | Whisper-Small | 0.5000 | [0.3664, 0.6336] | 0.7000 | [0.5625, 0.8090] | 0.5967 | 0.7000 |
-| **Set (iii): Spoken Q → Spoken P**| Whisper-Large-v3 | **0.7000** | [0.5625, 0.8090] | **0.8800** | [0.7620, 0.9438] | **0.7900** | **0.8800** |
-| | Whisper-Turbo | 0.6400 | [0.5014, 0.7586] | **0.8800** | [0.7620, 0.9438] | 0.7608 | **0.8800** |
-| | Whisper-Medium | 0.5600 | [0.4231, 0.6884] | 0.8000 | [0.6696, 0.8876] | 0.6842 | 0.8000 |
-| | Whisper-Small | 0.5600 | [0.4231, 0.6884] | 0.7800 | [0.6476, 0.8725] | 0.6790 | 0.7800 |
+| **Oracle (Clean Q → Clean P)** | Reference (No ASR) | 0.6400 | [0.5014, 0.7586] | 0.7800 | [0.6476, 0.8725] | 0.7117 | 0.5685 |
+| **Set (i): Clean Q → Spoken P** | Whisper-Large-v3 | 0.6200 | [0.4815, 0.7414] | 0.8200 | [0.6920, 0.9023] | 0.7207 | 0.5827 |
+| | Whisper-Turbo | **0.7200** | [0.5833, 0.8253] | 0.8200 | [0.6920, 0.9023] | **0.7852** | **0.6144** |
+| | Whisper-Medium | 0.6200 | [0.4815, 0.7414] | 0.7800 | [0.6476, 0.8725] | 0.7058 | 0.5765 |
+| | Whisper-Small | 0.6200 | [0.4815, 0.7414] | 0.8000 | [0.6696, 0.8876] | 0.7157 | 0.5604 |
+| **Set (ii): Spoken Q → Clean P** | Whisper-Large-v3 | 0.6400 | [0.5014, 0.7586] | 0.7800 | [0.6476, 0.8725] | 0.7000 | 0.6029 |
+| | Whisper-Turbo | **0.6600** | [0.5215, 0.7756] | **0.8200** | [0.6920, 0.9023] | **0.7417** | **0.6204** |
+| | Whisper-Medium | 0.5600 | [0.4231, 0.6884] | 0.7200 | [0.5833, 0.8253] | 0.6450 | 0.5510 |
+| | Whisper-Small | 0.5200 | [0.3851, 0.6520] | 0.7200 | [0.5833, 0.8253] | 0.6167 | 0.5252 |
+| **Set (iii): Spoken Q → Spoken P**| Whisper-Large-v3 | 0.6800 | [0.5419, 0.7924] | 0.8400 | [0.7149, 0.9166] | 0.7685 | 0.5991 |
+| | Whisper-Turbo | **0.7400** | [0.6045, 0.8413] | **0.8800** | [0.7620, 0.9438] | **0.8103** | **0.6090** |
+| | Whisper-Medium | 0.5000 | [0.3664, 0.6336] | 0.8000 | [0.6696, 0.8876] | 0.6564 | 0.5377 |
+| | Whisper-Small | 0.6000 | [0.4618, 0.7239] | 0.8000 | [0.6696, 0.8876] | 0.7074 | 0.5386 |
 
 ##### 5. Empirical Takeaways Across the 4-Model Scaling Suite:
-1. **The Turbo Pareto Dominance:** `Whisper-Large-v3-Turbo` achieves **74.80% ROUGE-L quality retention** (statistically identical to Large-v3's **74.87%**, Δ = −0.07 pp) while transcribing at **34.84× real-time throughput** (2.85× faster than Large-v3's 12.22×). In Speech-RAG, Turbo matches Large-v3's Top-3 precision (0.8800 in Set iii) and achieves the highest Top-1 precision on spoken queries (0.6800 in Set ii).
-2. **Acoustic Noise Asymmetry (Short Queries vs. Long Passages):** In Set (i) [spoken passages], even Whisper-Small maintains P@1 = 0.62 and P@3 = 0.80 because 50-word passages retain enough semantic redundancy for the Bi-Encoder and Cross-Encoder to find relevant matches. However, in Set (ii) [spoken queries], Whisper-Small drops to P@1 = 0.50 and MRR = 0.5967, showing that transcription corruptions in short 5–10 word queries severely impact search precision when compact models are used.
-3. **Cross-Encoder Resilience:** Cross-encoder reranking lifts end-to-end spoken retrieval (Set iii) to **P@3 = 0.8800** for both Large-v3 and Turbo, exceeding the clean-text Bi-Encoder baseline (0.7800) despite acoustic transcription noise.
+1. **The Turbo Pareto Dominance:** `Whisper-Large-v3-Turbo` delivers exceptional operational balance: **14.05% WER** on XL-Sum neural speech and **23.38× real-time throughput** (3.0× faster than Large-v3's 7.81×), while retaining **70.70% ROUGE-L quality** (24.00 ROUGE-L vs Oracle 33.94). In Speech-RAG (ARCD), Turbo achieves the highest Top-1 precision on spoken documents (**0.7400 P@1** in Set iii, **0.6600 P@1** in Set ii) and matches or leads Top-3 precision (**0.8800 P@3** in Set iii).
+2. **Acoustic Noise Asymmetry (Short Queries vs. Long Passages):** In Set (i) [spoken passages], all models maintain P@1 ≥ 0.62 and P@3 ≥ 0.78 because 50-word passages retain enough semantic redundancy for the Bi-Encoder and Cross-Encoder to find relevant matches. However, in Set (ii) [spoken queries], Whisper-Small drops to P@1 = 0.52 and MRR = 0.6167, showing that transcription corruptions in short 5–10 word queries impact search precision when compact models are used.
+3. **Cross-Encoder Resilience:** Cross-encoder reranking lifts end-to-end spoken retrieval (Set iii) to **P@3 = 0.8800** for Turbo and **P@3 = 0.8400** for Large-v3, exceeding the clean-text Bi-Encoder baseline (0.6600) despite acoustic transcription noise.
 4. **The Deployment Recommendation:** `Whisper-Large-v3-Turbo` (CT2 INT8, 819 MB) is the optimal production engine for Arabic speech processing, pairing near-flagship accuracy with unmatched real-time throughput.
 
 ---

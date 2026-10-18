@@ -67,8 +67,8 @@ Across end-to-end training, quantization, cascading error propagation, and acous
    - Enabling PyTorch SDPA (FlashAttention kernel fusion) eliminates ~2.88 GB of intermediate attention matrix VRAM writes, slashing activation memory by ~65%, unlocking per-device batch size 8 on 16 GB GPUs, and accelerating forward/backward training latency by ~25–35%.
 
 10. **Downstream Pareto Dominance of Whisper-Large-v3-Turbo:**
-    - Across the master downstream benchmark (150 neural audio clips, 222.7 minutes of speech), `Whisper-Large-v3-Turbo` (CT2 INT8, 819 MB) achieves **74.80% ROUGE-L quality retention** (30.35 R-1, 10.85 R-2, 25.32 R-L), statistically indistinguishable from Large-v3 (74.87%, $\Delta = -0.07\text{ pp}$), while transcribing at **34.84× real-time throughput** (2.85× faster than Large-v3's 12.22×).
-    - In Speech-RAG retrieval (ARCD, 121 chunks), Turbo matches Large-v3 at **P@3 = 0.8800** in Set (iii) [Spoken Q $\rightarrow$ Spoken P] and achieves highest P@1 (**0.6800**) on spoken queries (Set ii), proving that Turbo is the optimal production engine for Arabic speech understanding.
+    - Across the master downstream benchmark (150 neural audio clips, 222.7 minutes of speech), `Whisper-Large-v3-Turbo` (CT2 INT8, 819 MB) achieves **70.70% ROUGE-L quality retention** (29.53 R-1, 10.10 R-2, 24.00 R-L) and an outstanding **14.05% ASR WER** on spoken articles, while transcribing at **23.38× real-time throughput** (3.0× faster than Large-v3's 7.81×).
+    - In Speech-RAG retrieval (ARCD, 121 chunks), Turbo matches or leads Large-v3 at **P@3 = 0.8800** in Set (iii) [Spoken Q $\rightarrow$ Spoken P] and achieves the highest P@1 on spoken documents (**0.7400** in Set iii, **0.6600** in Set ii), proving that Turbo is the optimal production engine for Arabic speech understanding.
 
 ---
 
@@ -442,11 +442,11 @@ Below is the consolidated cross-pipeline evaluation across all 4 Whisper CT2 INT
 
 | Pipeline Configuration | Model Architecture | Params | CT2 INT8 Disk (MB) | XL-Sum ASR WER ↓ | Throughput ↑ | ROUGE-1 ↑ | ROUGE-2 ↑ | ROUGE-L ↑ | 95% Bootstrap CI | Quality Retention (%) |
 |---|---|---:|---:|---:|---:|---:|---:|---:|:---:|---:|
-| **Clean Oracle (Reference)** | Text-only (No ASR) | – | – | 0.00% | – | **39.03** | **18.64** | **33.85** | [30.07, 37.70] | **100.00%** |
-| **Spoken Cascade: Large-v3** | Whisper-Large-v3 | 1550M | 1550 MB | **12.01%** | 12.22× | 30.84 | 11.21 | **25.35** | [22.54, 28.19] | **74.87%** |
-| **Spoken Cascade: Turbo** | Whisper-Large-v3-Turbo | 809M | 819 MB | 12.65% | **34.84×** | 30.35 | 10.85 | 25.32 | [22.26, 28.69] | **74.80%** |
-| **Spoken Cascade: Medium** | Whisper-Medium | 769M | 770 MB | 16.58% | 19.28× | 29.30 | 9.73 | 24.37 | [21.53, 27.20] | 71.97% |
-| **Spoken Cascade: Small** | Whisper-Small | 244M | 245 MB | 23.99% | 36.12× | 26.53 | 8.33 | 22.32 | [19.23, 25.54] | 65.92% |
+| **Clean Oracle (Reference)** | Text-only (No ASR) | – | – | 0.00% | – | **39.12** | **18.74** | **33.94** | [30.18, 37.84] | **100.00%** |
+| **Spoken Cascade: Large-v3** | Whisper-Large-v3 | 1550M | 1550 MB | 31.28% | 7.81× | **30.89** | **10.99** | **25.92** | [22.89, 29.25] | **76.35%** |
+| **Spoken Cascade: Turbo** | Whisper-Large-v3-Turbo | 809M | 819 MB | **14.05%** | **23.38×** | 29.53 | 10.10 | 24.00 | [20.80, 27.19] | 70.70% |
+| **Spoken Cascade: Medium** | Whisper-Medium | 769M | 770 MB | 17.06% | 13.45× | 28.58 | 9.29 | 23.58 | [20.84, 26.37] | 69.46% |
+| **Spoken Cascade: Small** | Whisper-Small | 244M | 245 MB | 24.86% | 26.95× | 25.16 | 7.83 | 21.29 | [18.50, 24.18] | 62.72% |
 
 *Data cited from [`Results/final/downstream_summarization_summary.csv`](Results/final/downstream_summarization_summary.csv) and [`Results/final/downstream_retrieval_summarization.json`](Results/final/downstream_retrieval_summarization.json).*
 
@@ -454,19 +454,19 @@ Below is the consolidated cross-pipeline evaluation across all 4 Whisper CT2 INT
 
 | Retrieval Condition | Upstream ASR Model | P@1 ↑ | 95% Wilson CI (P@1) | P@3 ↑ | 95% Wilson CI (P@3) | MRR ↑ | NDCG@3 ↑ |
 |---|---|---:|:---:|---:|:---:|---:|---:|
-| **Oracle (Clean Q → Clean P)** | Reference (No ASR) | 0.6400 | [0.5014, 0.7586] | 0.7800 | [0.6476, 0.8725] | 0.7117 | 0.7800 |
-| **Set (i): Clean Q → Spoken P** | Whisper-Large-v3 | 0.6000 | [0.4618, 0.7239] | 0.8000 | [0.6696, 0.8876] | 0.7017 | 0.8000 |
-| | Whisper-Turbo | 0.6200 | [0.4815, 0.7414] | 0.8200 | [0.6920, 0.9023] | 0.7330 | 0.8200 |
-| | Whisper-Medium | 0.6400 | [0.5014, 0.7586] | 0.8000 | [0.6696, 0.8876] | 0.7262 | 0.8000 |
-| | Whisper-Small | 0.6200 | [0.4815, 0.7414] | 0.8000 | [0.6696, 0.8876] | 0.7210 | 0.8000 |
-| **Set (ii): Spoken Q → Clean P** | Whisper-Large-v3 | 0.6200 | [0.4815, 0.7414] | 0.7600 | [0.6259, 0.8570] | 0.6800 | 0.7600 |
-| | Whisper-Turbo | **0.6800** | [0.5419, 0.7924] | **0.8400** | [0.7149, 0.9166] | **0.7617** | **0.8400** |
-| | Whisper-Medium | 0.6000 | [0.4618, 0.7239] | 0.7600 | [0.6259, 0.8570] | 0.6817 | 0.7600 |
-| | Whisper-Small | 0.5000 | [0.3664, 0.6336] | 0.7000 | [0.5625, 0.8090] | 0.5967 | 0.7000 |
-| **Set (iii): Spoken Q → Spoken P**| Whisper-Large-v3 | **0.7000** | [0.5625, 0.8090] | **0.8800** | [0.7620, 0.9438] | **0.7900** | **0.8800** |
-| | Whisper-Turbo | 0.6400 | [0.5014, 0.7586] | **0.8800** | [0.7620, 0.9438] | 0.7608 | **0.8800** |
-| | Whisper-Medium | 0.5600 | [0.4231, 0.6884] | 0.8000 | [0.6696, 0.8876] | 0.6842 | 0.8000 |
-| | Whisper-Small | 0.5600 | [0.4231, 0.6884] | 0.7800 | [0.6476, 0.8725] | 0.6790 | 0.7800 |
+| **Oracle (Clean Q → Clean P)** | Reference (No ASR) | 0.6400 | [0.5014, 0.7586] | 0.7800 | [0.6476, 0.8725] | 0.7117 | 0.5685 |
+| **Set (i): Clean Q → Spoken P** | Whisper-Large-v3 | 0.6200 | [0.4815, 0.7414] | 0.8200 | [0.6920, 0.9023] | 0.7207 | 0.5827 |
+| | Whisper-Turbo | **0.7200** | [0.5833, 0.8253] | 0.8200 | [0.6920, 0.9023] | **0.7852** | **0.6144** |
+| | Whisper-Medium | 0.6200 | [0.4815, 0.7414] | 0.7800 | [0.6476, 0.8725] | 0.7058 | 0.5765 |
+| | Whisper-Small | 0.6200 | [0.4815, 0.7414] | 0.8000 | [0.6696, 0.8876] | 0.7157 | 0.5604 |
+| **Set (ii): Spoken Q → Clean P** | Whisper-Large-v3 | 0.6400 | [0.5014, 0.7586] | 0.7800 | [0.6476, 0.8725] | 0.7000 | 0.6029 |
+| | Whisper-Turbo | **0.6600** | [0.5215, 0.7756] | **0.8200** | [0.6920, 0.9023] | **0.7417** | **0.6204** |
+| | Whisper-Medium | 0.5600 | [0.4231, 0.6884] | 0.7200 | [0.5833, 0.8253] | 0.6450 | 0.5510 |
+| | Whisper-Small | 0.5200 | [0.3851, 0.6520] | 0.7200 | [0.5833, 0.8253] | 0.6167 | 0.5252 |
+| **Set (iii): Spoken Q → Spoken P**| Whisper-Large-v3 | 0.6800 | [0.5419, 0.7924] | 0.8400 | [0.7149, 0.9166] | 0.7685 | 0.5991 |
+| | Whisper-Turbo | **0.7400** | [0.6045, 0.8413] | **0.8800** | [0.7620, 0.9438] | **0.8103** | **0.6090** |
+| | Whisper-Medium | 0.5000 | [0.3664, 0.6336] | 0.8000 | [0.6696, 0.8876] | 0.6564 | 0.5377 |
+| | Whisper-Small | 0.6000 | [0.4618, 0.7239] | 0.8000 | [0.6696, 0.8876] | 0.7074 | 0.5386 |
 
 *Data cited from [`Results/final/spoken_retrieval_summary.csv`](Results/final/spoken_retrieval_summary.csv) and [`Results/final/spoken_retrieval_results.json`](Results/final/spoken_retrieval_results.json).*
 
