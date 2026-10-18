@@ -399,7 +399,7 @@ for m_info in ct2_models:
     m_key = m_info["key"]
     m_path = m_info["path"]
     
-    print(f"\nTranscribing with: {m_name} from {m_path}...")
+    print(f"\\nTranscribing with: {m_name} from {m_path}...")
     if not os.path.exists(m_path):
         print(f"[SKIP] Model path not found: {m_path}")
         continue

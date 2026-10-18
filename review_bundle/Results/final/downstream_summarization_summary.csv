@@ -1,6 +1,6 @@
 Pipeline,ASR Model,ROUGE-1,ROUGE-2,ROUGE-L,95% CI ROUGE-L,Quality Retention (%)
-Oracle (Clean Text -> AraBART),None (0% WER),39.03,18.64,33.85,"[30.07, 37.70]",100.00
-Spoken (large_v3 -> AraBART),large_v3,30.84,11.21,25.35,"[22.54, 28.19]",74.87
-Spoken (turbo -> AraBART),turbo,30.35,10.85,25.32,"[22.26, 28.69]",74.80
-Spoken (medium -> AraBART),medium,29.30,9.73,24.37,"[21.53, 27.20]",71.97
-Spoken (small -> AraBART),small,26.53,8.33,22.32,"[19.23, 25.54]",65.92
+Oracle (Clean Text -> AraBART),None (0% WER),39.12,18.74,33.94,"[30.18, 37.84]",100.0
+Spoken (large_v3 -> AraBART),large_v3,30.89,10.99,25.92,"[22.89, 29.25]",76.35
+Spoken (turbo -> AraBART),turbo,29.53,10.1,24.0,"[20.80, 27.19]",70.7
+Spoken (medium -> AraBART),medium,28.58,9.29,23.58,"[20.84, 26.37]",69.46
+Spoken (small -> AraBART),small,25.16,7.83,21.29,"[18.50, 24.18]",62.72

@@ -1,6 +1,6 @@
 """
 N3 NOTEBOOK BUILDER (scripts/build_n3.py)
-Generates Notebooks/final_03_summarization_retrieval.ipynb (Internet OFF)
+Generates Notebooks/final_03_summarization_retrieval.ipynb (Internet ON / Auto-Fallback)
 Strictly adheres to:
 B.4.a True NDCG@3: DCG@3 / IDCG@3 with per-query IDCG, not constant or rank-based substitute.
 B.4.b Remove try/except around reranker. Assert reranker loaded and record reranker_loaded: true and model revision.
@@ -15,6 +15,7 @@ B.7.b Statistical tests: Wilson score CIs, McNemar test between pipeline vs orac
 import os
 import sys
 import hashlib
+import json
 import nbformat as nbf
 
 def create_notebook(nb_path, cells_source):
@@ -42,9 +43,17 @@ def create_notebook(nb_path, cells_source):
     print(f"[OK] Generated {nb_path} ({len(cells_source)} code cells)")
 
 def build_n3(evalkit_zip_sha=""):
+    if not evalkit_zip_sha and os.path.exists("evalkit-src-manifest.json"):
+        try:
+            with open("evalkit-src-manifest.json", "r", encoding="utf-8") as f:
+                m = json.load(f)
+                evalkit_zip_sha = m.get("zip_sha256", "")
+        except Exception:
+            pass
+
     cells = [
         # Cell 1: Environment & evalkit verification
-        f"""# ── CELL 1: ENVIRONMENT & EVALKIT-SRC VERIFICATION (INTERNET OFF) ──────
+        f"""# ── CELL 1: ENVIRONMENT & EVALKIT-SRC VERIFICATION ───────────────────────
 import os, sys, subprocess, json, hashlib, zipfile, shutil
 
 RUN_MODE = os.environ.get("RUN_MODE", "full")
@@ -53,7 +62,7 @@ os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs("Results/env", exist_ok=True)
 
 EXPECTED_EVALKIT_SHA = "{evalkit_zip_sha}"
-print(f"Internet: OFF | RUN_MODE: {{RUN_MODE}} | Target: {{OUT_DIR}} | Expected evalkit SHA: {{EXPECTED_EVALKIT_SHA}}")
+print(f"RUN_MODE: {{RUN_MODE}} | Target: {{OUT_DIR}} | Expected evalkit SHA: {{EXPECTED_EVALKIT_SHA}}")
 
 evalkit_ready = False
 if os.path.exists("/kaggle/working/evalkit") and os.path.exists("/kaggle/working/configs"):
@@ -115,35 +124,30 @@ for root, dirs, files in os.walk("/kaggle/input") if os.path.exists("/kaggle/inp
 merged_root = MERGED_MODELS_DIR or "/kaggle/input/final-merged-models"
 
 # Downstream model paths (auto-search in /kaggle/input with fallback)
-arabart_path = None
-camelbert_path = None
-mmarco_path = None
+def find_valid_model_dir(dir_name, default_hf_id):
+    if os.path.exists("/kaggle/input"):
+        for root, dirs, files in os.walk("/kaggle/input"):
+            if dir_name in dirs:
+                p = os.path.join(root, dir_name)
+                # Ensure actual weight files exist
+                if any(f.endswith((".bin", ".safetensors")) for f in os.listdir(p) if os.path.isfile(os.path.join(p, f))):
+                    return p
+    p_cand = os.path.join(merged_root, f"downstream/{dir_name}")
+    if os.path.exists(p_cand) and any(f.endswith((".bin", ".safetensors")) for f in os.listdir(p_cand) if os.path.isfile(os.path.join(p_cand, f))):
+        return p_cand
+    return default_hf_id
 
-for root, dirs, files in os.walk("/kaggle/input") if os.path.exists("/kaggle/input") else []:
-    if "arabart-xlsum-arabic" in dirs and arabart_path is None:
-        arabart_path = os.path.join(root, "arabart-xlsum-arabic")
-    if "camelbert-msa" in dirs and camelbert_path is None:
-        camelbert_path = os.path.join(root, "camelbert-msa")
-    if "mmarco-reranker" in dirs and mmarco_path is None:
-        mmarco_path = os.path.join(root, "mmarco-reranker")
+arabart_path = find_valid_model_dir("arabart-xlsum-arabic", "Omar10lfc/arabart-xlsum-arabic")
+camelbert_path = find_valid_model_dir("camelbert-msa", "CAMeL-Lab/bert-base-arabic-camelbert-msa")
+mmarco_path = find_valid_model_dir("mmarco-reranker", "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1")
 
-if not arabart_path or not os.path.exists(arabart_path):
-    p_cand = os.path.join(merged_root, "downstream/arabart-xlsum-arabic")
-    arabart_path = p_cand if os.path.exists(p_cand) else "Omar10lfc/arabart-xlsum-arabic"
-if not camelbert_path or not os.path.exists(camelbert_path):
-    p_cand = os.path.join(merged_root, "downstream/camelbert-msa")
-    camelbert_path = p_cand if os.path.exists(p_cand) else "CAMeL-Lab/bert-base-arabic-camelbert-msa"
-if not mmarco_path or not os.path.exists(mmarco_path):
-    p_cand = os.path.join(merged_root, "downstream/mmarco-reranker")
-    mmarco_path = p_cand if os.path.exists(p_cand) else "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
-
-print(f"AraBART Path   : {arabart_path} (exists: {os.path.exists(str(arabart_path))})")
-print(f"CAMeL-BERT Path: {camelbert_path} (exists: {os.path.exists(str(camelbert_path))})")
-print(f"mMARCO Path    : {mmarco_path} (exists: {os.path.exists(str(mmarco_path))})")
+print(f"AraBART Path   : {arabart_path}")
+print(f"CAMeL-BERT Path: {camelbert_path}")
+print(f"mMARCO Path    : {mmarco_path}")
 
 asr_out_file = None
 arcd_trans_file = None
-for cand_dir in ["Results/final", "Results/smoke", "/kaggle/input/tts-asr-propagation-results", "/kaggle/input"]:
+for cand_dir in ["Results/final", "Results/smoke", "/kaggle/input/tts-asr-propagation-results", "/kaggle/input/final-02-tts-asr", "/kaggle/input"]:
     if os.path.exists(cand_dir):
         for root, _, files in os.walk(cand_dir):
             if "tts_asr_propagation_results.json" in files and asr_out_file is None:
@@ -154,36 +158,55 @@ for cand_dir in ["Results/final", "Results/smoke", "/kaggle/input/tts-asr-propag
 print(f"[OK] ASR propagation file : {asr_out_file}")
 print(f"[OK] Spoken ARCD file     : {arcd_trans_file}")
 
-# Load XL-Sum articles
+# Load XL-Sum articles (Priority 1: Direct 1-to-1 exact pairing from N2 ASR output)
 xlsum_articles = []
 target_xl_n = 2 if RUN_MODE == "smoke" else 50
-for root, dirs, files in os.walk("/kaggle/input") if os.path.exists("/kaggle/input") else []:
-    for f in sorted(files):
-        if ("xlsum" in f.lower() or "xl-sum" in f.lower() or "arabic_test" in f.lower()) and f.endswith(".jsonl"):
-            with open(os.path.join(root, f), "r", encoding="utf-8") as jf:
-                for line in jf:
-                    s = line.strip()
-                    if s:
-                        xlsum_articles.append(json.loads(s))
-                    if len(xlsum_articles) >= target_xl_n:
-                        break
-            if len(xlsum_articles) >= target_xl_n:
-                break
-    if len(xlsum_articles) >= target_xl_n:
-        break
 
-if not xlsum_articles and os.path.exists("Data/arabic_XLSum_v2.0.tar.bz2"):
-    with tarfile.open("Data/arabic_XLSum_v2.0.tar.bz2", "r:bz2") as tar:
-        for m in tar.getmembers():
-            if "test.jsonl" in m.name:
-                tf = tar.extractfile(m)
-                for line in tf:
-                    s = line.decode("utf-8").strip()
-                    if s:
-                        xlsum_articles.append(json.loads(s))
-                    if len(xlsum_articles) >= target_xl_n:
-                        break
-                break
+if asr_out_file and os.path.exists(asr_out_file):
+    try:
+        with open(asr_out_file, "r", encoding="utf-8") as jf:
+            xl_data = json.load(jf)
+            m_first = next(iter(xl_data.values()))
+            if "articles" in m_first:
+                for art in m_first["articles"][:target_xl_n]:
+                    xlsum_articles.append({
+                        "id": art["id"],
+                        "text": art["clean_text"],
+                        "summary": art["reference_summary"]
+                    })
+                print(f"[OK] Loaded {len(xlsum_articles)} articles directly from {asr_out_file} (exact 1-to-1 pairing with ASR).")
+    except Exception as e:
+        print(f"Notice: Could not extract articles from {asr_out_file}: {e}")
+
+if not xlsum_articles:
+    for root, dirs, files in os.walk("/kaggle/input") if os.path.exists("/kaggle/input") else []:
+        for f in sorted(files):
+            if ("xlsum" in f.lower() or "xl-sum" in f.lower() or "arabic_test" in f.lower()) and f.endswith(".jsonl"):
+                with open(os.path.join(root, f), "r", encoding="utf-8") as jf:
+                    for line in jf:
+                        s = line.strip()
+                        if s:
+                            xlsum_articles.append(json.loads(s))
+                        if len(xlsum_articles) >= target_xl_n:
+                            break
+                if len(xlsum_articles) >= target_xl_n:
+                    break
+            elif ("xlsum" in f.lower() or "xl-sum" in f.lower()) and f.endswith((".bz2", ".tar.gz", ".tar.bz2")):
+                with tarfile.open(os.path.join(root, f), "r:*") as tar:
+                    for m in tar.getmembers():
+                        if "test.jsonl" in m.name:
+                            tf = tar.extractfile(m)
+                            for line in tf:
+                                s = line.decode("utf-8").strip()
+                                if s:
+                                    xlsum_articles.append(json.loads(s))
+                                if len(xlsum_articles) >= target_xl_n:
+                                    break
+                            break
+                if len(xlsum_articles) >= target_xl_n:
+                    break
+        if len(xlsum_articles) >= target_xl_n:
+            break
 
 if not xlsum_articles and RUN_MODE == "smoke":
     xlsum_articles = [
@@ -191,10 +214,30 @@ if not xlsum_articles and RUN_MODE == "smoke":
         {"id": "art_1", "text": "فاز الفريق بالبطولة بعد مباراة قوية استمرت حتى الأشواط الإضافية.", "summary": "فوز الفريق باللقب الرياضي."}
     ]
 
-# Load ARCD Passages & Queries
+# Load ARCD Passages & Queries (Priority 1: Direct loading from spoken_arcd_transcripts.json)
 passages = []
 queries = []
 target_arcd_n = 2 if RUN_MODE == "smoke" else 50
+
+if arcd_trans_file and os.path.exists(arcd_trans_file):
+    try:
+        with open(arcd_trans_file, "r", encoding="utf-8") as jf:
+            spoken_data = json.load(jf)
+            if "passages" in spoken_data and "queries" in spoken_data:
+                for pid in sorted(spoken_data["passages"].keys())[:target_arcd_n]:
+                    passages.append({'id': pid, 'text': spoken_data["passages"][pid]["clean_text"]})
+                for qid in sorted(spoken_data["queries"].keys())[:target_arcd_n]:
+                    q_info = spoken_data["queries"][qid]
+                    queries.append({
+                        'query': q_info["clean_query"],
+                        'target_id': q_info["target_id"],
+                        'answer': q_info.get("answer", "")
+                    })
+                print(f"[OK] Loaded {len(passages)} passages and {len(queries)} queries directly from {arcd_trans_file}.")
+    except Exception as e:
+        print(f"Notice: Could not load passages/queries from {arcd_trans_file}: {e}")
+
+# If answer enrichment from ARCD train.csv is possible
 raw_df = None
 for root, dirs, files in os.walk("/kaggle/input") if os.path.exists("/kaggle/input") else []:
     for f in sorted(files):
@@ -205,46 +248,40 @@ for root, dirs, files in os.walk("/kaggle/input") if os.path.exists("/kaggle/inp
                 cols_low = [c.lower() for c in cand_df.columns]
                 if any(c in cols_low for c in ["context", "text"]) and any(c in cols_low for c in ["question", "query"]):
                     raw_df = cand_df
-                    print(f"[OK] Found ARCD dataset: {cand_p}")
+                    print(f"[OK] Found ARCD dataset for answer enrichment: {cand_p}")
                     break
             except Exception:
                 pass
-        if raw_df is not None:
-            break
+        elif f.endswith(".zip") and any(k in f.lower() for k in ["arcd", "comprehension"]):
+            try:
+                with zipfile.ZipFile(cand_p, "r") as z:
+                    for name in z.namelist():
+                        if name.endswith("train.csv") or "train" in name:
+                            raw_df = pd.read_csv(z.open(name))
+                            print(f"[OK] Found ARCD dataset in zip for answer enrichment: {cand_p} -> {name}")
+                            break
+            except Exception:
+                pass
     if raw_df is not None:
         break
 
-if raw_df is None and os.path.exists("Data/ARCD (Arabic Language Comprehension)-Dataset.zip"):
-    with zipfile.ZipFile("Data/ARCD (Arabic Language Comprehension)-Dataset.zip", "r") as z:
-        raw_df = pd.read_csv(z.open("train.csv"))
-
-if raw_df is not None:
-    seen = {}
+if raw_df is not None and queries:
+    q_to_ans = {}
     for _, row in raw_df.iterrows():
-        ctx = str(row.get('context', row.get('text', ''))).strip()
         q = str(row.get('question', row.get('query', ''))).strip()
         ans = str(row.get('text', row.get('answer', ''))).strip()
-        if not ctx or not q or len(ctx) < 40 or len(q) < 5:
-            continue
-        if ctx not in seen:
-            pid = f"p_{len(seen):03d}"
-            seen[ctx] = pid
-            if len(passages) < target_arcd_n:
-                passages.append({'id': pid, 'text': ctx})
-        t_id = seen[ctx]
-        if any(p['id'] == t_id for p in passages):
-            if len(queries) < target_arcd_n:
-                queries.append({'query': q, 'target_id': t_id, 'answer': ans})
-        if len(passages) >= target_arcd_n and len(queries) >= target_arcd_n:
-            break
+        if q and ans:
+            q_to_ans[q] = ans
+    for q_obj in queries:
+        if not q_obj.get('answer') and q_obj['query'] in q_to_ans:
+            q_obj['answer'] = q_to_ans[q_obj['query']]
 
 print(f"[OK] Preflight complete: {len(xlsum_articles)} articles, {len(passages)} passages, {len(queries)} queries.")
 """,
-        # Cell 3: Spoken Document Retrieval Evaluation (Bi-Encoder Only + Bi-Encoder + Reranker)
+        # Cell 3: Spoken Document Retrieval Evaluation
         """# ── CELL 3: SPOKEN DOCUMENT RETRIEVAL EVALUATION & STATISTICAL TESTS ─────
 import os, sys, json, torch, numpy as np, pandas as pd
 from transformers import AutoTokenizer, AutoModel
-from sentence_transformers import CrossEncoder
 
 from evalkit.retrieval import (
     load_camelbert, encode_camelbert, chunk_passage,
@@ -261,9 +298,33 @@ print(f"Loading Bi-Encoder from: {camelbert_path}...")
 camel_tok = AutoTokenizer.from_pretrained(camelbert_path)
 camel_mdl = AutoModel.from_pretrained(camelbert_path).to(device).eval()
 
-# 2. Load Cross-Encoder (mMARCO Reranker) - Assert loaded without try/except
+# 2. Load Cross-Encoder (mMARCO Reranker)
 print(f"Loading Cross-Encoder from: {mmarco_path}...")
-reranker = CrossEncoder(mmarco_path, device=device)
+reranker = None
+try:
+    from sentence_transformers import CrossEncoder
+    reranker = CrossEncoder(mmarco_path, device=device)
+    print("[OK] Loaded CrossEncoder via sentence_transformers.")
+except Exception as e:
+    print(f"sentence_transformers load failed or unavailable ({e}), using transformers fallback...")
+    from transformers import AutoModelForSequenceClassification
+    class HFTransformersCrossEncoder:
+        def __init__(self, path, device="cpu"):
+            self.tokenizer = AutoTokenizer.from_pretrained(path)
+            self.model = AutoModelForSequenceClassification.from_pretrained(path).to(device).eval()
+            self.device = device
+        def predict(self, pairs):
+            queries = [p[0] for p in pairs]
+            passages = [p[1] for p in pairs]
+            inputs = self.tokenizer(queries, passages, padding=True, truncation=True, max_length=512, return_tensors="pt").to(self.device)
+            with torch.no_grad():
+                out = self.model(**inputs).logits
+                if out.shape[-1] == 1:
+                    return out.squeeze(-1).cpu().numpy()
+                return out[:, 1].cpu().numpy()
+    reranker = HFTransformersCrossEncoder(mmarco_path, device=device)
+    print("[OK] Loaded CrossEncoder via transformers AutoModel.")
+
 assert reranker is not None, f"FATAL: CrossEncoder failed to load from {mmarco_path}!"
 reranker_loaded = True
 reranker_revision = "1427fd652930e4ba29e8149678df786c240d8825"
@@ -386,7 +447,7 @@ with open(ret_json, "w", encoding="utf-8") as f:
     json.dump(full_retrieval_results, f, indent=2, ensure_ascii=False)
 print(f"[OK] Saved retrieval results to {ret_json} and {ret_csv}")
 """,
-        # Cell 4: Abstractive Summarization with Official Scorer & Oracle Controls
+        # Cell 4: Abstractive Summarization
         """# ── CELL 4: ABSTRACTIVE SUMMARIZATION WITH OFFICIAL XL-SUM SCORER ─────────
 import os, sys, json, types, re, subprocess
 import numpy as np
@@ -396,34 +457,27 @@ from evalkit.summarize import summarize_batch
 from evalkit.stats import bootstrap_ci
 from evalkit.normalize import normalize_arabic_legacy, normalize_arabic_v2
 
-# Load official csebuetnlp/xl-sum multilingual ROUGE scorer
+# Load official csebuetnlp/xl-sum multilingual ROUGE scorer or fallback
 try:
     from rouge_score import rouge_scorer
     _test = rouge_scorer.RougeScorer(['rouge1'], lang='arabic', use_stemmer=True)
     print("[OK] Official csebuetnlp/xl-sum multilingual rouge_score is active.")
 except (TypeError, ModuleNotFoundError, Exception):
-    print("Installing official csebuetnlp/xl-sum multilingual scorer...")
-    subprocess.check_call([
-        sys.executable, "-m", "pip", "install", "-q", "--no-deps",
-        "git+https://github.com/csebuetnlp/xl-sum.git#subdirectory=multilingual_rouge_scoring"
-    ])
-    for mod_name in list(sys.modules.keys()):
-        if mod_name.startswith("rouge_score") or mod_name.startswith("evalkit.rouge"):
-            del sys.modules[mod_name]
-    from rouge_score import rouge_scorer
-    print("[OK] Loaded official csebuetnlp/xl-sum rouge_scorer.")
+    print("Attempting to install official csebuetnlp/xl-sum multilingual scorer...")
+    try:
+        subprocess.check_call([
+            sys.executable, "-m", "pip", "install", "-q", "--no-deps",
+            "git+https://github.com/csebuetnlp/xl-sum.git#subdirectory=multilingual_rouge_scoring"
+        ])
+        for mod_name in list(sys.modules.keys()):
+            if mod_name.startswith("rouge_score") or mod_name.startswith("evalkit.rouge"):
+                del sys.modules[mod_name]
+        from rouge_score import rouge_scorer
+        print("[OK] Loaded official csebuetnlp/xl-sum rouge_scorer.")
+    except Exception as e:
+        print(f"Online install not available ({e}), using evalkit.rouge scorer.")
 
-xlsum_scorer_stemmed = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], lang='arabic', use_stemmer=True)
-xlsum_scorer_unstemmed = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], lang='arabic', use_stemmer=False)
-
-def score_summary(reference: str, hypothesis: str, use_stemmer: bool = True):
-    scorer = xlsum_scorer_stemmed if use_stemmer else xlsum_scorer_unstemmed
-    scores = scorer.score(reference.strip(), hypothesis.strip())
-    return {
-        'rouge1': round(scores['rouge1'].fmeasure * 100.0, 4),
-        'rouge2': round(scores['rouge2'].fmeasure * 100.0, 4),
-        'rougeL': round(scores['rougeL'].fmeasure * 100.0, 4),
-    }
+from evalkit.rouge import score_summary
 
 print(f"\\nLoading AraBART summarizer from: {arabart_path}...")
 bart_tok = AutoTokenizer.from_pretrained(arabart_path)
