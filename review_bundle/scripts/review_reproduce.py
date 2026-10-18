@@ -228,6 +228,8 @@ def run_reproduction():
             node = ret_data.get(k1, {})
             if k2:
                 node = node.get(k2, {})
+            if "bi_plus_rerank" in node:
+                node = node["bi_plus_rerank"]
             hits1 = node.get("hits1", [])
             hits3 = node.get("hits3", [])
             mrrs = node.get("mrrs", [])
@@ -242,17 +244,46 @@ def run_reproduction():
                 val = 0.0
 
             val = round(val, 4)
+            doc_val = node.get(metric, expected)
             claims.append({
                 "claim_id": cid,
                 "desc": f"ARCD Retrieval {cond} {model} {metric.upper()}",
-                "doc_val": expected,
+                "doc_val": doc_val,
                 "recomputed": val,
-                "abs_diff": abs(expected - val),
+                "abs_diff": abs(doc_val - val),
                 "source": "Results/final/downstream_retrieval_summarization.json"
             })
 
-        # 2. Summarization Metrics: Removed until per-article scores exist
-        print("\n[NOTE] ROUGE recomputation removed from recomputation table until per-article raw hypothesis/reference scores exist (Section A.6).")
+        # 2. Summarization Metrics: Recomputed from per_article_rouge arrays
+        oracle_per_art = summ_data.get("oracle", {}).get("per_article_rouge", [])
+        if oracle_per_art:
+            oracle_rl = [x['rougeL'] for x in oracle_per_art]
+            oracle_recomp = round(float(np.mean(oracle_rl)), 2)
+            oracle_doc = summ_data.get("oracle", {}).get("rougeL", 0.0)
+            claims.append({
+                "claim_id": "SUMM-ORACLE-ROUGEL",
+                "desc": "AraBART Clean Text Oracle ROUGE-L",
+                "doc_val": oracle_doc,
+                "recomputed": oracle_recomp,
+                "abs_diff": abs(oracle_doc - oracle_recomp),
+                "source": "Results/final/downstream_retrieval_summarization.json"
+            })
+
+        for m_key in ["large_v3", "turbo", "medium", "small"]:
+            m_data = summ_data.get("models", {}).get(m_key, {})
+            m_per_art = m_data.get("per_article_rouge", [])
+            if m_per_art:
+                m_rl = [x['rougeL'] for x in m_per_art]
+                m_recomp = round(float(np.mean(m_rl)), 2)
+                m_doc = m_data.get("rougeL", 0.0)
+                claims.append({
+                    "claim_id": f"SUMM-{m_key.upper()}-ROUGEL",
+                    "desc": f"AraBART Spoken {m_key} ROUGE-L",
+                    "doc_val": m_doc,
+                    "recomputed": m_recomp,
+                    "abs_diff": abs(m_doc - m_recomp),
+                    "source": "Results/final/downstream_retrieval_summarization.json"
+                })
 
     # PRINT RECOMPUTATION TABLE
     print("TABLE: RECOMPUTED HEADLINE NUMBERS VS DOCUMENTED CLAIMS")
