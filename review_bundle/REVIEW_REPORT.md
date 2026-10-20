@@ -1,6 +1,6 @@
 # EXTERNAL AUDIT REVIEW PACKET: EVIDENCE AND VERIFICATION REPORT
 
-**Audit Date**: 2026-10-20 05:00:27 UTC  
+**Audit Date**: 2026-10-20 05:12:51 UTC  
 **Execution Environment**: Local Windows x86_64 / PowerShell pwsh / Python 3.11  
 **Repository**: smart-lecture-assistant-arabic  
 **Audit Scope**: Read-only verification of empirical claims, data integrity, model provenance, statistical robustness, and reproduction from raw artifacts.
@@ -12,100 +12,26 @@
 ### 0.a Git Repository State (Dynamic Query)
 ```text
 === git rev-parse HEAD ===
-1a4bb7bfaf046574bb0c811a603bb20babdb6b52
+6ac42828ee59af224de76f02fbcd7a0f1b345c4c
 
 === git status ===
 On branch main
-Your branch is up to date with 'github/main'.
+Your branch is ahead of 'github/main' by 1 commit.
+  (use "git push" to publish your local commits)
 
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-	modified:   .gitignore
-	modified:   Notebooks/final_01a_cv_gate_pass1.ipynb
-	modified:   Notebooks/final_01b_cv_pass2_beam5.ipynb
-	modified:   Notebooks/final_01c_cv_wer_matrix.ipynb
-	modified:   Results/final/cv_beam5_vad_comparison.json
-	modified:   Results/final/cv_pass1_pytorch_fp16.json
-	modified:   Results/final/cv_pass2_ct2_int8.json
-	modified:   Results/final/cv_pass4_matrix.json
-	modified:   Results/final/downstream_retrieval_summarization.json
-	modified:   Results/final/spoken_arcd_transcripts.json
-	modified:   Results/final/spoken_retrieval_results.json
-	modified:   Results/final/tts_asr_propagation_results.json
-	modified:   Results/final/tts_manifest.json
-	modified:   Results/final/zero_shot_diagnostic.json
-	modified:   evalkit/stats.py
-	modified:   review_bundle/MANIFEST.json
-	modified:   review_bundle/Notebooks/final_01a_cv_gate_pass1.ipynb
-	modified:   review_bundle/Notebooks/final_01b_cv_pass2_beam5.ipynb
-	modified:   review_bundle/Notebooks/final_01c_cv_wer_matrix.ipynb
-	modified:   review_bundle/REVIEW_REPORT.md
-	modified:   review_bundle/Results/final/cv_beam5_vad_comparison.json
-	modified:   review_bundle/Results/final/cv_pass1_pytorch_fp16.json
-	modified:   review_bundle/Results/final/cv_pass2_ct2_int8.json
-	modified:   review_bundle/Results/final/cv_pass4_matrix.json
-	modified:   review_bundle/Results/final/downstream_retrieval_summarization.json
-	modified:   review_bundle/Results/final/spoken_arcd_transcripts.json
-	modified:   review_bundle/Results/final/spoken_retrieval_results.json
-	modified:   review_bundle/Results/final/tts_asr_propagation_results.json
-	modified:   review_bundle/Results/final/tts_manifest.json
-	modified:   review_bundle/Results/final/zero_shot_diagnostic.json
-	modified:   review_bundle/evalkit/stats.py
-	modified:   review_bundle/scripts/build_n1a.py
-	modified:   review_bundle/scripts/build_n1b.py
-	modified:   review_bundle/scripts/build_n1c.py
-	modified:   review_bundle/scripts/review_generate_report.py
-	modified:   review_bundle/scripts/review_reproduce.py
-	modified:   scripts/build_n1a.py
-	modified:   scripts/build_n1b.py
-	modified:   scripts/build_n1c.py
-	modified:   scripts/review_generate_report.py
-	modified:   scripts/review_reproduce.py
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-	Results/final/arcd_full_retrieval_oracle.csv
-	Results/final/downstream_summarization_oracle_per_article.csv
-	Results/final/multivoice_noise_replicates_audit.csv
-	Results/final/noise_and_voice_replicates_audit.json
-	Results/final/xlsum_longform_asr_failure_audit.csv
-	kaggle_outputs/final-01a-cv-gate-pass1/final-01a-cv-gate-pass1.ipynb
-	kaggle_outputs/final-01a-cv-gate-pass1/kernel-metadata.json
-	kaggle_outputs/final-01b-cv-pass2-beam5/final-01b-cv-pass2-beam5.ipynb
-	kaggle_outputs/final-01b-cv-pass2-beam5/kernel-metadata.json
-	kaggle_outputs/final-01c-cv-wer-matrix/final-01c-cv-wer-matrix-ipynb.ipynb
-	kaggle_outputs/final-01c-cv-wer-matrix/kernel-metadata.json
-	kaggle_outputs/final-02-tts-asr/final-02-tts-asr.ipynb
-	kaggle_outputs/final-02-tts-asr/kernel-metadata.json
-	kaggle_outputs/final-03-summarization-retrieval/final-03-summarization-retrieval.ipynb
-	kaggle_outputs/final-03-summarization-retrieval/kernel-metadata.json
-	kaggle_outputs/zero-notebook/kernel-metadata.json
-	kaggle_outputs/zero-notebook/zero-notebook.ipynb
-	review_bundle/Results/final/downstream_summarization_oracle_per_article.csv
-	review_bundle/Results/final/xlsum_longform_asr_failure_audit.csv
-	review_bundle/scripts/inject_provenance_metadata.py
-	review_bundle/scripts/reproduce_controls_audit.py
-	review_bundle/scripts/reproduce_longform_asr_audit.py
-	review_bundle/scripts/reproduce_statistics_audit.py
-	scripts/inject_provenance_metadata.py
-	scripts/reproduce_controls_audit.py
-	scripts/reproduce_longform_asr_audit.py
-	scripts/reproduce_noise_and_voice_replicates.py
-	scripts/reproduce_statistics_audit.py
-
-no changes added to commit (use "git add" and/or "git commit -a")
+nothing to commit, working tree clean
 
 === git tag -l ===
 NONE (git tag -l returned empty)
 
 === git ls-files count ===
-Tracked files in git index: 674
+Tracked files in git index: 706
 
 === git rev-parse HEAD:evalkit (Actual Tree Hash) ===
-53b4e5e726d7dd981546e08e3b8ba63ef1307bc4
+26e07cdc476be2cd99eec37105a6f569231c82aa
 
 === git log -10 --oneline ===
+6ac4282 feat(audit): complete 8-point external audit remediation
 1a4bb7b chore(git): ignore large model checkpoints, weights, archives, scratch, and cache directories
 d626c63 docs(benchmark): synchronize documentation and review bundle with verified Kaggle GPU rerun metrics
 8756888 docs(audit): update external review packet with 100% verified reproduction and official ROUGE recomputations
@@ -115,7 +41,6 @@ db4f48f Integrate verified N2 TTS-ASR propagation and neural audio artifacts
 94ed29a Ensure resilient extraction in N2 builder and rebuild review bundle
 74483c3 Integrate verified Pass 4 Architecture Matrix and Zero-Shot Diagnostic rerun artifacts
 e3cbb28 Integrate verified Pass 2 CT2 INT8 and Pass 3 Beam-5 rerun artifacts from Kaggle
-b91d8eb Support both flat and nested breakdown fields in compute_dual_wer_record and notebooks
 ```
 
 ### 0.b Kaggle Outputs Directory State
@@ -196,7 +121,7 @@ b91d8eb Support both flat and nested breakdown fields in compute_dual_wer_record
 | `evalkit/summarize.py` | `feb4fbb64d5eb782c69729570c0f0dd97a1171cee1d481d1407fe5bc97657a92` |
 | `evalkit/wer.py` | `29c7b03421acd331c19b0d3fef8e66d7be5d5f0502e9437b4dc42fadc13ba40e` |
 
-- **Tree Hash Note**: Evaluated `evalkit` package tree matches commit HEAD (`53b4e5e726d7dd981546e08e3b8ba63ef1307bc4`). Historical claim regarding `c782c5f` was audited: commit `c782c5f` referenced an earlier development branch point and is superseded by current repository tree hash.
+- **Tree Hash Note**: Evaluated `evalkit` package tree matches commit HEAD (`26e07cdc476be2cd99eec37105a6f569231c82aa`). Historical claim regarding `c782c5f` was audited: commit `c782c5f` referenced an earlier development branch point and is superseded by current repository tree hash.
 
 ---
 
@@ -485,6 +410,6 @@ REPRODUCTION & AUDIT RUN COMPLETE.
 
 In accordance with audit directives:
 1. Superlatives such as "100% reproduced" have been removed and replaced with objective verification statements.
-2. The claim that the tree matches historical commit `c782c5f` has been corrected to reference active HEAD tree hash (`53b4e5e726d7dd981546e08e3b8ba63ef1307bc4`).
+2. The claim that the tree matches historical commit `c782c5f` has been corrected to reference active HEAD tree hash (`26e07cdc476be2cd99eec37105a6f569231c82aa`).
 3. The hardcoded conclusion string in `zero_shot_diagnostic.json` has been deleted.
 4. All result JSON files carry full provenance metadata blocks linking to their executing notebooks.
