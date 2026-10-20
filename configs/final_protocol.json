@@ -25,6 +25,17 @@
       "temperature": 0.0,
       "vad_filter": true,
       "condition_on_previous_text": false
+    },
+    "longform_decoding": {
+      "language": "ar",
+      "task": "transcribe",
+      "beam_size": 1,
+      "best_of": 1,
+      "condition_on_previous_text": false,
+      "temperature": [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+      "compression_ratio_threshold": 2.4,
+      "no_repeat_ngram_size": 3,
+      "vad_filter": true
     }
   },
   "summarization": {

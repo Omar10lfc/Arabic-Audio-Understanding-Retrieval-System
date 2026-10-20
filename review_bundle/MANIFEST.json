@@ -19,9 +19,9 @@
   },
   {
     "path": "configs/final_protocol.json",
-    "sha256": "c2d75c2d70b82b58f9d2a6e34e39c61e1e44d810170376b73996603873c38b9b",
-    "bytes": 3001,
-    "mtime": 1791437358.9690163
+    "sha256": "6208f4df49a034860b04bc92220b265a2f71843dc5a22ea8c375cb1d5ad27098",
+    "bytes": 3336,
+    "mtime": 1792511875.5405295
   },
   {
     "path": "configs/notebook_manifest.json",
@@ -115,9 +115,9 @@
   },
   {
     "path": "Notebooks/final_02_tts_asr.ipynb",
-    "sha256": "1c9f25a092f98bcbf9d6f2e4a26c5afe5403ba6e7554b206192e65bc20776e4b",
-    "bytes": 25189,
-    "mtime": 1792284532.4088776
+    "sha256": "3618da08194a88a0c452e8e6bec33a72a49ce97cf63f00ed482a90c96b5f77cd",
+    "bytes": 26288,
+    "mtime": 1792512110.6101682
   },
   {
     "path": "Notebooks/final_03_summarization_retrieval.ipynb",
@@ -318,6 +318,18 @@
     "mtime": 1792471951.1890538
   },
   {
+    "path": "Results/final/claims_register.csv",
+    "sha256": "0f297461856b222cbe249ccc64f5b19349a4dbbcd0c278a1077a8d3ac9c68b43",
+    "bytes": 4893,
+    "mtime": 1792510769.2410321
+  },
+  {
+    "path": "Results/final/claims_register.json",
+    "sha256": "9b436ce2c3d77ec0a8d981a85a7bb6533af0db346210d5f8c55428186940b9d0",
+    "bytes": 10012,
+    "mtime": 1792510769.243673
+  },
+  {
     "path": "Results/final/cv_beam5_vad_comparison.json",
     "sha256": "ede35cc7ffc2156a0aa9ab2f7e6e0e15dd3c2456620d792a645ad46c5d18992b",
     "bytes": 5008,
@@ -426,6 +438,12 @@
     "mtime": 1792471951.35238
   },
   {
+    "path": "Results/final/pass2_vs_pass4_differing_clips.csv",
+    "sha256": "66994c2d5a4d68013fecf4c77f6300e9b954b524fa5ee9b5f90b24716b87fab8",
+    "bytes": 18644,
+    "mtime": 1792500701.3279798
+  },
+  {
     "path": "Results/final/pass4_clip_ids.json",
     "sha256": "9d3b62b448e757b06437a34034f708ab31b41ddd16b02496e939132d282be74e",
     "bytes": 36055,
@@ -493,9 +511,9 @@
   },
   {
     "path": "REVIEW_REPORT.md",
-    "sha256": "8c4f8aaa17780b91a6e3a94e935dcbf45089d4692ca8bde1aac398cb02307d1c",
-    "bytes": 32960,
-    "mtime": 1792473171.425461
+    "sha256": "69f48123f7fea44690c48aa7072dd4c72bb9ac8ef31d828bbb53d8f7b190d621",
+    "bytes": 34685,
+    "mtime": 1792512213.9685612
   },
   {
     "path": "scripts/archive_superseded.py",
@@ -580,6 +598,12 @@
     "sha256": "3050c3a9bbb213e51d672f32d091cf67d826ab46021e98beb27886a044de90dd",
     "bytes": 479,
     "mtime": 1791435538.5958247
+  },
+  {
+    "path": "scripts/generate_claims_register.py",
+    "sha256": "d45967b975e5f2dec6f925eaeee8e3941377bd20b26134d605727c14db4c7859",
+    "bytes": 13258,
+    "mtime": 1792505994.7544515
   },
   {
     "path": "scripts/generate_hardcode_audit_csv.py",

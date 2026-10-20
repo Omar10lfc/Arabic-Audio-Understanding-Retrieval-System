@@ -1,6 +1,6 @@
 # EXTERNAL AUDIT REVIEW PACKET: EVIDENCE AND VERIFICATION REPORT
 
-**Audit Date**: 2026-10-20 05:12:51 UTC  
+**Audit Date**: 2026-10-20 16:07:49 UTC  
 **Execution Environment**: Local Windows x86_64 / PowerShell pwsh / Python 3.11  
 **Repository**: smart-lecture-assistant-arabic  
 **Audit Scope**: Read-only verification of empirical claims, data integrity, model provenance, statistical robustness, and reproduction from raw artifacts.
@@ -12,14 +12,40 @@
 ### 0.a Git Repository State (Dynamic Query)
 ```text
 === git rev-parse HEAD ===
-6ac42828ee59af224de76f02fbcd7a0f1b345c4c
+a4d37f35a1df0343a0599a61501ea77d4e742648
 
 === git status ===
 On branch main
-Your branch is ahead of 'github/main' by 1 commit.
-  (use "git push" to publish your local commits)
+Your branch is up to date with 'github/main'.
 
-nothing to commit, working tree clean
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   Notebooks/final_02_tts_asr.ipynb
+	modified:   configs/final_protocol.json
+	modified:   review_bundle/MANIFEST.json
+	modified:   review_bundle/Notebooks/final_02_tts_asr.ipynb
+	modified:   review_bundle/REVIEW_REPORT.md
+	modified:   review_bundle/configs/final_protocol.json
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	Results/final/claims_register.csv
+	Results/final/claims_register.json
+	Results/final/pass2_vs_pass4_differing_clips.csv
+	kaggle_outputs/final-01a-cv-gate-pass1/final-01a-cv-gate-pass1_executed_v4.ipynb
+	kaggle_outputs/final-01b-cv-pass2-beam5/final-01b-cv-pass2-beam5_executed_v1.ipynb
+	kaggle_outputs/final-01c-cv-wer-matrix/final-01c-cv-wer-matrix-ipynb_executed_v4.ipynb
+	kaggle_outputs/final-02-tts-asr/final-02-tts-asr_executed_v9.ipynb
+	kaggle_outputs/final-03-summarization-retrieval/final-03-summarization-retrieval_executed_v4.ipynb
+	kaggle_outputs/zero-notebook/zero-notebook_executed_v3.ipynb
+	review_bundle/Results/final/claims_register.csv
+	review_bundle/Results/final/claims_register.json
+	review_bundle/Results/final/pass2_vs_pass4_differing_clips.csv
+	review_bundle/scripts/generate_claims_register.py
+	scripts/generate_claims_register.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
 
 === git tag -l ===
 NONE (git tag -l returned empty)
@@ -31,6 +57,7 @@ Tracked files in git index: 706
 26e07cdc476be2cd99eec37105a6f569231c82aa
 
 === git log -10 --oneline ===
+a4d37f3 chore(bundle): sync dynamic review bundle and manifest
 6ac4282 feat(audit): complete 8-point external audit remediation
 1a4bb7b chore(git): ignore large model checkpoints, weights, archives, scratch, and cache directories
 d626c63 docs(benchmark): synchronize documentation and review bundle with verified Kaggle GPU rerun metrics
@@ -40,7 +67,6 @@ db4f48f Integrate verified N2 TTS-ASR propagation and neural audio artifacts
 37d1826 Add PyAV patch and safe_transcribe to N2 Cell 4
 94ed29a Ensure resilient extraction in N2 builder and rebuild review bundle
 74483c3 Integrate verified Pass 4 Architecture Matrix and Zero-Shot Diagnostic rerun artifacts
-e3cbb28 Integrate verified Pass 2 CT2 INT8 and Pass 3 Beam-5 rerun artifacts from Kaggle
 ```
 
 ### 0.b Kaggle Outputs Directory State
@@ -72,7 +98,7 @@ e3cbb28 Integrate verified Pass 2 CT2 INT8 and Pass 3 Beam-5 rerun artifacts fro
 | `final_01a_cv_gate_pass1.ipynb` | `C:\Users\omarm\Downloads\arabic_audio_system\Notebooks\final_01a_cv_gate_pass1.ipynb` | 26,983 bytes | `28ad983b474440fa94bb9a8b138042aa0da6f187c8e6fe1efb9fa5990a9f0d48` |
 | `final_01b_cv_pass2_beam5.ipynb` | `C:\Users\omarm\Downloads\arabic_audio_system\Notebooks\final_01b_cv_pass2_beam5.ipynb` | 23,769 bytes | `417f547d859c31e1e0cf2ad789a37a917f1e5a0c3668cd2fe344ef5feb1f646d` |
 | `final_01c_cv_wer_matrix.ipynb` | `C:\Users\omarm\Downloads\arabic_audio_system\Notebooks\final_01c_cv_wer_matrix.ipynb` | 19,878 bytes | `299b39cb4ce076b92e2891a6cdd30ec65bddaf6cd5f7037537b33990e7f49362` |
-| `final_02_tts_asr.ipynb` | `C:\Users\omarm\Downloads\arabic_audio_system\Notebooks\final_02_tts_asr.ipynb` | 25,189 bytes | `1c9f25a092f98bcbf9d6f2e4a26c5afe5403ba6e7554b206192e65bc20776e4b` |
+| `final_02_tts_asr.ipynb` | `C:\Users\omarm\Downloads\arabic_audio_system\Notebooks\final_02_tts_asr.ipynb` | 26,288 bytes | `3618da08194a88a0c452e8e6bec33a72a49ce97cf63f00ed482a90c96b5f77cd` |
 | `final_03_summarization_retrieval.ipynb` | `C:\Users\omarm\Downloads\arabic_audio_system\Notebooks\final_03_summarization_retrieval.ipynb` | 33,362 bytes | `7b78bd2b952481aecf7da1cffae67ba3c938085461988565acb3fb332a4bf562` |
 | `nlp-fine-tune-edit-1.ipynb` | `C:\Users\omarm\Downloads\arabic_audio_system\Notebooks\nlp-fine-tune-edit-1.ipynb` | 1,306,670 bytes | `dfc1271bbdf5405ff505ee1f2f7a7642c16fd7214f7bd5ef189a479b7fe209a4` |
 | `nlp-fine-tune-edit-2.ipynb` | `C:\Users\omarm\Downloads\arabic_audio_system\Notebooks\nlp-fine-tune-edit-2.ipynb` | 1,306,670 bytes | `dfc1271bbdf5405ff505ee1f2f7a7642c16fd7214f7bd5ef189a479b7fe209a4` |
@@ -82,6 +108,8 @@ e3cbb28 Integrate verified Pass 2 CT2 INT8 and Pass 3 Beam-5 rerun artifacts fro
 | File Name | Size | MTime (UTC) | MD5 | SHA256 (prefix) |
 | :--- | :--- | :--- | :--- | :--- |
 | `arcd_full_retrieval_oracle.csv` | 62,042 bytes | 2026-10-20 04:52:31 UTC | `b8544ab69fc90d493149c82550b0afd5` | `fd58169f43224e63...` |
+| `claims_register.csv` | 4,893 bytes | 2026-10-20 15:39:29 UTC | `ace66a4ed06f2a0b1a113f320b9d6efc` | `0f297461856b222c...` |
+| `claims_register.json` | 10,012 bytes | 2026-10-20 15:39:29 UTC | `6327d1db2192fed557aea30e7009765b` | `9b436ce2c3d77ec0...` |
 | `cv_beam5_vad_comparison.json` | 5,008 bytes | 2026-10-20 04:54:06 UTC | `f2979c64fbda077d5fa59fa79e714f7d` | `ede35cc7ffc2156a...` |
 | `cv_pass1_checkpoint.csv` | 1,806,107 bytes | 2026-10-16 16:52:31 UTC | `5ede897a884a48d331665b547f3441e1` | `e4efdc3c3f3daf5f...` |
 | `cv_pass1_pytorch_fp16.json` | 5,807 bytes | 2026-10-20 04:54:06 UTC | `dfa1a3e0a4994f038d3cfcf127fbadd8` | `8aefcd5c3890db90...` |
@@ -100,6 +128,7 @@ e3cbb28 Integrate verified Pass 2 CT2 INT8 and Pass 3 Beam-5 rerun artifacts fro
 | `downstream_summarization_summary.csv` | 461 bytes | 2026-10-18 14:39:54 UTC | `aeb423d239d5d4543502780f3e9217cf` | `85fc2efc9f1c187c...` |
 | `multivoice_noise_replicates_audit.csv` | 304 bytes | 2026-10-20 04:52:31 UTC | `467229dffe8c10cf863b972aa95a983a` | `9fb60e26ee6a73cf...` |
 | `noise_and_voice_replicates_audit.json` | 2,403 bytes | 2026-10-20 04:52:31 UTC | `935431f92126307a799f267ac3024834` | `3c8f6d8a72e6b04d...` |
+| `pass2_vs_pass4_differing_clips.csv` | 18,644 bytes | 2026-10-20 12:51:41 UTC | `3e041ecd84d1cca4c100c58b120c9d70` | `66994c2d5a4d6801...` |
 | `pass4_clip_ids.json` | 36,055 bytes | 2026-10-17 13:08:46 UTC | `3c3ca2b2e35c8e5411b99a407a59f3ba` | `9d3b62b448e757b0...` |
 | `spoken_arcd_transcripts.json` | 877,669 bytes | 2026-10-20 04:54:06 UTC | `07347618b76a8dd41e1cae39a2f7551d` | `af300982a0e7416c...` |
 | `spoken_retrieval_results.json` | 744,520 bytes | 2026-10-20 04:54:06 UTC | `e3110b1939969d56822dc39b20db1f81` | `707d5f17910ff038...` |
