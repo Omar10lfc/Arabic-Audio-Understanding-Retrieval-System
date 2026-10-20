@@ -41,6 +41,7 @@ external/
 # ==========================================
 scratch/
 arabic_lecture_sample.mp3
+*.mp3
 *.wav
 *.flac
 *.m4a

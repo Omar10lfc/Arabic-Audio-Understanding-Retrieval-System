@@ -265,8 +265,12 @@ try:
     model_4bit = PeftModel.from_pretrained(base_4bit, adapter_path).eval()
     has_4bit = True
 except Exception as e:
-    print(f"[NOTICE] 4-bit loading unavailable ({e}); proceeding with merged FP16 gate.")
-    has_4bit = False
+    if RUN_MODE == "smoke":
+        print(f"[SMOKE NOTICE] 4-bit loading unavailable in smoke mode ({e}); skipping 4-bit gate.")
+        model_4bit = None
+        has_4bit = False
+    else:
+        raise RuntimeError(f"FATAL: 4-bit unmerged replica loading failed: {e}. Bitsandbytes/PEFT required for gate check.")
 
 gate_records_4bit = []
 if has_4bit:
@@ -311,35 +315,74 @@ for idx, (_, row) in enumerate(eval_subset.iterrows()):
         'wer': round(w, 4)
     })
 
-# Compute Gate Summary
-df_gate_csv = pd.DataFrame(gate_records_4bit if has_4bit else gate_records_fp16)
-gate_csv_path = os.path.join(OUT_DIR, "cv_gate_subset_a_clips.csv")
-df_gate_csv.to_csv(gate_csv_path, index=False, encoding="utf-8")
-print(f"[OK] Saved gate per-clip CSV to {gate_csv_path} ({len(df_gate_csv)} rows)")
-assert len(df_gate_csv) == len(eval_subset), "FATAL: Dropped clips during gate evaluation!"
+# Compute Gate Summary and Save Separate CSVs
+if has_4bit:
+    df_gate_4bit = pd.DataFrame(gate_records_4bit)
+    gate_4bit_csv = os.path.join(OUT_DIR, "cv_gate_subset_a_4bit_clips.csv")
+    df_gate_4bit.to_csv(gate_4bit_csv, index=False, encoding="utf-8")
+    print(f"[OK] Saved 4-bit gate per-clip CSV to {gate_4bit_csv} ({len(df_gate_4bit)} rows)")
+    assert len(df_gate_4bit) == len(eval_subset), "FATAL: Dropped clips during 4-bit gate evaluation!"
+    four_bit_s = int(df_gate_4bit['S'].sum())
+    four_bit_d = int(df_gate_4bit['D'].sum())
+    four_bit_i = int(df_gate_4bit['I'].sum())
+    four_bit_h = int(df_gate_4bit['H'].sum())
+    four_bit_n = int(df_gate_4bit['N'].sum())
+    four_bit_wer = ((four_bit_s + four_bit_d + four_bit_i) / four_bit_n * 100.0) if four_bit_n > 0 else 0.0
+else:
+    four_bit_s = four_bit_d = four_bit_i = four_bit_h = four_bit_n = 0
+    four_bit_wer = 0.0
 
-tot_s = df_gate_csv['S'].sum()
-tot_d = df_gate_csv['D'].sum()
-tot_i = df_gate_csv['I'].sum()
-tot_n = df_gate_csv['N'].sum()
-gate_measured_wer = ((tot_s + tot_d + tot_i) / tot_n * 100.0) if tot_n > 0 else 0.0
+df_gate_fp16 = pd.DataFrame(gate_records_fp16)
+gate_fp16_csv = os.path.join(OUT_DIR, "cv_gate_subset_a_fp16_clips.csv")
+df_gate_fp16.to_csv(gate_fp16_csv, index=False, encoding="utf-8")
+print(f"[OK] Saved merged-FP16 gate per-clip CSV to {gate_fp16_csv} ({len(df_gate_fp16)} rows)")
+assert len(df_gate_fp16) == len(eval_subset), "FATAL: Dropped clips during merged-FP16 gate evaluation!"
 
-fp16_s = sum(r['S'] for r in gate_records_fp16)
-fp16_d = sum(r['D'] for r in gate_records_fp16)
-fp16_i = sum(r['I'] for r in gate_records_fp16)
-fp16_n = sum(r['N'] for r in gate_records_fp16)
-fp16_measured_wer = ((fp16_s + fp16_d + fp16_i) / fp16_n * 100.0) if fp16_n > 0 else 0.0
+fp16_s = int(df_gate_fp16['S'].sum())
+fp16_d = int(df_gate_fp16['D'].sum())
+fp16_i = int(df_gate_fp16['I'].sum())
+fp16_h = int(df_gate_fp16['H'].sum())
+fp16_n = int(df_gate_fp16['N'].sum())
+fp16_wer = ((fp16_s + fp16_d + fp16_i) / fp16_n * 100.0) if fp16_n > 0 else 0.0
+
+tolerance = 5.0 if RUN_MODE == "smoke" else 0.25
 
 print("\\n=== GATE RESULTS ===")
 if has_4bit:
-    print(f"4-bit NF4 Unmerged WER : {gate_measured_wer:.2f}%")
-print(f"Merged FP16 WER        : {fp16_measured_wer:.2f}%")
-print(f"Reference Target WER   : {ref_wer:.2f}%")
+    print(f"4-bit NF4 Unmerged WER : {four_bit_wer:.2f}% (Delta vs Ref: {abs(four_bit_wer - ref_wer):.2f} pp)")
+print(f"Merged FP16 WER        : {fp16_wer:.2f}% (Delta vs Ref: {abs(fp16_wer - ref_wer):.2f} pp)")
+print(f"Reference Target WER   : {ref_wer:.2f}% (Tolerance: {tolerance:.2f} pp)")
 
-eval_wer_for_gate = gate_measured_wer if has_4bit else fp16_measured_wer
+gate_summary_results = {
+    'reference_baseline_wer': ref_wer,
+    'tolerance_pp': tolerance,
+    'four_bit_unmerged_replica': {
+        'wer': round(four_bit_wer, 2) if has_4bit else None,
+        'substitutions': four_bit_s,
+        'deletions': four_bit_d,
+        'insertions': four_bit_i,
+        'hits': four_bit_h,
+        'total_words': four_bit_n,
+        'delta_pp': round(abs(four_bit_wer - ref_wer), 2) if has_4bit else None,
+        'status': ('PASSED' if abs(four_bit_wer - ref_wer) <= tolerance else 'FAILED') if has_4bit else 'SKIPPED_SMOKE'
+    },
+    'merged_fp16': {
+        'wer': round(fp16_wer, 2),
+        'substitutions': fp16_s,
+        'deletions': fp16_d,
+        'insertions': fp16_i,
+        'hits': fp16_h,
+        'total_words': fp16_n,
+        'delta_pp': round(abs(fp16_wer - ref_wer), 2),
+        'status': 'PASSED' if abs(fp16_wer - ref_wer) <= tolerance else 'FAILED'
+    }
+}
+gate_json_path = os.path.join(OUT_DIR, "cv_gate_results.json")
+save_result_file(gate_json_path, gate_summary_results, config=PROTOCOL, device=device, notebook_path="Notebooks/final_01a_cv_gate_pass1.ipynb")
+print(f"[OK] Saved gate summary JSON to {gate_json_path}")
+
+eval_wer_for_gate = four_bit_wer if has_4bit else fp16_wer
 delta = abs(eval_wer_for_gate - ref_wer)
-tolerance = 5.0 if RUN_MODE == "smoke" else 0.25
-
 if RUN_MODE != "smoke":
     assert delta <= tolerance, f"GATE STOPPED: Measured WER ({eval_wer_for_gate:.2f}%) differs from reference {ref_wer:.2f}% by {delta:.2f} pp (> {tolerance:.2f} pp)"
 print(f"[GATE PASSED] Measured WER ({eval_wer_for_gate:.2f}%) replicated reference within {tolerance:.2f} pp tolerance. Proceeding to Pass 1.")
@@ -458,8 +501,8 @@ pass1_results = {
     'throughput_realtime': th_rt,
     'rtf': round(tot_comp_s / tot_audio_s, 4) if tot_audio_s > 0 else 0.0,
     'gate_subset_a': {
-        'gate_wer_4bit_unmerged': round(gate_measured_wer, 2) if has_4bit else None,
-        'gate_wer_merged_fp16': round(fp16_measured_wer, 2),
+        'gate_wer_4bit_unmerged': round(four_bit_wer, 2) if has_4bit else None,
+        'gate_wer_merged_fp16': round(fp16_wer, 2),
         'baseline_reference_wer': ref_wer,
         'status': 'PASSED'
     },
@@ -481,9 +524,10 @@ pass1_results = {
     }
 }
 
-save_result_file(pass1_out_file, pass1_results, config=PROTOCOL, device=device)
+save_result_file(pass1_out_file, pass1_results, config=PROTOCOL, device=device, notebook_path="Notebooks/final_01a_cv_gate_pass1.ipynb")
 print(f"[OK] Pass 1 results saved to: {pass1_out_file}")
 print(f"Pass 1 Legacy WER: {leg_wer:.2f}% | v2 WER: {v2_wer:.2f}% | Throughput: {th_rt:.2f}x real-time")
+
 """
     ]
     create_notebook("Notebooks/final_01a_cv_gate_pass1.ipynb", cells)

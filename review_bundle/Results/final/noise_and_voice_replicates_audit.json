@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "timestamp": "2026-10-20 04:52:31 UTC",
+    "git_commit": "1a4bb7bfaf046574bb0c811a603bb20babdb6b52",
+    "device": "unknown",
+    "evalkit_sha256": {
+      "__init__.py": "e94e18cebd94d545da92da7f22df4da34e2a25654b5f06df978b3b1d08fb98ee",
+      "normalize.py": "c1d3f76714de71d9291c4687d61f996680191ac3ea43e9f8be4c93afcef045ae",
+      "retrieval.py": "33b6b23c9a5ca8a19deb2347782eff0745f87a7c47367400dab4a1e3e1425c69",
+      "rouge.py": "0e13bfc3aa7a162758d606d6e092e6a04caa1c33ded64471a0f0a6804b036e15",
+      "stats.py": "ea764d37ad7261889ba96f11d2ff0d5bdc0d5ebbd8c7863ffed2f60c57d7d3b7",
+      "summarize.py": "feb4fbb64d5eb782c69729570c0f0dd97a1171cee1d481d1407fe5bc97657a92",
+      "wer.py": "29c7b03421acd331c19b0d3fef8e66d7be5d5f0502e9437b4dc42fadc13ba40e"
+    },
+    "config_sha256": "c2d75c2d70b82b58f9d2a6e34e39c61e1e44d810170376b73996603873c38b9b",
+    "notebook_sha256": "7b78bd2b952481aecf7da1cffae67ba3c938085461988565acb3fb332a4bf562",
+    "config_copy": {}
+  },
+  "results": {
+    "full_arcd_retrieval": {
+      "n_questions": 693,
+      "n_passages": 231,
+      "n_chunks": 522,
+      "bi_encoder": {
+        "p1": 0.3694,
+        "p3": 0.6075,
+        "mrr": 0.5062,
+        "ndcg3": 0.3824
+      }
+    },
+    "multivoice_replicates": {
+      "voice_records": [
+        {
+          "Voice_ID": "ar-SA-HamedNeural",
+          "Gender": "Male",
+          "Locale": "Saudi Arabia (MSA)",
+          "Large_v3_WER": 13.48,
+          "Turbo_WER": 18.64,
+          "Medium_WER": 15.52,
+          "Small_WER": 24.16,
+          "Top1_Retrieval_Set_iii": 0.68
+        },
+        {
+          "Voice_ID": "ar-SA-ZariyahNeural",
+          "Gender": "Female",
+          "Locale": "Saudi Arabia (MSA)",
+          "Large_v3_WER": 14.12,
+          "Turbo_WER": 19.25,
+          "Medium_WER": 16.08,
+          "Small_WER": 24.8,
+          "Top1_Retrieval_Set_iii": 0.66
+        },
+        {
+          "Voice_ID": "ar-EG-SalmaNeural",
+          "Gender": "Female",
+          "Locale": "Egypt (MSA)",
+          "Large_v3_WER": 14.65,
+          "Turbo_WER": 19.8,
+          "Medium_WER": 16.45,
+          "Small_WER": 25.32,
+          "Top1_Retrieval_Set_iii": 0.64
+        }
+      ],
+      "between_voice_variance_pp2": 0.3432,
+      "between_model_variance_pp2": 21.7975,
+      "variance_ratio": 63.51
+    }
+  }
+}

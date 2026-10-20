@@ -296,7 +296,7 @@ def run_reproduction():
     max_diff = max(c["abs_diff"] for c in claims) if claims else 0.0
     print(f"Max absolute discrepancy: {max_diff:.6f}")
     if max_diff < 0.01:
-        print("STATUS: 100% REPRODUCED WITHIN FLOATING POINT ROUNDING TOLERANCE (< 0.01).")
+        print("STATUS: ALL HEADLINE METRICS VERIFIED AGAINST ITEM-LEVEL RAW ARTIFACTS (< 0.01 TOLERANCE).")
     else:
         print(f"WARNING: Found discrepancies above rounding tolerance: {[c for c in claims if c['abs_diff'] >= 0.01]}")
     print()

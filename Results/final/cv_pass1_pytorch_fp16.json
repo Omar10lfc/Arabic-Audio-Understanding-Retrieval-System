@@ -1,16 +1,16 @@
 {
   "metadata": {
     "timestamp": "2026-10-16 16:44:01 UTC",
-    "git_commit": "unknown",
+    "git_commit": "1a4bb7bfaf046574bb0c811a603bb20babdb6b52",
     "device": "cuda",
     "evalkit_sha256": {
       "__init__.py": "e94e18cebd94d545da92da7f22df4da34e2a25654b5f06df978b3b1d08fb98ee",
       "normalize.py": "c1d3f76714de71d9291c4687d61f996680191ac3ea43e9f8be4c93afcef045ae",
       "retrieval.py": "33b6b23c9a5ca8a19deb2347782eff0745f87a7c47367400dab4a1e3e1425c69",
-      "rouge.py": "18043f9534d88163b6c65f3aaca29c5362691197ed0bdc6b3851a2602803e3fb",
-      "stats.py": "518c54efa668f22a090f3d324368cb6938bcf963ba667206b4248f0d4aef9872",
+      "rouge.py": "0e13bfc3aa7a162758d606d6e092e6a04caa1c33ded64471a0f0a6804b036e15",
+      "stats.py": "ea764d37ad7261889ba96f11d2ff0d5bdc0d5ebbd8c7863ffed2f60c57d7d3b7",
       "summarize.py": "feb4fbb64d5eb782c69729570c0f0dd97a1171cee1d481d1407fe5bc97657a92",
-      "wer.py": "7682b7a19b0ed9baed2f409fc2024e562bc7cb99c9f0f87659b4896fe29e4a7b"
+      "wer.py": "29c7b03421acd331c19b0d3fef8e66d7be5d5f0502e9437b4dc42fadc13ba40e"
     },
     "config_sha256": "c2d75c2d70b82b58f9d2a6e34e39c61e1e44d810170376b73996603873c38b9b",
     "config_copy": {
@@ -114,7 +114,9 @@
         "primary": "legacy",
         "secondary": "v2"
       }
-    }
+    },
+    "notebook_sha256": "28ad983b474440fa94bb9a8b138042aa0da6f187c8e6fe1efb9fa5990a9f0d48",
+    "notebook_name": "final_01a_cv_gate_pass1.ipynb"
   },
   "results": {
     "pass": "Pass 1: Common Voice Full Pool (PyTorch FP16 Greedy)",

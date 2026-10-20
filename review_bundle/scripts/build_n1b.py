@@ -375,7 +375,7 @@ pass2_results = {
         'total_words': p2_v2_n
     }
 }
-save_result_file(pass2_out_file, pass2_results, config=PROTOCOL, device=device)
+save_result_file(pass2_out_file, pass2_results, config=PROTOCOL, device=device, notebook_path="Notebooks/final_01b_cv_pass2_beam5.ipynb")
 print(f"[OK] Pass 2 results saved to: {pass2_out_file}")
 print(f"Pass 2 Legacy WER: {p2_leg_wer:.2f}% | v2 WER: {p2_v2_wer:.2f}% | Throughput: {th_p2:.2f}x real-time")
 """,
@@ -475,7 +475,7 @@ pass3_results = {
         'total_words': p3_n
     }
 }
-save_result_file(pass3_out_file, pass3_results, config=PROTOCOL, device=device)
+save_result_file(pass3_out_file, pass3_results, config=PROTOCOL, device=device, notebook_path="Notebooks/final_01b_cv_pass2_beam5.ipynb")
 print(f"[OK] Pass 3 results saved to: {pass3_out_file} (Beam-5 WER: {p3_wer:.2f}%)")
 """
     ]

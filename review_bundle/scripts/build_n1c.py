@@ -247,8 +247,7 @@ for b_name, local_p, hub_id in base_model_candidates:
     diagnostic_findings.append({
         'model': b_name,
         'prompted_wer': round(avg_p, 2),
-        'unprompted_wer': round(avg_u, 2),
-        'conclusion': 'Unprompted execution causes Whisper language classifier to decode English tokens/hallucinations, explaining ~100% WER in preflight. Forced language prompt restores true baseline.'
+        'unprompted_wer': round(avg_u, 2)
     })
     del mdl, proc
     if torch.cuda.is_available():
@@ -383,7 +382,8 @@ for m in ct2_models:
 
 # Save final Pass 4 matrix outputs
 matrix_out_file = os.path.join(OUT_DIR, "cv_pass4_matrix.json")
-save_result_file(matrix_out_file, pass4_full_results, config=PROTOCOL, device=device)
+save_result_file(matrix_out_file, pass4_full_results, config=PROTOCOL, device=device, notebook_path="Notebooks/final_01c_cv_wer_matrix.ipynb")
+
 
 df_summary = pd.DataFrame(pass4_summary_records)
 summary_csv = os.path.join(OUT_DIR, "cv_pass4_matrix_summary.csv")

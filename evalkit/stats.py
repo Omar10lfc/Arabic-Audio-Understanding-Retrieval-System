@@ -217,16 +217,27 @@ def get_config_sha256(config_path: str = "configs/final_protocol.json") -> Optio
             return hashlib.sha256(f.read()).hexdigest()
     return None
 
+def get_file_sha256(filepath: Optional[str]) -> Optional[str]:
+    """Computes SHA-256 for a specific file path."""
+    if filepath and os.path.exists(filepath):
+        with open(filepath, "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()
+    return None
+
 def save_result_file(
     filepath: str,
     results_data: Dict[str, Any],
     config: Optional[Dict[str, Any]] = None,
-    device: Optional[str] = None
+    device: Optional[str] = None,
+    notebook_path: Optional[str] = None,
+    notebook_sha256: Optional[str] = None
 ):
     """
     Stores result data alongside complete protocol config copy, git commit,
-    sha256 of every evalkit source file, sha256 of protocol config, device, and timestamp.
+    sha256 of every evalkit source file, sha256 of protocol config, notebook sha256,
+    device, and timestamp.
     """
+    resolved_nb_sha = notebook_sha256 or get_file_sha256(notebook_path)
     payload = {
         'metadata': {
             'timestamp': time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime()),
@@ -234,9 +245,11 @@ def save_result_file(
             'device': device or "unknown",
             'evalkit_sha256': get_evalkit_sha256(),
             'config_sha256': get_config_sha256(),
+            'notebook_sha256': resolved_nb_sha,
             'config_copy': config or {},
         },
         'results': results_data
     }
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(payload, f, indent=2, ensure_ascii=False)
+
