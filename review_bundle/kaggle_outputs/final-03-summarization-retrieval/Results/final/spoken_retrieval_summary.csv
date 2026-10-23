@@ -1,0 +1,7 @@
+Condition,Model,P@1,P@3,MRR,NDCG@3
+Oracle (Bi-Only),Reference,0.5,0.66,0.5822,0.4715
+Oracle (Bi+Rerank),Reference,0.64,0.78,0.7117,0.5685
+Set (iii) Spoken->Spoken (Bi+Rerank),large_v3,0.68,0.84,0.7685,0.5991
+Set (iii) Spoken->Spoken (Bi+Rerank),turbo,0.74,0.88,0.8103,0.609
+Set (iii) Spoken->Spoken (Bi+Rerank),medium,0.5,0.8,0.6564,0.5377
+Set (iii) Spoken->Spoken (Bi+Rerank),small,0.6,0.8,0.7074,0.5386

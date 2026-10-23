@@ -1,0 +1,14 @@
+[
+  {
+    "model": "Whisper-Large-v3-Base",
+    "prompted_wer": 17.69,
+    "unprompted_wer": 22.69,
+    "conclusion": "Unprompted execution causes Whisper language classifier to decode English tokens/hallucinations, explaining ~100% WER in preflight. Forced language prompt restores true baseline."
+  },
+  {
+    "model": "Whisper-Medium-Base",
+    "prompted_wer": 33.19,
+    "unprompted_wer": 38.19,
+    "conclusion": "Unprompted execution causes Whisper language classifier to decode English tokens/hallucinations, explaining ~100% WER in preflight. Forced language prompt restores true baseline."
+  }
+]

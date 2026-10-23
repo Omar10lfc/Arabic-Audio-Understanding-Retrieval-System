@@ -1,0 +1,1402 @@
+{
+  "xlsum_000_130806_nidhal_hassan_trial": {
+    "type": "xlsum",
+    "article_id": "130806_nidhal_hassan_trial",
+    "audio_path": "audio_tts/xlsum/xlsum_000_130806_nidhal_hassan_trial.mp3",
+    "duration_s": 117.6,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "dcc1609411def8d12f5b1f0b368812d2b067f8b6c1126ee19d6ca00ecc57e92a",
+    "text_len": 1191
+  },
+  "xlsum_001_160129_germany_asylum_seekers": {
+    "type": "xlsum",
+    "article_id": "160129_germany_asylum_seekers",
+    "audio_path": "audio_tts/xlsum/xlsum_001_160129_germany_asylum_seekers.mp3",
+    "duration_s": 145.97,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "ad403004e04c6d315a8024808c227beb658a3d39da5c90dba8dbdcb187d034ca",
+    "text_len": 1619
+  },
+  "xlsum_002_130729_syria_homs_area_retaken": {
+    "type": "xlsum",
+    "article_id": "130729_syria_homs_area_retaken",
+    "audio_path": "audio_tts/xlsum/xlsum_002_130729_syria_homs_area_retaken.mp3",
+    "duration_s": 106.44,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "b2c1b1ef341d64b61adc6f54af77783eedb2846bf5c33157c8e1cee4e2910fc2",
+    "text_len": 1192
+  },
+  "xlsum_003_140517_arsenal_fa_cup_winners": {
+    "type": "xlsum",
+    "article_id": "140517_arsenal_fa_cup_winners",
+    "audio_path": "audio_tts/xlsum/xlsum_003_140517_arsenal_fa_cup_winners.mp3",
+    "duration_s": 186.72,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "de2b51152e7056251d97d70c99e9e1d535c516645e1cc3d98dec3f63320f9dc8",
+    "text_len": 2099
+  },
+  "xlsum_004_140722_iraq_minorities": {
+    "type": "xlsum",
+    "article_id": "140722_iraq_minorities",
+    "audio_path": "audio_tts/xlsum/xlsum_004_140722_iraq_minorities.mp3",
+    "duration_s": 426.48,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "4c0c87f0d8116c3b8e79c0162c1954361f50fb67ceafdaf41ae7a08d5af624c2",
+    "text_len": 4467
+  },
+  "xlsum_005_160404_syrai_isis_alqayatain": {
+    "type": "xlsum",
+    "article_id": "160404_syrai_isis_alqayatain",
+    "audio_path": "audio_tts/xlsum/xlsum_005_160404_syrai_isis_alqayatain.mp3",
+    "duration_s": 200.04,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "6c1f1d8f9d55fb1e5c8fd23822b638a717c0e196ad1fa98e3c35eb24b41ca288",
+    "text_len": 2244
+  },
+  "xlsum_006_140129_israel_settlements_palestine_": {
+    "type": "xlsum",
+    "article_id": "140129_israel_settlements_palestine_",
+    "audio_path": "audio_tts/xlsum/xlsum_006_140129_israel_settlements_palestine_.mp3",
+    "duration_s": 357.96,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "8f4dbd8f364a60005e18f8fcc0bc40dd1cd4f716df88eda8481e1f8e87cb5887",
+    "text_len": 3932
+  },
+  "xlsum_007_120917_gaza_activist_court": {
+    "type": "xlsum",
+    "article_id": "120917_gaza_activist_court",
+    "audio_path": "audio_tts/xlsum/xlsum_007_120917_gaza_activist_court.mp3",
+    "duration_s": 129.58,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "9f53394031170f53a9f0bce52ec80d5e2530e7c9e45c9264db870065175cd028",
+    "text_len": 1380
+  },
+  "xlsum_008_121003_darfur_ambush": {
+    "type": "xlsum",
+    "article_id": "121003_darfur_ambush",
+    "audio_path": "audio_tts/xlsum/xlsum_008_121003_darfur_ambush.mp3",
+    "duration_s": 104.81,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "a790ca8839d3ab17b5bb0799b140397e5aae7479de704e46d72cc94128d51bae",
+    "text_len": 1129
+  },
+  "xlsum_009_inthepress-56059368": {
+    "type": "xlsum",
+    "article_id": "inthepress-56059368",
+    "audio_path": "audio_tts/xlsum/xlsum_009_inthepress-56059368.mp3",
+    "duration_s": 327.7,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "cf0d80790f76d68379d9e92ade574fa03711f7527dd2b750c3b84a44d4e865fb",
+    "text_len": 3574
+  },
+  "xlsum_010_middleeast-45674399": {
+    "type": "xlsum",
+    "article_id": "middleeast-45674399",
+    "audio_path": "audio_tts/xlsum/xlsum_010_middleeast-45674399.mp3",
+    "duration_s": 180.74,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "1df2dae6a14faf1ce92f6fee68c2cd6001483ff186def69a5aeacfdb281dd932",
+    "text_len": 1894
+  },
+  "xlsum_011_150617_fifa_corruption_swiss_banks": {
+    "type": "xlsum",
+    "article_id": "150617_fifa_corruption_swiss_banks",
+    "audio_path": "audio_tts/xlsum/xlsum_011_150617_fifa_corruption_swiss_banks.mp3",
+    "duration_s": 153.1,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "4d2fa9494dc503acd4ce634ed7f83312918164611ee67236063ae2ef29413b4f",
+    "text_len": 1534
+  },
+  "xlsum_012_inthepress-51643486": {
+    "type": "xlsum",
+    "article_id": "inthepress-51643486",
+    "audio_path": "audio_tts/xlsum/xlsum_012_inthepress-51643486.mp3",
+    "duration_s": 390.14,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "82b040380547d2ab68da04f9bfb87796221eca2f4f8f489e61cd5613cd7f5927",
+    "text_len": 4122
+  },
+  "xlsum_013_130923_apple_9_million_iphones_sold": {
+    "type": "xlsum",
+    "article_id": "130923_apple_9_million_iphones_sold",
+    "audio_path": "audio_tts/xlsum/xlsum_013_130923_apple_9_million_iphones_sold.mp3",
+    "duration_s": 123.7,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "aecf14bf5d5c48a4f74c37c50f4711c57f022f2fc66a85b534c193310d665aa6",
+    "text_len": 1285
+  },
+  "xlsum_014_141113_philae_comet_stable": {
+    "type": "xlsum",
+    "article_id": "141113_philae_comet_stable",
+    "audio_path": "audio_tts/xlsum/xlsum_014_141113_philae_comet_stable.mp3",
+    "duration_s": 87.36,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "1454a4bc220bbc09b965da084b1152952f2a56e9d50f4182e99936e9ab6c7a19",
+    "text_len": 952
+  },
+  "xlsum_015_101130_kyrgyzstan_blast": {
+    "type": "xlsum",
+    "article_id": "101130_kyrgyzstan_blast",
+    "audio_path": "audio_tts/xlsum/xlsum_015_101130_kyrgyzstan_blast.mp3",
+    "duration_s": 133.97,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "118f398343ced5f89f82c1ad67332a1330731e6f0e8f1676ed2b22896a50978f",
+    "text_len": 1522
+  },
+  "xlsum_016_130722_japan_elections_pm": {
+    "type": "xlsum",
+    "article_id": "130722_japan_elections_pm",
+    "audio_path": "audio_tts/xlsum/xlsum_016_130722_japan_elections_pm.mp3",
+    "duration_s": 161.95,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "678e8446c6a546c62779056f20af61bcdff84472e8f435484ffb05a997706aa1",
+    "text_len": 1782
+  },
+  "xlsum_017_131220_geneva_syria_failure_iran": {
+    "type": "xlsum",
+    "article_id": "131220_geneva_syria_failure_iran",
+    "audio_path": "audio_tts/xlsum/xlsum_017_131220_geneva_syria_failure_iran.mp3",
+    "duration_s": 155.74,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "202713c136aa60e04ba9d5c104714758be48e71768c86afb49fd1f417701c3d7",
+    "text_len": 1753
+  },
+  "xlsum_018_middleeast-40578212": {
+    "type": "xlsum",
+    "article_id": "middleeast-40578212",
+    "audio_path": "audio_tts/xlsum/xlsum_018_middleeast-40578212.mp3",
+    "duration_s": 275.64,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "2c75fb11ac8c2ce9cfebd774b593fedf76a5eba951d9ab132b93ec5890bcfbb7",
+    "text_len": 3051
+  },
+  "xlsum_019_130818_egypt_saudi_warning": {
+    "type": "xlsum",
+    "article_id": "130818_egypt_saudi_warning",
+    "audio_path": "audio_tts/xlsum/xlsum_019_130818_egypt_saudi_warning.mp3",
+    "duration_s": 150.05,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "e6d3fbc1c5e26d1e9e2b5ead2d04deb9be601a89f1810f41a05ec93e7e29021b",
+    "text_len": 1714
+  },
+  "xlsum_020_middleeast-45411391": {
+    "type": "xlsum",
+    "article_id": "middleeast-45411391",
+    "audio_path": "audio_tts/xlsum/xlsum_020_middleeast-45411391.mp3",
+    "duration_s": 169.13,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "faa0ce310d1bd2f252deeec22be1b99307b58b69e19a4a693bea783c4fb28cc1",
+    "text_len": 1702
+  },
+  "xlsum_021_middleeast-49877547": {
+    "type": "xlsum",
+    "article_id": "middleeast-49877547",
+    "audio_path": "audio_tts/xlsum/xlsum_021_middleeast-49877547.mp3",
+    "duration_s": 259.68,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "8dd5f55618198574cb99aded7f9ffb016bbdf75830dadb119237d3069990bc51",
+    "text_len": 2710
+  },
+  "xlsum_022_130811_egyptian_army_militant": {
+    "type": "xlsum",
+    "article_id": "130811_egyptian_army_militant",
+    "audio_path": "audio_tts/xlsum/xlsum_022_130811_egyptian_army_militant.mp3",
+    "duration_s": 111.07,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "3f767208cdcdb64fa4eba5ca3cc1f8f7cc2d611697c58108f28515fdf29cea23",
+    "text_len": 1195
+  },
+  "xlsum_023_141230_unsc_palestine_vote_us_veto": {
+    "type": "xlsum",
+    "article_id": "141230_unsc_palestine_vote_us_veto",
+    "audio_path": "audio_tts/xlsum/xlsum_023_141230_unsc_palestine_vote_us_veto.mp3",
+    "duration_s": 178.15,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "d1a923ae9e642852072b5e4d4b6b151efcdf9e9faf8530f5d9ebb7c423622cf6",
+    "text_len": 1846
+  },
+  "xlsum_024_140409_arab_league_palestinian_israel_mideast": {
+    "type": "xlsum",
+    "article_id": "140409_arab_league_palestinian_israel_mideast",
+    "audio_path": "audio_tts/xlsum/xlsum_024_140409_arab_league_palestinian_israel_mideast.mp3",
+    "duration_s": 153.12,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "16ecb9d0270f8f28b93ec859f381a4e70a9920c1ffb70b8212549eae73e0c92e",
+    "text_len": 1737
+  },
+  "xlsum_025_middleeast-43060592": {
+    "type": "xlsum",
+    "article_id": "middleeast-43060592",
+    "audio_path": "audio_tts/xlsum/xlsum_025_middleeast-43060592.mp3",
+    "duration_s": 188.81,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "79e0c7db6be5828f1770892ce5468d7a029dcabaf669ee9d8667982d706abd53",
+    "text_len": 2006
+  },
+  "xlsum_026_130519_nkorea_ban_ki_moon": {
+    "type": "xlsum",
+    "article_id": "130519_nkorea_ban_ki_moon",
+    "audio_path": "audio_tts/xlsum/xlsum_026_130519_nkorea_ban_ki_moon.mp3",
+    "duration_s": 155.74,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "628b2cfffebdd748cb957d3982ccaa61ce5d7f334bcef5d36e3f5ea51b4f0e21",
+    "text_len": 1736
+  },
+  "xlsum_027_150627_greece_debt_eurozone": {
+    "type": "xlsum",
+    "article_id": "150627_greece_debt_eurozone",
+    "audio_path": "audio_tts/xlsum/xlsum_027_150627_greece_debt_eurozone.mp3",
+    "duration_s": 96.12,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "fee2ddf87823aa3a828f8443caf4f502a4f8bf4bf00db1504f6ebd38a3eee864",
+    "text_len": 1066
+  },
+  "xlsum_028_art-and-culture-40013331": {
+    "type": "xlsum",
+    "article_id": "art-and-culture-40013331",
+    "audio_path": "audio_tts/xlsum/xlsum_028_art-and-culture-40013331.mp3",
+    "duration_s": 104.66,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "cfb95281c63f560045155d36cd54b8ae88d77942db2b0d43fcf2e9bddac93519",
+    "text_len": 1071
+  },
+  "xlsum_029_140717_syria_aid_convoy": {
+    "type": "xlsum",
+    "article_id": "140717_syria_aid_convoy",
+    "audio_path": "audio_tts/xlsum/xlsum_029_140717_syria_aid_convoy.mp3",
+    "duration_s": 113.64,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "15a541ac8d13d8e5a430fc905e9d8074cec6884e2501837c29a696e77706fb75",
+    "text_len": 1277
+  },
+  "xlsum_030_150515_iraq_anbar_baghdadi": {
+    "type": "xlsum",
+    "article_id": "150515_iraq_anbar_baghdadi",
+    "audio_path": "audio_tts/xlsum/xlsum_030_150515_iraq_anbar_baghdadi.mp3",
+    "duration_s": 267.17,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "6b7764f075a96c68fb097a28ed635544aba7bcad6536ac4d22be925fe728671a",
+    "text_len": 2901
+  },
+  "xlsum_031_130311_syria_iraq_qaeda_claims_killing": {
+    "type": "xlsum",
+    "article_id": "130311_syria_iraq_qaeda_claims_killing",
+    "audio_path": "audio_tts/xlsum/xlsum_031_130311_syria_iraq_qaeda_claims_killing.mp3",
+    "duration_s": 153.5,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "99066ec50eb6ad2bde2c6b86e215fb44a7a2c71c0787707ec738cb19728dd556",
+    "text_len": 1735
+  },
+  "xlsum_032_151113_italy_israli_stabbed": {
+    "type": "xlsum",
+    "article_id": "151113_italy_israli_stabbed",
+    "audio_path": "audio_tts/xlsum/xlsum_032_151113_italy_israli_stabbed.mp3",
+    "duration_s": 69.53,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "42412aba34e61ebbc7c25da97af22cbd1b869239efbf153c9058f6a4c9cc50bd",
+    "text_len": 724
+  },
+  "xlsum_033_inthepress-53298219": {
+    "type": "xlsum",
+    "article_id": "inthepress-53298219",
+    "audio_path": "audio_tts/xlsum/xlsum_033_inthepress-53298219.mp3",
+    "duration_s": 334.37,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "f8035cacbe011c02b2e52bd2e44fad4a4e3c2f4ef69b8ee9efd0b45ae468cf10",
+    "text_len": 3552
+  },
+  "xlsum_034_150109_science_saturn_telescope": {
+    "type": "xlsum",
+    "article_id": "150109_science_saturn_telescope",
+    "audio_path": "audio_tts/xlsum/xlsum_034_150109_science_saturn_telescope.mp3",
+    "duration_s": 224.95,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "b901b8971003119e46d89fafd79a819693182759c2938b285771d2c7435bcf2e",
+    "text_len": 2415
+  },
+  "xlsum_035_trending-53011842": {
+    "type": "xlsum",
+    "article_id": "trending-53011842",
+    "audio_path": "audio_tts/xlsum/xlsum_035_trending-53011842.mp3",
+    "duration_s": 120.65,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "a9268bb598f7425d17b752720e50d52d56a033abee9a8ef65cfe6725eadaf57e",
+    "text_len": 1244
+  },
+  "xlsum_036_160721_trump_us_nato_protection": {
+    "type": "xlsum",
+    "article_id": "160721_trump_us_nato_protection",
+    "audio_path": "audio_tts/xlsum/xlsum_036_160721_trump_us_nato_protection.mp3",
+    "duration_s": 87.62,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "3f5b515cbaee498f35fb64afcbf9a8d5950e45184a9691fe91274c742b619dab",
+    "text_len": 1000
+  },
+  "xlsum_037_world-52612287": {
+    "type": "xlsum",
+    "article_id": "world-52612287",
+    "audio_path": "audio_tts/xlsum/xlsum_037_world-52612287.mp3",
+    "duration_s": 144.19,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "56eafe008dcd6fdede98bae1410d97e7f021b53e3f486ce56e694067ebab05a4",
+    "text_len": 1494
+  },
+  "xlsum_038_120601_israel_gaza_killing": {
+    "type": "xlsum",
+    "article_id": "120601_israel_gaza_killing",
+    "audio_path": "audio_tts/xlsum/xlsum_038_120601_israel_gaza_killing.mp3",
+    "duration_s": 139.51,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "3965b0627bb6b83a138100c2c2f7f087b259457d91b2b899c90eb18407840007",
+    "text_len": 1529
+  },
+  "xlsum_039_140826_syria_isis_leaders_deir": {
+    "type": "xlsum",
+    "article_id": "140826_syria_isis_leaders_deir",
+    "audio_path": "audio_tts/xlsum/xlsum_039_140826_syria_isis_leaders_deir.mp3",
+    "duration_s": 158.33,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "1bf0a1799c3299fd7db9767cb0561752064a042ea7f0dc303eedf5e78cdca6be",
+    "text_len": 1800
+  },
+  "xlsum_040_inthepress-50376039": {
+    "type": "xlsum",
+    "article_id": "inthepress-50376039",
+    "audio_path": "audio_tts/xlsum/xlsum_040_inthepress-50376039.mp3",
+    "duration_s": 307.63,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "1d5916af4768a9348558bf6c0dcc8f143597ac35b640325caab67272e376736d",
+    "text_len": 3446
+  },
+  "xlsum_041_130319_pa_obama_visit_reaction": {
+    "type": "xlsum",
+    "article_id": "130319_pa_obama_visit_reaction",
+    "audio_path": "audio_tts/xlsum/xlsum_041_130319_pa_obama_visit_reaction.mp3",
+    "duration_s": 328.2,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "cac7e2d013676809902aa9f3fd33b866940f9d3a4bda475b02c584788b007e45",
+    "text_len": 3747
+  },
+  "xlsum_042_160526_comments_iraq_falluja_humancosts": {
+    "type": "xlsum",
+    "article_id": "160526_comments_iraq_falluja_humancosts",
+    "audio_path": "audio_tts/xlsum/xlsum_042_160526_comments_iraq_falluja_humancosts.mp3",
+    "duration_s": 246.1,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "8f8c1ba025103b3227c4585af777213a64bfd397223a50a7d89f56e8fbe68b9f",
+    "text_len": 2762
+  },
+  "xlsum_043_140728_egypt_demo_policegeneral_injured": {
+    "type": "xlsum",
+    "article_id": "140728_egypt_demo_policegeneral_injured",
+    "audio_path": "audio_tts/xlsum/xlsum_043_140728_egypt_demo_policegeneral_injured.mp3",
+    "duration_s": 206.74,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "136aab273fc1e76a45cd9f36bce67247744a97bd56ab191361631be58eb3b976",
+    "text_len": 2202
+  },
+  "xlsum_044_middleeast-41631269": {
+    "type": "xlsum",
+    "article_id": "middleeast-41631269",
+    "audio_path": "audio_tts/xlsum/xlsum_044_middleeast-41631269.mp3",
+    "duration_s": 341.52,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "6bd4b7ac29d21a775e8ccd43209e321bc25e9619ab649b622a2aa009e262cd57",
+    "text_len": 3734
+  },
+  "xlsum_045_science-and-tech-53639042": {
+    "type": "xlsum",
+    "article_id": "science-and-tech-53639042",
+    "audio_path": "audio_tts/xlsum/xlsum_045_science-and-tech-53639042.mp3",
+    "duration_s": 372.7,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "331310b939d4a3f715ffb0e2d1d0b47f35220d37dd578da93fe737fccf45e970",
+    "text_len": 3875
+  },
+  "xlsum_046_150215_egypt_raids_on_libya": {
+    "type": "xlsum",
+    "article_id": "150215_egypt_raids_on_libya",
+    "audio_path": "audio_tts/xlsum/xlsum_046_150215_egypt_raids_on_libya.mp3",
+    "duration_s": 367.22,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "9361b7277055afa4ce25ff0508734d0f04f3f4cf1f3a28842bd1f9cb3e7d5d75",
+    "text_len": 4086
+  },
+  "xlsum_047_131002_venezuela_us_diplomats": {
+    "type": "xlsum",
+    "article_id": "131002_venezuela_us_diplomats",
+    "audio_path": "audio_tts/xlsum/xlsum_047_131002_venezuela_us_diplomats.mp3",
+    "duration_s": 127.2,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "fc59df343381c302bf329770d26076649cf45dd9db866b80a16d63bebf5081e5",
+    "text_len": 1328
+  },
+  "xlsum_048_vert-fut-47501433": {
+    "type": "xlsum",
+    "article_id": "vert-fut-47501433",
+    "audio_path": "audio_tts/xlsum/xlsum_048_vert-fut-47501433.mp3",
+    "duration_s": 538.01,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "5e0b3658fee294030b885d0989781599d0f2481314e42252c40d76ea4d6745f5",
+    "text_len": 5604
+  },
+  "xlsum_049_100803_afghanistan_attacks": {
+    "type": "xlsum",
+    "article_id": "100803_afghanistan_attacks",
+    "audio_path": "audio_tts/xlsum/xlsum_049_100803_afghanistan_attacks.mp3",
+    "duration_s": 131.09,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "3ddd619ab5c392e6d5317f2ed17abe49baa907979a8ee07446c40be1cbab10da",
+    "text_len": 1407
+  },
+  "p_000": {
+    "type": "arcd_passage",
+    "passage_id": "p_000",
+    "audio_path": "audio_tts/arcd_passages/p_000.mp3",
+    "duration_s": 25.2,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "91c2689f4106d790932585978ce64249b7983d7ddbb8503e2b0260fb680357d6",
+    "text_len": 201
+  },
+  "p_001": {
+    "type": "arcd_passage",
+    "passage_id": "p_001",
+    "audio_path": "audio_tts/arcd_passages/p_001.mp3",
+    "duration_s": 38.64,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "f352b117dd2294689533f8d905f6df25e3ad6a4b03310020de67a6c26e41ea34",
+    "text_len": 331
+  },
+  "p_002": {
+    "type": "arcd_passage",
+    "passage_id": "p_002",
+    "audio_path": "audio_tts/arcd_passages/p_002.mp3",
+    "duration_s": 22.46,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "30840984e9f559ab6a0198112a44ed1a5645fc08158fc54914429b6da0e99323",
+    "text_len": 213
+  },
+  "p_003": {
+    "type": "arcd_passage",
+    "passage_id": "p_003",
+    "audio_path": "audio_tts/arcd_passages/p_003.mp3",
+    "duration_s": 19.63,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "75bf8712c00bf979c987be50126f2fde65e7bd750c9d978e9f966bf728567b6b",
+    "text_len": 220
+  },
+  "p_004": {
+    "type": "arcd_passage",
+    "passage_id": "p_004",
+    "audio_path": "audio_tts/arcd_passages/p_004.mp3",
+    "duration_s": 40.73,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "142b5ed02fe82e59473c86ac19117b5c38ed37363603774653732f5cf2528c4a",
+    "text_len": 489
+  },
+  "p_005": {
+    "type": "arcd_passage",
+    "passage_id": "p_005",
+    "audio_path": "audio_tts/arcd_passages/p_005.mp3",
+    "duration_s": 118.82,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "3c347b536ade70203d363b7393c297ee9aab1897a2ba5a5982a8f06f0997a98d",
+    "text_len": 1112
+  },
+  "p_006": {
+    "type": "arcd_passage",
+    "passage_id": "p_006",
+    "audio_path": "audio_tts/arcd_passages/p_006.mp3",
+    "duration_s": 27.72,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "09deee6a073cafbddbfc89571b569be7d763b8cd1586c6d63f36ddb44be41f2c",
+    "text_len": 300
+  },
+  "p_007": {
+    "type": "arcd_passage",
+    "passage_id": "p_007",
+    "audio_path": "audio_tts/arcd_passages/p_007.mp3",
+    "duration_s": 92.09,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "32af1395d68689de17c268dba210b19834b5c6d73540e4f66dee02c3950ae967",
+    "text_len": 855
+  },
+  "p_008": {
+    "type": "arcd_passage",
+    "passage_id": "p_008",
+    "audio_path": "audio_tts/arcd_passages/p_008.mp3",
+    "duration_s": 38.3,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "fe635b6b24001825eaaed19599d9cc6638253b22db2787cd0dda8eedb1f764f4",
+    "text_len": 408
+  },
+  "p_009": {
+    "type": "arcd_passage",
+    "passage_id": "p_009",
+    "audio_path": "audio_tts/arcd_passages/p_009.mp3",
+    "duration_s": 31.8,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "7d87959598e082f6d39f9393ad118b441922bd6e96da81bee48b67b189e531b2",
+    "text_len": 309
+  },
+  "p_010": {
+    "type": "arcd_passage",
+    "passage_id": "p_010",
+    "audio_path": "audio_tts/arcd_passages/p_010.mp3",
+    "duration_s": 81.36,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "73ea063979c26f5b3ba6061b9fe18bda512a1764d83d7a375e7a864a4bac78f7",
+    "text_len": 872
+  },
+  "p_011": {
+    "type": "arcd_passage",
+    "passage_id": "p_011",
+    "audio_path": "audio_tts/arcd_passages/p_011.mp3",
+    "duration_s": 97.2,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "323eca0be46b3f04dcf8a1aca6d5c6db3ecc7fc19228eab728e371620a98772e",
+    "text_len": 1024
+  },
+  "p_012": {
+    "type": "arcd_passage",
+    "passage_id": "p_012",
+    "audio_path": "audio_tts/arcd_passages/p_012.mp3",
+    "duration_s": 32.18,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "9beaf967f4dd075383bc41778b5e58fa0a390c57789c331f15dae58bd160b8c5",
+    "text_len": 326
+  },
+  "p_013": {
+    "type": "arcd_passage",
+    "passage_id": "p_013",
+    "audio_path": "audio_tts/arcd_passages/p_013.mp3",
+    "duration_s": 107.9,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "a50fbb8f1d8668eca2b6289505ce40d19d646f3984b97031def0d9aa879a34c6",
+    "text_len": 1018
+  },
+  "p_014": {
+    "type": "arcd_passage",
+    "passage_id": "p_014",
+    "audio_path": "audio_tts/arcd_passages/p_014.mp3",
+    "duration_s": 31.66,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "204535198d524da22e3e169286d33d2e2d5586017e6451861da6de1d3ae8a01f",
+    "text_len": 302
+  },
+  "p_015": {
+    "type": "arcd_passage",
+    "passage_id": "p_015",
+    "audio_path": "audio_tts/arcd_passages/p_015.mp3",
+    "duration_s": 33.94,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "8884bace8e47a8a49b3985c1a101733261991857714bf6937667ebdb11c116d1",
+    "text_len": 327
+  },
+  "p_016": {
+    "type": "arcd_passage",
+    "passage_id": "p_016",
+    "audio_path": "audio_tts/arcd_passages/p_016.mp3",
+    "duration_s": 94.03,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "3bbf99fdde157b58143921d973fe3ed2e4c5b544f5905450cc963564e2dacefd",
+    "text_len": 1027
+  },
+  "p_017": {
+    "type": "arcd_passage",
+    "passage_id": "p_017",
+    "audio_path": "audio_tts/arcd_passages/p_017.mp3",
+    "duration_s": 104.23,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "b49db691dd867616ee2680dd1f17dce265d2e027cc086f28ee502a903133df7c",
+    "text_len": 1106
+  },
+  "p_018": {
+    "type": "arcd_passage",
+    "passage_id": "p_018",
+    "audio_path": "audio_tts/arcd_passages/p_018.mp3",
+    "duration_s": 16.78,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "062db12d07c3ec4cbe28bcb56bce846ae63995a24244875fb7b3d0460d4aceef",
+    "text_len": 201
+  },
+  "p_019": {
+    "type": "arcd_passage",
+    "passage_id": "p_019",
+    "audio_path": "audio_tts/arcd_passages/p_019.mp3",
+    "duration_s": 43.49,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "46eeef2c8dbcfa6ca25bab2bf343aaee3ae526504135c7f9454941fcf0e889ea",
+    "text_len": 570
+  },
+  "p_020": {
+    "type": "arcd_passage",
+    "passage_id": "p_020",
+    "audio_path": "audio_tts/arcd_passages/p_020.mp3",
+    "duration_s": 53.42,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "a37b7e194f00f7398c90a8ee63925d35902a81a44295525a3a80db7c025c3d97",
+    "text_len": 647
+  },
+  "p_021": {
+    "type": "arcd_passage",
+    "passage_id": "p_021",
+    "audio_path": "audio_tts/arcd_passages/p_021.mp3",
+    "duration_s": 32.45,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "8a16de0c410f46e025db229a0304b004ece285225ef083e5fb4b4956a624b0b1",
+    "text_len": 281
+  },
+  "p_022": {
+    "type": "arcd_passage",
+    "passage_id": "p_022",
+    "audio_path": "audio_tts/arcd_passages/p_022.mp3",
+    "duration_s": 86.83,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "4b46dd2b5a09625e1e42dc741429c7c6c2f72c9f43cd21d8bb242b8364b741a1",
+    "text_len": 841
+  },
+  "p_023": {
+    "type": "arcd_passage",
+    "passage_id": "p_023",
+    "audio_path": "audio_tts/arcd_passages/p_023.mp3",
+    "duration_s": 58.46,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "094bc4f0d379617b6bd04c07a57f20be7ed78e588d45d2ee0ace8442b40f269d",
+    "text_len": 554
+  },
+  "p_024": {
+    "type": "arcd_passage",
+    "passage_id": "p_024",
+    "audio_path": "audio_tts/arcd_passages/p_024.mp3",
+    "duration_s": 40.2,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "6eb2d762813de2cc50e36e1e47460f5264be6d044cdbe25ac2ad68a6f00d2208",
+    "text_len": 436
+  },
+  "p_025": {
+    "type": "arcd_passage",
+    "passage_id": "p_025",
+    "audio_path": "audio_tts/arcd_passages/p_025.mp3",
+    "duration_s": 66.65,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "1c62e26692b122f587a6795073893ff8ae6d000b4e8675b235f785ec593f0f05",
+    "text_len": 735
+  },
+  "p_026": {
+    "type": "arcd_passage",
+    "passage_id": "p_026",
+    "audio_path": "audio_tts/arcd_passages/p_026.mp3",
+    "duration_s": 112.82,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "47dc6edb6d9d90542d7cd4030a9c66aef637192c28973b01519a6098988ea16c",
+    "text_len": 1166
+  },
+  "p_027": {
+    "type": "arcd_passage",
+    "passage_id": "p_027",
+    "audio_path": "audio_tts/arcd_passages/p_027.mp3",
+    "duration_s": 48.26,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "11058de6361d8be539847972555c81616ee976a34c6fd6b8ae979a5590202b46",
+    "text_len": 487
+  },
+  "p_028": {
+    "type": "arcd_passage",
+    "passage_id": "p_028",
+    "audio_path": "audio_tts/arcd_passages/p_028.mp3",
+    "duration_s": 63.84,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "15cc3a3ea8746dfbc09b7c50bbe7874afad5954ead9dd4b2108e1bb51b9d72dd",
+    "text_len": 677
+  },
+  "p_029": {
+    "type": "arcd_passage",
+    "passage_id": "p_029",
+    "audio_path": "audio_tts/arcd_passages/p_029.mp3",
+    "duration_s": 52.99,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "9c29378d5c10cccdc4f767a98f9d2b10845116b34ff227ab7ae728fbaa1a04a8",
+    "text_len": 568
+  },
+  "p_030": {
+    "type": "arcd_passage",
+    "passage_id": "p_030",
+    "audio_path": "audio_tts/arcd_passages/p_030.mp3",
+    "duration_s": 34.1,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "631367ffd47baec0f87781d8e3c646efa854b6c411ed55d2ae98f9d586780207",
+    "text_len": 313
+  },
+  "p_031": {
+    "type": "arcd_passage",
+    "passage_id": "p_031",
+    "audio_path": "audio_tts/arcd_passages/p_031.mp3",
+    "duration_s": 59.71,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "97a534b28665ff315223e89b30b8cefc0b3420343fc4c16cb1e591d60d443beb",
+    "text_len": 619
+  },
+  "p_032": {
+    "type": "arcd_passage",
+    "passage_id": "p_032",
+    "audio_path": "audio_tts/arcd_passages/p_032.mp3",
+    "duration_s": 78.94,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "2de9c0bb35a1ad330a68470dc67f0ba1ec7d70b0cff6b1c438b1ef8355832e27",
+    "text_len": 857
+  },
+  "p_033": {
+    "type": "arcd_passage",
+    "passage_id": "p_033",
+    "audio_path": "audio_tts/arcd_passages/p_033.mp3",
+    "duration_s": 28.44,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "afdc4bf4a284051a8b32d77b76916690c056c4f650ad71fa6e781030dd62f3e5",
+    "text_len": 289
+  },
+  "p_034": {
+    "type": "arcd_passage",
+    "passage_id": "p_034",
+    "audio_path": "audio_tts/arcd_passages/p_034.mp3",
+    "duration_s": 127.25,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "c3bd894a8e9f5a6333ad315b77dd7bd7036bf76b90ca8923fdedee87fd9f37d1",
+    "text_len": 1376
+  },
+  "p_035": {
+    "type": "arcd_passage",
+    "passage_id": "p_035",
+    "audio_path": "audio_tts/arcd_passages/p_035.mp3",
+    "duration_s": 102.89,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "5c11e455f3ab90f5dc786a48acc7d7c30d0df5a8a819af96b171bb45dc77a134",
+    "text_len": 922
+  },
+  "p_036": {
+    "type": "arcd_passage",
+    "passage_id": "p_036",
+    "audio_path": "audio_tts/arcd_passages/p_036.mp3",
+    "duration_s": 58.15,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "22802762af127fe2a2b5e4b36de2389902013348db7d6f56536220d228c4ca20",
+    "text_len": 580
+  },
+  "p_037": {
+    "type": "arcd_passage",
+    "passage_id": "p_037",
+    "audio_path": "audio_tts/arcd_passages/p_037.mp3",
+    "duration_s": 103.08,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "13573bbf723f847de1626ed40cf0e01f5541aa7085cd1aaa28b63f9eee9f0fe6",
+    "text_len": 1009
+  },
+  "p_038": {
+    "type": "arcd_passage",
+    "passage_id": "p_038",
+    "audio_path": "audio_tts/arcd_passages/p_038.mp3",
+    "duration_s": 63.31,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "1c4a5fc91ab5ae72fec9b8b1789c8626e4cb51f3816304f89e876209c1c6b0d3",
+    "text_len": 573
+  },
+  "p_039": {
+    "type": "arcd_passage",
+    "passage_id": "p_039",
+    "audio_path": "audio_tts/arcd_passages/p_039.mp3",
+    "duration_s": 23.28,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "a949a99442629ab74178d7a1a847c54464eebca67277a1e7748713e1e3453f7c",
+    "text_len": 227
+  },
+  "p_040": {
+    "type": "arcd_passage",
+    "passage_id": "p_040",
+    "audio_path": "audio_tts/arcd_passages/p_040.mp3",
+    "duration_s": 39.41,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "263539b70776f4449672828be26dc0dea707cdb1c9e437d10d840bbe21166765",
+    "text_len": 470
+  },
+  "p_041": {
+    "type": "arcd_passage",
+    "passage_id": "p_041",
+    "audio_path": "audio_tts/arcd_passages/p_041.mp3",
+    "duration_s": 46.32,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "fc6d91d0f0ff1e46fdcaf5ae4e5893ef80cbbdc4a2ef0454fbcc4408ff4ebe4b",
+    "text_len": 521
+  },
+  "p_042": {
+    "type": "arcd_passage",
+    "passage_id": "p_042",
+    "audio_path": "audio_tts/arcd_passages/p_042.mp3",
+    "duration_s": 44.78,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "aaacc4349fd7cf124b49cc30dda7fbb36afab94a4c213d8c56279f877e937fab",
+    "text_len": 389
+  },
+  "p_043": {
+    "type": "arcd_passage",
+    "passage_id": "p_043",
+    "audio_path": "audio_tts/arcd_passages/p_043.mp3",
+    "duration_s": 65.69,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "985cc938022648c00c0a5b11d750d916374d9b1b4b4b4fa828b88d31c54c5d0a",
+    "text_len": 644
+  },
+  "p_044": {
+    "type": "arcd_passage",
+    "passage_id": "p_044",
+    "audio_path": "audio_tts/arcd_passages/p_044.mp3",
+    "duration_s": 140.3,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "ba24070058ce7ce8e5adf18f57e69b0b0dd66208d0cdaf23891657e0cb456308",
+    "text_len": 1462
+  },
+  "p_045": {
+    "type": "arcd_passage",
+    "passage_id": "p_045",
+    "audio_path": "audio_tts/arcd_passages/p_045.mp3",
+    "duration_s": 19.01,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "e742abd30b09e5d767b4863ba3ca55e3e2f968880d9f3b4d31bfebeb2882c144",
+    "text_len": 216
+  },
+  "p_046": {
+    "type": "arcd_passage",
+    "passage_id": "p_046",
+    "audio_path": "audio_tts/arcd_passages/p_046.mp3",
+    "duration_s": 63.22,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "6c05a845605c24cc9b6ce484373e72d3c00fe7d2a610876c8ad29076f54871d8",
+    "text_len": 707
+  },
+  "p_047": {
+    "type": "arcd_passage",
+    "passage_id": "p_047",
+    "audio_path": "audio_tts/arcd_passages/p_047.mp3",
+    "duration_s": 75.58,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "0f9fdff85fd71b281c1e1ae52662f5167f5e1cf8e34e10092caf25aa012ee2d3",
+    "text_len": 814
+  },
+  "p_048": {
+    "type": "arcd_passage",
+    "passage_id": "p_048",
+    "audio_path": "audio_tts/arcd_passages/p_048.mp3",
+    "duration_s": 19.99,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "bfbae7dc96df85f58be03155feabfedd272d99bb825873f77288126254ee33c3",
+    "text_len": 236
+  },
+  "p_049": {
+    "type": "arcd_passage",
+    "passage_id": "p_049",
+    "audio_path": "audio_tts/arcd_passages/p_049.mp3",
+    "duration_s": 108.14,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "8842226a737ccd8c4875be0c866ab19906e14460c406836154e44a0fc1e6409d",
+    "text_len": 1178
+  },
+  "query_000": {
+    "type": "arcd_query",
+    "query_id": "query_000",
+    "target_id": "p_000",
+    "audio_path": "audio_tts/arcd_queries/query_000.mp3",
+    "duration_s": 3.5,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "01a884dae3057b7a5bc38086406cceefabc3d3ca4ed33eddb539a03e2bd1c4cb",
+    "text_len": 30
+  },
+  "query_001": {
+    "type": "arcd_query",
+    "query_id": "query_001",
+    "target_id": "p_000",
+    "audio_path": "audio_tts/arcd_queries/query_001.mp3",
+    "duration_s": 5.54,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "b06bc26c6ef571c914975e2ac668cf5eb7e06b4debfa2f3d62df2f01e4004227",
+    "text_len": 41
+  },
+  "query_002": {
+    "type": "arcd_query",
+    "query_id": "query_002",
+    "target_id": "p_000",
+    "audio_path": "audio_tts/arcd_queries/query_002.mp3",
+    "duration_s": 5.5,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "51ce098423af25a8a5e4db18e7774ff85a059521220e0b985c185db2ab4961b8",
+    "text_len": 43
+  },
+  "query_003": {
+    "type": "arcd_query",
+    "query_id": "query_003",
+    "target_id": "p_001",
+    "audio_path": "audio_tts/arcd_queries/query_003.mp3",
+    "duration_s": 6.7,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "2acb3c6d4c7ef63cce4f464ebdd9d6da9549e7d1537267b22a2612b114f06d2a",
+    "text_len": 46
+  },
+  "query_004": {
+    "type": "arcd_query",
+    "query_id": "query_004",
+    "target_id": "p_001",
+    "audio_path": "audio_tts/arcd_queries/query_004.mp3",
+    "duration_s": 5.4,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "2a9fa7a9b72600d09bc609c72f29d0c50339efb2e2301cf954f69a4838a3ca1c",
+    "text_len": 47
+  },
+  "query_005": {
+    "type": "arcd_query",
+    "query_id": "query_005",
+    "target_id": "p_001",
+    "audio_path": "audio_tts/arcd_queries/query_005.mp3",
+    "duration_s": 4.25,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "1744e2c197133f2fde6b5b885f725e7b496313d5318952da9452ed7a65da1505",
+    "text_len": 31
+  },
+  "query_006": {
+    "type": "arcd_query",
+    "query_id": "query_006",
+    "target_id": "p_002",
+    "audio_path": "audio_tts/arcd_queries/query_006.mp3",
+    "duration_s": 4.22,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "dd59db92b8d86cd702413cc8390a7c50f384ade9d481145bd2ee484f6520ead0",
+    "text_len": 30
+  },
+  "query_007": {
+    "type": "arcd_query",
+    "query_id": "query_007",
+    "target_id": "p_002",
+    "audio_path": "audio_tts/arcd_queries/query_007.mp3",
+    "duration_s": 4.85,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "48cd7076e1871a10fda91a9a87a0be6ee473ae74ee048d8dd37a226b706e1210",
+    "text_len": 37
+  },
+  "query_008": {
+    "type": "arcd_query",
+    "query_id": "query_008",
+    "target_id": "p_002",
+    "audio_path": "audio_tts/arcd_queries/query_008.mp3",
+    "duration_s": 5.83,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "eebfbf37c0fc3f64a50463ca6f0eca4682e7b96003232b1a38c3fcd4cf915b31",
+    "text_len": 48
+  },
+  "query_009": {
+    "type": "arcd_query",
+    "query_id": "query_009",
+    "target_id": "p_003",
+    "audio_path": "audio_tts/arcd_queries/query_009.mp3",
+    "duration_s": 5.06,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "25fc6af8788b7c1e4fdf9b60513c0c0049d1f27e2ce34f9cced425a81ba3a63e",
+    "text_len": 42
+  },
+  "query_010": {
+    "type": "arcd_query",
+    "query_id": "query_010",
+    "target_id": "p_003",
+    "audio_path": "audio_tts/arcd_queries/query_010.mp3",
+    "duration_s": 5.5,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "cb64a140bf03d7e2940cef404f318913eea2841314f86143aa9a94fcabe1cfb9",
+    "text_len": 46
+  },
+  "query_011": {
+    "type": "arcd_query",
+    "query_id": "query_011",
+    "target_id": "p_003",
+    "audio_path": "audio_tts/arcd_queries/query_011.mp3",
+    "duration_s": 5.59,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "ac3ee527b084e0f163d253d9cdaeb21f0a92fa627357f97befb61f3aabd721be",
+    "text_len": 53
+  },
+  "query_012": {
+    "type": "arcd_query",
+    "query_id": "query_012",
+    "target_id": "p_004",
+    "audio_path": "audio_tts/arcd_queries/query_012.mp3",
+    "duration_s": 3.79,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "457670d0520de14fe3e5c2e12ca0c1b2595dd141980e89cda897f43bc3515b96",
+    "text_len": 28
+  },
+  "query_013": {
+    "type": "arcd_query",
+    "query_id": "query_013",
+    "target_id": "p_004",
+    "audio_path": "audio_tts/arcd_queries/query_013.mp3",
+    "duration_s": 4.22,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "740f8e547a7b52c42516b10dbb45f5307df52fe193de391b4affdb72a17562c3",
+    "text_len": 35
+  },
+  "query_014": {
+    "type": "arcd_query",
+    "query_id": "query_014",
+    "target_id": "p_004",
+    "audio_path": "audio_tts/arcd_queries/query_014.mp3",
+    "duration_s": 2.59,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "f13113dfd522c2f3247008cf708fd0ec2ed309a29bc1129a14e536ccc10ada5c",
+    "text_len": 24
+  },
+  "query_015": {
+    "type": "arcd_query",
+    "query_id": "query_015",
+    "target_id": "p_005",
+    "audio_path": "audio_tts/arcd_queries/query_015.mp3",
+    "duration_s": 4.42,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "09d430bfe70cd76119035e737d9e1abb0f68ff56195e69a41629d427fbb23f29",
+    "text_len": 52
+  },
+  "query_016": {
+    "type": "arcd_query",
+    "query_id": "query_016",
+    "target_id": "p_005",
+    "audio_path": "audio_tts/arcd_queries/query_016.mp3",
+    "duration_s": 6.02,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "acfd0ed07a3a3f269ff2df81c5360c2aa2af762995787172f6c68788e5b47509",
+    "text_len": 61
+  },
+  "query_017": {
+    "type": "arcd_query",
+    "query_id": "query_017",
+    "target_id": "p_005",
+    "audio_path": "audio_tts/arcd_queries/query_017.mp3",
+    "duration_s": 6.84,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "3eacf00a6a5938545bf0bcd3b4b2b27353d674f625a04cb19eb92f044071e001",
+    "text_len": 65
+  },
+  "query_018": {
+    "type": "arcd_query",
+    "query_id": "query_018",
+    "target_id": "p_006",
+    "audio_path": "audio_tts/arcd_queries/query_018.mp3",
+    "duration_s": 3.38,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "039f7a4d5a768f719599ca6c38aff886c53f3f7cbb25a042b7d212f285a50972",
+    "text_len": 17
+  },
+  "query_019": {
+    "type": "arcd_query",
+    "query_id": "query_019",
+    "target_id": "p_006",
+    "audio_path": "audio_tts/arcd_queries/query_019.mp3",
+    "duration_s": 4.39,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "eb1d576af638eec71055f7d19afa7b3bb6af49ee210cb8d6ae7f2094755944a6",
+    "text_len": 29
+  },
+  "query_020": {
+    "type": "arcd_query",
+    "query_id": "query_020",
+    "target_id": "p_006",
+    "audio_path": "audio_tts/arcd_queries/query_020.mp3",
+    "duration_s": 4.99,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "b9d8573fd0c0e39a541e915b58c5104c788644ddb2db6dca2dcd78ae4b025e70",
+    "text_len": 36
+  },
+  "query_021": {
+    "type": "arcd_query",
+    "query_id": "query_021",
+    "target_id": "p_007",
+    "audio_path": "audio_tts/arcd_queries/query_021.mp3",
+    "duration_s": 3.65,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "5ed4a2961e31fc89dc7623d2cc06e78eb1d217bf2272537a3a69fb3f7f571fb2",
+    "text_len": 27
+  },
+  "query_022": {
+    "type": "arcd_query",
+    "query_id": "query_022",
+    "target_id": "p_007",
+    "audio_path": "audio_tts/arcd_queries/query_022.mp3",
+    "duration_s": 4.06,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "bd189821dadf97d30b984813cdc0680dd98b414e1f02802173b5ec27fcecdfd0",
+    "text_len": 26
+  },
+  "query_023": {
+    "type": "arcd_query",
+    "query_id": "query_023",
+    "target_id": "p_007",
+    "audio_path": "audio_tts/arcd_queries/query_023.mp3",
+    "duration_s": 4.94,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "3fd07d00594800d65d04898d922051c236173a7e406b6fb349df5c57f5e5865c",
+    "text_len": 37
+  },
+  "query_024": {
+    "type": "arcd_query",
+    "query_id": "query_024",
+    "target_id": "p_008",
+    "audio_path": "audio_tts/arcd_queries/query_024.mp3",
+    "duration_s": 5.3,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "1d6a857be321765bb1a7df718be25b64ceae5faf25db9b784431674448ea48ec",
+    "text_len": 43
+  },
+  "query_025": {
+    "type": "arcd_query",
+    "query_id": "query_025",
+    "target_id": "p_008",
+    "audio_path": "audio_tts/arcd_queries/query_025.mp3",
+    "duration_s": 5.3,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "c113adb6ca7a3de3f640331531db282bbcbf0b59cbbf0f9c2371218f44beda2a",
+    "text_len": 47
+  },
+  "query_026": {
+    "type": "arcd_query",
+    "query_id": "query_026",
+    "target_id": "p_008",
+    "audio_path": "audio_tts/arcd_queries/query_026.mp3",
+    "duration_s": 5.23,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "c3a600510cfa28e5f003ecda7a365c7fd28911a9206dd252d595ebde4d63e531",
+    "text_len": 44
+  },
+  "query_027": {
+    "type": "arcd_query",
+    "query_id": "query_027",
+    "target_id": "p_009",
+    "audio_path": "audio_tts/arcd_queries/query_027.mp3",
+    "duration_s": 3.38,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "b654de8d497b29c67122565f854b11c4b7d781cfaa670d803823381db6b02d1c",
+    "text_len": 21
+  },
+  "query_028": {
+    "type": "arcd_query",
+    "query_id": "query_028",
+    "target_id": "p_009",
+    "audio_path": "audio_tts/arcd_queries/query_028.mp3",
+    "duration_s": 4.03,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "a5eec71cb009e375c7019255a2e047f72de763dc01cdb209719a8978cdb6ec2e",
+    "text_len": 27
+  },
+  "query_029": {
+    "type": "arcd_query",
+    "query_id": "query_029",
+    "target_id": "p_009",
+    "audio_path": "audio_tts/arcd_queries/query_029.mp3",
+    "duration_s": 3.65,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "6d6f8c92669a8cb3c09b59731116671a06238ada7004d464d0fd9cc37466c03e",
+    "text_len": 22
+  },
+  "query_030": {
+    "type": "arcd_query",
+    "query_id": "query_030",
+    "target_id": "p_010",
+    "audio_path": "audio_tts/arcd_queries/query_030.mp3",
+    "duration_s": 5.81,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "f95ae1470013d7e7aabe356ab6fc4446fa54894b4f35f97b100b05f581f54367",
+    "text_len": 54
+  },
+  "query_031": {
+    "type": "arcd_query",
+    "query_id": "query_031",
+    "target_id": "p_010",
+    "audio_path": "audio_tts/arcd_queries/query_031.mp3",
+    "duration_s": 6.94,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "c32da8d8ec6c87af3238a1b5bd43c90328af786455bdf0cffe46a666c517f89b",
+    "text_len": 53
+  },
+  "query_032": {
+    "type": "arcd_query",
+    "query_id": "query_032",
+    "target_id": "p_010",
+    "audio_path": "audio_tts/arcd_queries/query_032.mp3",
+    "duration_s": 7.54,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "013caa98e2c894de08fa823e6113aac3c7da08cbb0b1c8f70dc75400d4fd7386",
+    "text_len": 69
+  },
+  "query_033": {
+    "type": "arcd_query",
+    "query_id": "query_033",
+    "target_id": "p_011",
+    "audio_path": "audio_tts/arcd_queries/query_033.mp3",
+    "duration_s": 2.95,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "b3db25fc0aaba43dc40a4debe9a0859ac4693f11bbeb327b765bab33765c8b11",
+    "text_len": 13
+  },
+  "query_034": {
+    "type": "arcd_query",
+    "query_id": "query_034",
+    "target_id": "p_011",
+    "audio_path": "audio_tts/arcd_queries/query_034.mp3",
+    "duration_s": 3.31,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "72c1f0c276ed3d94f54b3947598e9ae54fbcfcb52be96df8a3a188f88636e111",
+    "text_len": 17
+  },
+  "query_035": {
+    "type": "arcd_query",
+    "query_id": "query_035",
+    "target_id": "p_011",
+    "audio_path": "audio_tts/arcd_queries/query_035.mp3",
+    "duration_s": 3.29,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "c5577d6949239d3d2359a7f3d0e3990d8c05d98fb4b65a41f9394337160d1e3f",
+    "text_len": 15
+  },
+  "query_036": {
+    "type": "arcd_query",
+    "query_id": "query_036",
+    "target_id": "p_012",
+    "audio_path": "audio_tts/arcd_queries/query_036.mp3",
+    "duration_s": 3.48,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "5dfb3d402d8acc707183031d929980b5360fbfb8b7abae1f0d1c109ee76bec96",
+    "text_len": 20
+  },
+  "query_037": {
+    "type": "arcd_query",
+    "query_id": "query_037",
+    "target_id": "p_012",
+    "audio_path": "audio_tts/arcd_queries/query_037.mp3",
+    "duration_s": 3.84,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "2ad611f0a812a7da60b1c487f05fa03b3a663fac7e7c6a834655907e7cb21219",
+    "text_len": 24
+  },
+  "query_038": {
+    "type": "arcd_query",
+    "query_id": "query_038",
+    "target_id": "p_012",
+    "audio_path": "audio_tts/arcd_queries/query_038.mp3",
+    "duration_s": 4.32,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "4bc35f6d7be3ede13a212ff4d8ed16cc81fea3ab08664b7b35f82fe59573bf86",
+    "text_len": 29
+  },
+  "query_039": {
+    "type": "arcd_query",
+    "query_id": "query_039",
+    "target_id": "p_013",
+    "audio_path": "audio_tts/arcd_queries/query_039.mp3",
+    "duration_s": 5.06,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "37fef2094c28e7ec666c55d831752ff425114142fa95f4c12cb888394ccfb274",
+    "text_len": 46
+  },
+  "query_040": {
+    "type": "arcd_query",
+    "query_id": "query_040",
+    "target_id": "p_013",
+    "audio_path": "audio_tts/arcd_queries/query_040.mp3",
+    "duration_s": 5.59,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "dcb1928927ca7bc493fcc25a96418eab67b7f83a574b549471a582ff2801cd95",
+    "text_len": 52
+  },
+  "query_041": {
+    "type": "arcd_query",
+    "query_id": "query_041",
+    "target_id": "p_013",
+    "audio_path": "audio_tts/arcd_queries/query_041.mp3",
+    "duration_s": 5.74,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "bea1e3335cda4938df8ef1a029cbe6f655469209d05ea1ff02f5ceffe64afd33",
+    "text_len": 57
+  },
+  "query_042": {
+    "type": "arcd_query",
+    "query_id": "query_042",
+    "target_id": "p_014",
+    "audio_path": "audio_tts/arcd_queries/query_042.mp3",
+    "duration_s": 7.39,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "73842b97d7ddbd2ce34f892269d26ef3c6ae6d3938ed5b38eae5d32010a93f6f",
+    "text_len": 73
+  },
+  "query_043": {
+    "type": "arcd_query",
+    "query_id": "query_043",
+    "target_id": "p_014",
+    "audio_path": "audio_tts/arcd_queries/query_043.mp3",
+    "duration_s": 7.18,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "c541198f1cb9f157bab22d678f7050381a924cd62418b0bfec847d4a708ddcc4",
+    "text_len": 60
+  },
+  "query_044": {
+    "type": "arcd_query",
+    "query_id": "query_044",
+    "target_id": "p_014",
+    "audio_path": "audio_tts/arcd_queries/query_044.mp3",
+    "duration_s": 4.61,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "37a34ebfcbbe6d29d395cd092377381a3d942deea6bd621489d913198cc8deba",
+    "text_len": 40
+  },
+  "query_045": {
+    "type": "arcd_query",
+    "query_id": "query_045",
+    "target_id": "p_015",
+    "audio_path": "audio_tts/arcd_queries/query_045.mp3",
+    "duration_s": 2.88,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "4e92f559973d186a9b4a0dcfdeb9a82b784b8dffe3a77dccab0fb5c643d92d7a",
+    "text_len": 24
+  },
+  "query_046": {
+    "type": "arcd_query",
+    "query_id": "query_046",
+    "target_id": "p_015",
+    "audio_path": "audio_tts/arcd_queries/query_046.mp3",
+    "duration_s": 2.98,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "e6cb56885bf1cef3773c807dbd6d1eb27283eeffba65534929ba4fc7d786e091",
+    "text_len": 26
+  },
+  "query_047": {
+    "type": "arcd_query",
+    "query_id": "query_047",
+    "target_id": "p_015",
+    "audio_path": "audio_tts/arcd_queries/query_047.mp3",
+    "duration_s": 3.5,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "10064c3ed13d6678654144712537e01e94faee23d15c2d6f9e6fa454c02ea0e1",
+    "text_len": 31
+  },
+  "query_048": {
+    "type": "arcd_query",
+    "query_id": "query_048",
+    "target_id": "p_016",
+    "audio_path": "audio_tts/arcd_queries/query_048.mp3",
+    "duration_s": 4.78,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "c5eb1440d6c2cd21e5b01f08449a7b17a8866a0f513ac29113741b5a7fa4de6d",
+    "text_len": 47
+  },
+  "query_049": {
+    "type": "arcd_query",
+    "query_id": "query_049",
+    "target_id": "p_016",
+    "audio_path": "audio_tts/arcd_queries/query_049.mp3",
+    "duration_s": 3.62,
+    "voice": "ar-SA-HamedNeural",
+    "sha256": "695147f57085035eabeaa229777a5ec7466bbf7eb8c0867cc4186998ea93a907",
+    "text_len": 31
+  }
+}

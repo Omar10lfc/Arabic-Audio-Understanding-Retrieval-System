@@ -1,7 +1,7 @@
 """
 Review Bundle Builder (scripts/review_bundle_builder.py)
-Copies audited artifacts into review_bundle/, generates MANIFEST.json,
-and creates review_bundle.zip (excluding model weights).
+Copies audited artifacts into review_bundle/, generates MANIFEST.json with sha256 and md5,
+stages executed Kaggle notebooks with full outputs, and creates review_bundle.zip.
 """
 
 import os
@@ -17,6 +17,13 @@ BUNDLE_DIR = ROOT_DIR / "review_bundle"
 
 def compute_sha256(filepath):
     h = hashlib.sha256()
+    with open(filepath, "rb") as f:
+        while chunk := f.read(65536):
+            h.update(chunk)
+    return h.hexdigest()
+
+def compute_md5(filepath):
+    h = hashlib.md5()
     with open(filepath, "rb") as f:
         while chunk := f.read(65536):
             h.update(chunk)
@@ -52,33 +59,37 @@ def build_bundle():
     # 1. Notebooks
     copy_tree_filtered(ROOT_DIR / "Notebooks", BUNDLE_DIR / "Notebooks")
     
-    # 2. evalkit/
+    # 2. Executed Kaggle Notebooks (with outputs)
+    if (ROOT_DIR / "kaggle_outputs").exists():
+        copy_tree_filtered(ROOT_DIR / "kaggle_outputs", BUNDLE_DIR / "kaggle_outputs")
+
+    # 3. evalkit/
     copy_tree_filtered(ROOT_DIR / "evalkit", BUNDLE_DIR / "evalkit")
     
-    # 3. configs/
+    # 4. configs/
     if (ROOT_DIR / "configs").exists():
         copy_tree_filtered(ROOT_DIR / "configs", BUNDLE_DIR / "configs")
         
-    # 4. tests/
+    # 5. tests/
     copy_tree_filtered(ROOT_DIR / "tests", BUNDLE_DIR / "tests")
     
-    # 5. scripts/
+    # 6. scripts/
     copy_tree_filtered(ROOT_DIR / "scripts", BUNDLE_DIR / "scripts")
     
-    # 6. Requirements & env snapshots
+    # 7. Requirements & env snapshots
     copy_file(ROOT_DIR / "requirements.txt", BUNDLE_DIR / "requirements.txt")
     copy_file(ROOT_DIR / "packages.txt", BUNDLE_DIR / "packages.txt")
     copy_file(ROOT_DIR / "Results" / "pip_freeze.txt", BUNDLE_DIR / "Results" / "pip_freeze.txt")
     if (ROOT_DIR / "Results" / "env").exists():
         copy_tree_filtered(ROOT_DIR / "Results" / "env", BUNDLE_DIR / "Results" / "env")
         
-    # 7. Results/final/**
+    # 8. Results/final/**
     copy_tree_filtered(ROOT_DIR / "Results" / "final", BUNDLE_DIR / "Results" / "final")
     
-    # 8. Results/legacy/README.md
+    # 9. Results/legacy/README.md
     copy_file(ROOT_DIR / "Results" / "legacy" / "README.md", BUNDLE_DIR / "Results" / "legacy" / "README.md")
     
-    # 9. Docs
+    # 10. Docs
     copy_file(ROOT_DIR / "README.md", BUNDLE_DIR / "README.md")
     copy_file(ROOT_DIR / "README_SPACE.md", BUNDLE_DIR / "README_SPACE.md")
     copy_file(ROOT_DIR / "REPORT_experiments_results.md", BUNDLE_DIR / "REPORT_experiments_results.md")
@@ -96,8 +107,10 @@ def generate_manifest():
             stat = item.stat()
             rel_path = item.relative_to(BUNDLE_DIR).as_posix()
             sha256_val = compute_sha256(item)
+            md5_val = compute_md5(item)
             manifest.append({
                 "path": rel_path,
+                "md5": md5_val,
                 "sha256": sha256_val,
                 "bytes": stat.st_size,
                 "mtime": stat.st_mtime

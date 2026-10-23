@@ -1,0 +1,113 @@
+{
+  "manifest_version": "1.0",
+  "notebooks": {
+    "Notebooks/final_00_merge_models.ipynb": {
+      "internet": true,
+      "declared_inputs": [
+        "openai/whisper-large-v3",
+        "openai/whisper-large-v3-turbo",
+        "openai/whisper-medium",
+        "openai/whisper-small",
+        "Omar10lfc/whisper-small-arabic",
+        "Omar10lfc/arabart-xlsum-arabic",
+        "CAMeL-Lab/bert-base-arabic-camelbert-msa",
+        "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+        "/kaggle/input/evalkit-src",
+        "/kaggle/input/fine-tuning-whisper-large-v3-on-arabic-speech",
+        "/kaggle/input/whisper-large-v3-turbo-arabic-qlora",
+        "/kaggle/input/whisper-medium-arabic-stage2"
+      ],
+      "declared_outputs": [
+        "/kaggle/working/final-merged-models",
+        "Results/env/final_00_merge_models_env.txt"
+      ]
+    },
+    "Notebooks/final_01a_cv_gate_pass1.ipynb": {
+      "internet": false,
+      "declared_inputs": [
+        "/kaggle/input/evalkit-src",
+        "/kaggle/input/evalkitsrc",
+        "/kaggle/input/common-voice-scripted-speech-25-0-arabic",
+        "/kaggle/input/final-merged-models",
+        "/kaggle/input/zero-notebook"
+      ],
+      "declared_outputs": [
+        "Results/final/cv_pass1_pytorch_fp16.json",
+        "Results/smoke/cv_pass1_pytorch_fp16.json",
+        "Results/env/final_01a_cv_gate_pass1_env.txt"
+      ]
+    },
+    "Notebooks/final_01b_cv_pass2_beam5.ipynb": {
+      "internet": true,
+      "declared_inputs": [
+        "/kaggle/input/evalkit-src",
+        "/kaggle/input/evalkitsrc",
+        "/kaggle/input/common-voice-scripted-speech-25-0-arabic",
+        "/kaggle/input/final-merged-models",
+        "/kaggle/input/zero-notebook"
+      ],
+      "declared_outputs": [
+        "Results/final/cv_pass2_ct2_int8.json",
+        "Results/smoke/cv_pass2_ct2_int8.json",
+        "Results/final/cv_beam5_vad_comparison.json",
+        "Results/smoke/cv_beam5_vad_comparison.json",
+        "Results/env/final_01b_cv_pass2_beam5_env.txt"
+      ]
+    },
+    "Notebooks/final_01c_cv_wer_matrix.ipynb": {
+      "internet": true,
+      "declared_inputs": [
+        "/kaggle/input/evalkit-src",
+        "/kaggle/input/evalkitsrc",
+        "/kaggle/input/common-voice-scripted-speech-25-0-arabic",
+        "/kaggle/input/final-merged-models",
+        "/kaggle/input/zero-notebook"
+      ],
+      "declared_outputs": [
+        "Results/final/cv_pass4_matrix.json",
+        "Results/smoke/cv_pass4_matrix.json",
+        "Results/env/final_01c_cv_wer_matrix_env.txt"
+      ]
+    },
+    "Notebooks/final_02_tts_asr.ipynb": {
+      "internet": true,
+      "declared_inputs": [
+        "/kaggle/input/evalkit-src",
+        "/kaggle/input/evalkitsrc",
+        "/kaggle/input/arabic-xl-sum",
+        "/kaggle/input/arabic-reading-comprehension-dataset-arcd",
+        "/kaggle/input/final-merged-models",
+        "/kaggle/input/zero-notebook"
+      ],
+      "declared_outputs": [
+        "Results/final/tts_asr_propagation_results.json",
+        "Results/smoke/tts_asr_propagation_results.json",
+        "Results/spoken_arcd_transcripts.json",
+        "Results/final/spoken_arcd_transcripts.json",
+        "Results/smoke/spoken_arcd_transcripts.json",
+        "Results/env/final_02_tts_asr_env.txt"
+      ]
+    },
+    "Notebooks/final_03_summarization_retrieval.ipynb": {
+      "internet": false,
+      "declared_inputs": [
+        "/kaggle/input/evalkit-src",
+        "/kaggle/input/evalkitsrc",
+        "/kaggle/input/arabic-xl-sum",
+        "/kaggle/input/arabic-reading-comprehension-dataset-arcd",
+        "/kaggle/input/final-merged-models",
+        "/kaggle/input/zero-notebook",
+        "/kaggle/input/tts-asr-propagation-results"
+      ],
+      "declared_outputs": [
+        "Results/final/downstream_retrieval_summarization.json",
+        "Results/smoke/downstream_retrieval_summarization.json",
+        "Results/final/spoken_retrieval_summary.csv",
+        "Results/smoke/spoken_retrieval_summary.csv",
+        "Results/final/spoken_retrieval_results.json",
+        "Results/smoke/spoken_retrieval_results.json",
+        "Results/env/final_03_summarization_retrieval_env.txt"
+      ]
+    }
+  }
+}

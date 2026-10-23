@@ -1,0 +1,29 @@
+{
+  "id": "omar10lfc/final-03-summarization-retrieval",
+  "id_no": 138166057,
+  "title": "final_03_summarization_retrieval",
+  "code_file": "final-03-summarization-retrieval.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "omar10lfc/arabic-xl-sum",
+    "thedevastator/unlocking-arabic-language-comprehension-with-the",
+    "omar10lfc/common-voice-scripted-speech-25-0-arabic",
+    "omar10lfc/evalkit-src",
+    "omar10lfc/tts-asr-propagation-results"
+  ],
+  "kernel_sources": [
+    "omar10lfc/final-02-tts-asr"
+  ],
+  "competition_sources": [],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-private-byod/python@sha256:2757e0c7d1e0a9cb43da657b97e223c321a98f5014bdf64f44f2f6b083ad2b2f",
+  "machine_shape": "NvidiaTeslaT4"
+}
