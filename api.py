@@ -126,6 +126,7 @@ class DrillDownResponse(BaseModel):
 class HealthResponse(BaseModel):
     status:        str
     models_loaded: Dict[str, bool]
+    asr_model:     Dict[str, Any]
     device:        str
 
 
@@ -134,7 +135,7 @@ class HealthResponse(BaseModel):
 # =============================================================================
 @api.get("/health", response_model=HealthResponse)
 def health():
-    """Liveness probe + which heavy models are already resident."""
+    """Liveness probe + which heavy models are already resident + ASR model metadata."""
     return HealthResponse(
         status="ok",
         models_loaded={
@@ -143,6 +144,7 @@ def health():
             "summarizer": pipeline._M.summ_mdl    is not None,
             "reranker":   pipeline._M.reranker    is not None,
         },
+        asr_model=pipeline.get_asr_model_info(),
         device=pipeline._device(),
     )
 

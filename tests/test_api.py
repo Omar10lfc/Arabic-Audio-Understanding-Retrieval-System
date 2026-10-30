@@ -35,6 +35,9 @@ class TestHealth:
         assert "models_loaded" in body
         assert set(body["models_loaded"]) == {"whisper", "embedder",
                                               "summarizer", "reranker"}
+        assert "asr_model" in body
+        assert "model_id" in body["asr_model"]
+        assert "revision" in body["asr_model"]
         assert body["device"] in {"cpu", "cuda"}
 
 

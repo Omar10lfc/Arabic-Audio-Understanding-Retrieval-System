@@ -12,6 +12,8 @@ torch==2.9.1
 # Whisper + AraBART weights were saved with transformers 4.44.2.
 # Loading with >=4.45 breaks Whisper's tokenizer (extra_special_tokens list/dict).
 transformers==4.44.2
+faster-whisper==1.0.3
+ctranslate2==4.4.0
 accelerate>=0.30.0,<1.0
 librosa>=0.10.0
 # NOTE: Headline paper and report numbers are generated from the Kaggle GPU environments recorded in Results/env/.

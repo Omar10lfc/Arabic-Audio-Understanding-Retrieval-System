@@ -24,10 +24,12 @@ import re
 import textwrap
 import tempfile
 import urllib.request
+import json
+import hashlib
 from collections import namedtuple
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -52,11 +54,15 @@ def _fmt_time(t: Optional[float]) -> str:
 # =============================================================================
 PROJECT_DIR        = Path(__file__).resolve().parent
 
-# Models are loaded from the HF Hub by default (works on HF Spaces and any
-# clean machine). To use a local checkpoint instead, point these at a folder
-# path — `from_pretrained` accepts either form.
+# Evaluated Fine-Tuned Whisper CT2 INT8 checkpoint directory
+_EVAL_TURBO_CT2 = (PROJECT_DIR / "kaggle_outputs" / "zero-notebook" /
+                   "final-merged-models" / "ct2_int8" / "whisper-large-v3-turbo-ct2-int8")
+
+# Models are loaded from the fine-tuned CT2 export by default, falling back to
+# the evaluated Hugging Face Hub checkpoint or env var override.
 WHISPER_DIR        = os.environ.get(
-    "WHISPER_MODEL_ID", "large-v3-turbo")
+    "WHISPER_MODEL_ID",
+    str(_EVAL_TURBO_CT2) if _EVAL_TURBO_CT2.exists() else "openai/whisper-large-v3-turbo")
 SUMMARIZER_DIR     = os.environ.get(
     "SUMMARIZER_MODEL_ID", "Omar10lfc/arabart-xlsum-arabic")
 
@@ -192,6 +198,7 @@ class _Models:
     whisper_proc = None
     whisper_mdl  = None
     asr_pipeline = None
+    whisper_info: Optional[Dict[str, Any]] = None
     embed_tok    = None
     embed_mdl    = None
     summ_tok     = None
@@ -201,6 +208,60 @@ class _Models:
 
 
 _M = _Models()
+
+
+def get_asr_model_info() -> Dict[str, Any]:
+    """Inspect and return verified metadata for the configured Whisper model."""
+    if _M.whisper_info is not None:
+        return _M.whisper_info
+
+    target_path = Path(WHISPER_DIR)
+    card_path = target_path / "model_card.json" if target_path.is_dir() else None
+    card_data: Dict[str, Any] = {}
+    if card_path and card_path.exists():
+        try:
+            with open(card_path, "r", encoding="utf-8") as f:
+                card_data = json.load(f)
+        except Exception:
+            pass
+
+    target_str = str(WHISPER_DIR).lower()
+    is_fine_tuned = bool(
+        card_data.get("adapter_source")
+        or "turbo-ct2-int8" in target_str
+        or "qlora" in target_str
+        or "fine-tuned" in target_str
+        or "omar10lfc" in target_str
+    )
+
+    revision = card_data.get(
+        "commit_sha",
+        os.environ.get("WHISPER_REVISION", "41f01f3fe87f28c78e2fbf8b568835947dd65ed9" if "turbo" in target_str else "06f233fe06e710322aca913c1bc4249a0d71fce1")
+    )
+
+    # Compute SHA-256 for local verification
+    sha256 = None
+    if target_path.is_dir():
+        for candidate in ["model.bin", "model.safetensors", "config.json", "model_card.json"]:
+            cp = target_path / candidate
+            if cp.exists():
+                h = hashlib.sha256()
+                with open(cp, "rb") as fd:
+                    while chunk := fd.read(65536):
+                        h.update(chunk)
+                sha256 = h.hexdigest()
+                break
+
+    use_ct2 = os.environ.get("USE_CT2", "1") == "1"
+    info = {
+        "model_id": str(WHISPER_DIR),
+        "revision": revision,
+        "is_fine_tuned": is_fine_tuned,
+        "adapter_source": card_data.get("adapter_source"),
+        "sha256": sha256 or "unknown",
+        "engine": "faster-whisper (CTranslate2 INT8)" if use_ct2 else "transformers",
+    }
+    return info
 
 
 def _device() -> str:
@@ -225,6 +286,10 @@ def _load_kwargs():
 def _load_whisper():
     if _M.asr_pipeline is not None or _M.whisper_mdl is not None:
         return
+    info = get_asr_model_info()
+    _M.whisper_info = info
+    print(f"[pipeline] Loading Whisper ASR: id={info['model_id']}, is_fine_tuned={info['is_fine_tuned']}, revision={info['revision']}, sha256={info['sha256']}")
+
     # Check if faster_whisper can be loaded (CT2 INT8 high-throughput engine)
     use_ct2 = os.environ.get("USE_CT2", "1") == "1"
     if use_ct2:
