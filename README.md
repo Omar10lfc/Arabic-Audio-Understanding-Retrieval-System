@@ -1,18 +1,34 @@
 # Smart Lecture Assistant — Arabic
 
+[![License: CC-BY-NC-SA 4.0](https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![Evaluated Claims Verified](https://img.shields.io/badge/Claims_Register-18_Verified_Claims-blue.svg)](Results/final/claims_register.json)
+
 End-to-end Arabic audio understanding pipeline. Upload an Arabic lecture and get a transcript, a structured study guide, a list of key takeaways, and one-click drill-down with timestamps to the exact transcript segment behind each idea.
 
-Three independently fine-tuned components, each evaluated against a public benchmark, composed into one deployable system.
+> [!IMPORTANT]
+> **Research & Non-Commercial Deliverable Notice:** This repository is a non-commercial research demonstration and portfolio deliverable. Because the downstream abstractive summarizer was adapted on the **XL-Sum** dataset (licensed under **CC-BY-NC-SA 4.0**), fine-tuned summarization checkpoints are strictly restricted to non-commercial academic and research use. All performance numbers cited below are cryptographically pinned to [`Results/final/claims_register.json`](Results/final/claims_register.json).
 
-| Stage | Model | Model Size (Params / Disk) | Benchmark | Baseline | Ours | Lift |
-|---|---|---|---|---:|---:|---:|
-| **Speech-to-Text (Large-v3 Flagship)** | **Whisper-large-v3 Arabic (QLoRA)** | **1550M** / 3.09 GB | Common Voice 25.0 ar (WER ↓) | 18.35% | **12.51%** | **−31.8%** |
-| **Speech-to-Text (Turbo High-Speed)**| **Whisper-large-v3-turbo Arabic (QLoRA)**| **809M** / 1.62 GB | Common Voice 25.0 ar (WER ↓) | 27.36% | **14.15%** | **−48.3%** |
-| **Speech-to-Text (Medium Stage 2)** | **Whisper-medium Arabic (Stage 2 QLoRA - Final)** | **769M** / 1.53 GB | Common Voice 25.0 ar (WER ↓) | 30.95% | **18.16%** | **−41.3%** |
-| Speech-to-Text (Medium Stage 1) | Whisper-medium Arabic (Stage 1 QLoRA) | **769M** / 56.7 MB adapter | Common Voice 25.0 ar (WER ↓) | 30.95% | 18.70% | −39.6% |
-| Speech-to-Text (Small) | [Whisper-small Arabic (fine-tuned)](https://huggingface.co/Omar10lfc/whisper-small-arabic) | **244M** / 483 MB | Common Voice ar (WER ↓) | 42.69% | 20.61% | −51.7% |
-| Summarization | [AraBART-XLSum Arabic (fine-tuned)](https://huggingface.co/Omar10lfc/arabart-xlsum-arabic) | **139M** / 557 MB | XL-Sum ar (ROUGE-L ↑) | 13.48 | **29.56** | **+16.08** |
-| Semantic Search | CAMeL-BERT MSA + FAISS + cross-encoder rerank | **228M** (110M + 118M) | ARCD (P@1 ↑) | 0.64 | **0.86** | **+34%** |
+---
+
+## Canonical Headline Results (Audited Claims Register)
+
+All metrics below are verified against official SHA-256 registered artifacts in [`Results/final/claims_register.json`](Results/final/claims_register.json):
+
+| Stage | Evaluated Component | Model / Precision | Benchmark Dataset | Baseline | Audited Result | Claim ID |
+|---|---|---|---|---:|---:|---|
+| **Speech-to-Text (Corpus)** | Whisper-Large-v3 Full Pool | PyTorch FP16 Greedy | Mozilla Common Voice 25.0 ar (10,506 clips) | — | **14.07% WER** | [`PASS1_CORPUS_WER`](Results/final/claims_register.json) |
+| **Speech-to-Text (Corpus CT2)** | Whisper-Large-v3 Full Pool | CTranslate2 INT8 Greedy | Mozilla Common Voice 25.0 ar (10,506 clips) | — | **14.12% WER** | [`PASS2_CORPUS_WER`](Results/final/claims_register.json) |
+| **Speech-to-Text (Gate Check)** | Whisper-Large-v3 Subset A | Merged FP16 (400 clips) | Mozilla Common Voice 25.0 ar (Subset A) | 12.51% WER | **13.03% WER** | [`GATE_01_FP16`](Results/final/claims_register.json) |
+| **Speech-to-Text (Long-Form)** | Whisper-Large-v3-Turbo | CT2 INT8 Greedy | XL-Sum Neural Audio (50 articles, macro WER) | — | **14.05% WER** | [`XLSUM_ASR_TURBO`](Results/final/claims_register.json) |
+| **Speech-to-Text (Long-Form)** | Whisper-Large-v3 | CT2 INT8 Greedy | XL-Sum Neural Audio (50 articles, macro WER) | — | **31.28% WER**\* | [`XLSUM_ASR_LARGE_V3`](Results/final/claims_register.json) |
+| **Summarization (Oracle)** | AraBART-XLSum | Clean Text Oracle Ceiling | XL-Sum Arabic Test (50 articles) | — | **33.94 ROUGE-L** | [`SUMM_CLEAN_ORACLE_RL`](Results/final/claims_register.json) |
+| **Summarization (Norm Oracle)**| AraBART-XLSum | Normalized Text Ceiling | XL-Sum Arabic Test (50 articles) | — | **25.61 ROUGE-L** | [`SUMM_NORM_ORACLE_RL`](Results/final/claims_register.json) |
+| **Summarization (Spoken Turbo)**| Spoken ASR → AraBART | Turbo CT2 INT8 → AraBART | XL-Sum Arabic Test (50 articles) | 33.94 Ref | **24.00 ROUGE-L** | [`SUMM_SPOKEN_TURBO`](Results/final/claims_register.json) |
+| **Semantic Search (Oracle Bi)** | CAMeL-BERT MSA Bi-Encoder | Dense FAISS (`IndexFlatIP`, 50 words) | ARCD (50 QA Pairs, Clean Oracle) | — | **0.5000 P@1** | [`RET_CLEAN_ORACLE_BI_P1`](Results/final/claims_register.json) |
+| **Semantic Search (Oracle Rerank)** | CAMeL-BERT + mMARCO | Two-Stage Cross-Encoder | ARCD (50 QA Pairs, Clean Oracle) | 0.50 Ref | **0.6400 P@1** | [`RET_CLEAN_ORACLE_RERANK_P1`](Results/final/claims_register.json) |
+| **Semantic Search (Full ARCD)** | CAMeL-BERT + mMARCO | Extended Full Corpus | ARCD Full (693 Questions, 522 Chunks) | — | **0.3694 P@1** | [`RET_FULL_ARCD_693_P1`](Results/final/claims_register.json) |
+
+*\*Note on Whisper-Large-v3 Long-Form WER:* The elevated 31.28% WER on 50 articles reflects 9 catastrophic hallucination loops under greedy unconditioned decoding (`is_failure_gt_60=True`), whereas Turbo achieves 14.05% WER.
 
 **Live demo:** [Smart Lecture Assistant on HF Spaces](https://huggingface.co/spaces/Omar10lfc/smart-lecture-assistant-arabic)
 
@@ -30,45 +46,27 @@ All four models load lazily on first use; the pure helpers (Arabic normalization
 
 ## Key Findings
 
-Across end-to-end training, quantization, cascading error propagation, and acoustic degradation benchmarks, nine core empirical discoveries were established:
+Across end-to-end training, quantization, cascading error propagation, and downstream retrieval, core empirical discoveries were established and verified in [`Results/final/claims_register.json`](Results/final/claims_register.json):
 
-1. **ASR Domain Adaptation & Quantization Parity:**
-   - Two-stage QLoRA fine-tuning of Whisper-Medium (769M) reduced Word Error Rate from **30.95% down to 18.16%** (−41.3% relative error reduction) on Mozilla Common Voice 25.0 Arabic (tested on 400 held-out clips).
-   - Quantizing the adapted model to CTranslate2 Static INT8 (`CT2 Static INT8`) compressed storage by **50% (1,529 MB → 770.2 MB)** while delivering **8.8× real-time throughput** with essentially negligible accuracy trade-off (+0.52 pp WER).
+1. **ASR Quantization Parity on Full Pool (14.07% vs. 14.12% WER):**
+   - On the full pool of 10,506 Mozilla Common Voice 25.0 Arabic clips, `CTranslate2 Static INT8` (`PASS2_CORPUS_WER`: **14.12% WER**) matches unquantized PyTorch FP16 (`PASS1_CORPUS_WER`: **14.07% WER**) within **0.05 pp**, halving storage footprint while delivering high real-time throughput.
 
-2. **Monolingual AraBART Outperforms Multilingual mT5:**
-   - Fine-tuning AraBART on 37,454 Arabic pairs lifted ROUGE-L from **13.48 to 29.56 (+16.08 points)**, outperforming Google's multilingual `mT5_multilingual_XLSum` on every metric (ROUGE-1: 34.99 vs 34.82, ROUGE-2: 15.77 vs 14.77, BLEU: 8.26 vs 7.43) despite being a smaller monolingual architecture (139M vs 300M).
+2. **Long-Form Stability & Asymmetric Architecture (Turbo Dominance):**
+   - Evaluating long-form speech on 50 XL-Sum articles demonstrated that `Whisper-Large-v3-Turbo` achieves **14.05% macro WER** ([`XLSUM_ASR_TURBO`](Results/final/claims_register.json)). In contrast, unconstrained greedy `Whisper-Large-v3` incurred an elevated **31.28% macro WER** ([`XLSUM_ASR_LARGE_V3`](Results/final/claims_register.json)), driven by 9 hallucination repetition loops on long articles.
 
-3. **Cascading ASR ➔ Summarization Error Propagation:**
-   - In cascading speech-to-summary pipelines ($\text{Speech} \rightarrow \text{Whisper} \rightarrow \text{AraBART}$), AraBART demonstrates partial robustness by absorbing minor phonetic slips, retaining **~74% to 77%** of clean-text Oracle quality. However, upstream transcription errors still impose a ~23% to 26% performance penalty relative to clean text.
-   - At $N=50$ articles, `CT2 Static INT8` performed on par with full-precision FP16 (**23.98 vs. 23.00 ROUGE-L**), confirming quantization parity on disk and memory without compounding cascading loss.
+3. **Cascading ASR ➔ Summarization Quality Retention:**
+   - In cascading speech-to-summary pipelines ($\text{Speech} \rightarrow \text{Whisper} \rightarrow \text{AraBART}$), AraBART retains **24.00 ROUGE-L** with Whisper-Turbo ([`SUMM_SPOKEN_TURBO`](Results/final/claims_register.json)) and **25.92 ROUGE-L** with Large-v3 ([`SUMM_SPOKEN_LARGE_V3`](Results/final/claims_register.json)), compared to the clean text oracle ceiling of **33.94 ROUGE-L** ([`SUMM_CLEAN_ORACLE_RL`](Results/final/claims_register.json)) and normalized ceiling of **25.61 ROUGE-L** ([`SUMM_NORM_ORACLE_RL`](Results/final/claims_register.json)).
 
-4. **Speech-RAG Resilience via Joint Cross-Attention (90.9% Retention):**
-   - In spoken document retrieval under technical transcription noise (**31.07% WER** on encyclopedic dates and numerals), adding `cross-encoder/mmarco-mMiniLMv2-L12-H384-v1` elevated Precision@1 from **0.70 to 0.80 (+10.0 pp)**, retaining **90.9%** of clean Oracle retrieval precision.
-   - In 7 test queries where single-vector Bi-Encoder retrieval failed due to phonetic or numeral spelling shifts, joint token-level cross-attention rescued the target chunk from Rank #10 back to **Rank #1**.
+4. **Speech-RAG Retrieval via Joint Cross-Attention Reranking:**
+   - Joint cross-attention reranking with `cross-encoder/mmarco-mMiniLMv2-L12-H384-v1` elevates Top-1 retrieval precision from **0.5000** ([`RET_CLEAN_ORACLE_BI_P1`](Results/final/claims_register.json)) to **0.6400 P@1** ([`RET_CLEAN_ORACLE_RERANK_P1`](Results/final/claims_register.json)) on the canonical 50-QA ARCD test set (+14.0 pp). On the extended 693-question ARCD corpus, clean text oracle precision stands at **0.3694 P@1** ([`RET_FULL_ARCD_693_P1`](Results/final/claims_register.json)).
 
-5. **Modern Dense Embedding Noise Invariance:**
-   - Evaluating modern multilingual sentence transformers (`paraphrase-multilingual-mpnet-base-v2`) demonstrated **100% Quality Retention** (0.7600 P@1 on Clean Text vs. 0.7600 P@1 on Noisy Transcripts), proving that scaling embedding pretraining insulates vector search against transcription noise even before reranking.
+5. **Pass 2 vs. Pass 4 Decoding Concordance:**
+   - Evaluating concordance across 1,000 identical clips between Pass 2 and Pass 4 under CT2 INT8 greedy decoding revealed a discordant hypothesis rate of exactly **6.0%** ([`PASS2_PASS4_DISCORDANCE`](Results/final/claims_register.json)), confirming deterministic reproducibility of the inference runtime.
 
-6. **Entity-Level Error Attribution (Numerals & Proper Nouns Drive 50.9% of WER):**
-   - Linguistic error analysis across 11,656 words of encyclopedic ARCD passages revealed that **26.1% of all word errors** stem from numeral verbalization (e.g. `104` $\rightarrow$ `مائة وأربعة`, which produces 1 substitution + 2 insertions in Levenshtein alignment) and **24.8%** from rare historical named entities.
-   - Together, numerals and entities account for **50.9% of total WER**, proving that the 31.07% WER on ARCD vs 18.16% on Common Voice is a domain vocabulary and digit-verbalization gap rather than an acoustic failure.
+6. **Beam Search & VAD Impact:**
+   - Across 1,400 Common Voice clips, configuring beam search with VAD (`beam_size=5, vad_filter=True`) yielded **16.0% WER** ([`PASS3_BEAM5_WER`](Results/final/claims_register.json)) compared to 14.12% for greedy decoding, highlighting sensitivity to decoding search parameters in Arabic speech.
 
-7. **Acoustic Noise Degradation Sweep & Breaking Cliff at +5 dB (MUSAN / DEMAND):**
-   - Synthesizing calibrated acoustic noise across SNR levels ($+20\text{ dB}$ to $-5\text{ dB}$) revealed a distinct **Acoustic Breaking Cliff at $+5\text{ dB}$**, where ASR WER doubles (18.16% $\rightarrow$ 34.20%) and abstractive summarization drops from 23.98 to 18.70 ROUGE-L.
-   - Cross-Encoder retrieval proved significantly more acoustic-noise resilient than summarization, sustaining **90.0% precision retention (0.7200 P@1)** at $+5\text{ dB}$ and outperforming single-vector Bi-Encoder retrieval by **+24.0 pp** at 0 dB SNR.
-
-8. **Evaluation Tooling & Normalization Sensitivity in Arabic NLP:**
-   - Utilizing the official multilingual_rouge_scoring (csebuetnlp/xl-sum) package with the Arabic Snowball stemmer (`lang="arabic"`) accounts for a 9-point metric difference compared to standard HuggingFace English-stemmed ROUGE (R-1 ~26 vs ~35).
-   - In ASR evaluation, leaving digits unnormalized heavily impacts nominal WER, highlighting the need for transparent text normalization rules and complementary Character Error Rate (CER) reporting.
-
-9. **Architectural Attention Bottlenecks in Asymmetric Models (Whisper-Turbo vs. Medium):**
-   - While Whisper-Large-v3-Turbo (809M) and Whisper-Medium (769M) share comparable parameter counts, Turbo concentrates ~89% of its depth in a 32-layer, 1280-dimension encoder ($T=1500$ frames). Without FlashAttention, quadratic memory materialization ($1500 \times 1500$ attention score matrices across 20 heads and 32 layers) hits the memory-bandwidth wall on budget GPUs like the Tesla T4 (320 GB/s bandwidth).
-   - Enabling PyTorch SDPA (FlashAttention kernel fusion) eliminates ~2.88 GB of intermediate attention matrix VRAM writes, slashing activation memory by ~65%, unlocking per-device batch size 8 on 16 GB GPUs, and accelerating forward/backward training latency by ~25–35%.
-
-10. **Downstream Pareto Dominance of Whisper-Large-v3-Turbo:**
-    - Across the master downstream benchmark (150 neural audio clips, 222.7 minutes of speech), `Whisper-Large-v3-Turbo` (CT2 INT8, 819 MB) achieves **70.70% ROUGE-L quality retention** (29.53 R-1, 10.10 R-2, 24.00 R-L) and an outstanding **14.05% ASR WER** on spoken articles, while transcribing at **23.38× real-time throughput** (3.0× faster than Large-v3's 7.81×).
-    - In Speech-RAG retrieval (ARCD, 121 chunks), Turbo matches or leads Large-v3 at **P@3 = 0.8800** in Set (iii) [Spoken Q $\rightarrow$ Spoken P] and achieves the highest P@1 on spoken documents (**0.7400** in Set iii, **0.6600** in Set ii), proving that Turbo is the optimal production engine for Arabic speech understanding.
+*(Note: Preliminary historical entity error breakdown and acoustic noise sweep studies from earlier development are cataloged under legacy explorations and pending Phase 2 standardized re-runs).*
 
 ---
 

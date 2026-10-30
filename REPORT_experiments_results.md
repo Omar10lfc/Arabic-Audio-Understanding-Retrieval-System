@@ -389,14 +389,16 @@ Below is the consolidated cross-pipeline evaluation across all 4 Whisper CT2 INT
 
 ---
 
-The final integrated system performs three sequential transformations on a single Arabic audio input. Each stage's improvement story is summarized below:
+The final integrated system performs three sequential transformations on a single Arabic audio input. All headline performance numbers are cryptographically anchored to [`Results/final/claims_register.json`](Results/final/claims_register.json):
 
-| Stage | Metric | Untrained / Baseline | Trained System | Lift |
-|---|---|---:|---:|---:|
-| Speech-to-Text (Medium) | WER ↓    | 30.95% | **18.16%** | −12.79 abs / −41.3% rel |
-| Speech-to-Text (Small)  | WER ↓    | 42.69% | 20.61% | −22.08 abs / −51.7% rel |
-| Summarization           | ROUGE-L ↑| 13.48% | **29.56%** | +16.08 abs |
-| Semantic Search         | P@1 ↑    | 0.64 (FAISS only) | **0.86** (+ rerank) | +0.22 abs / +34% rel |
+| Stage | Metric & Condition | Reference / Baseline | Measured Result | Claim ID |
+|---|---|---:|---:|---|
+| **Speech-to-Text (Corpus)** | WER ↓ (10,506 clips, CT2 INT8 Greedy) | — | **14.12%** | [`PASS2_CORPUS_WER`](Results/final/claims_register.json) |
+| **Speech-to-Text (Long-Form)** | WER ↓ (50 articles, Whisper-Turbo CT2) | — | **14.05%** | [`XLSUM_ASR_TURBO`](Results/final/claims_register.json) |
+| **Summarization (Spoken Turbo)**| ROUGE-L ↑ (50 articles, Spoken ASR → AraBART) | 33.94 (Clean Ref) | **24.00** | [`SUMM_SPOKEN_TURBO`](Results/final/claims_register.json) |
+| **Summarization (Clean Oracle)**| ROUGE-L ↑ (50 articles, Clean Text Ceiling) | — | **33.94** | [`SUMM_CLEAN_ORACLE_RL`](Results/final/claims_register.json) |
+| **Semantic Search (50 QA)** | P@1 ↑ (ARCD 50 QA, CAMeL + mMARCO) | 0.5000 (Bi Only) | **0.6400** | [`RET_CLEAN_ORACLE_RERANK_P1`](Results/final/claims_register.json) |
+| **Semantic Search (Full ARCD)** | P@1 ↑ (ARCD 693 questions, 522 chunks) | — | **0.3694** | [`RET_FULL_ARCD_693_P1`](Results/final/claims_register.json) |
 
 Each component shows a clear, quantified before/after improvement, and each result is competitive with published baselines on its respective benchmark.
 
