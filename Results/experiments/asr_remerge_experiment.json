@@ -1,0 +1,64 @@
+{
+  "experiment": "ASR Checkpoint 3-Arm Re-Merge Verification (Candidate 1)",
+  "protocol": {
+    "subset_a_size": 400,
+    "sampling_verified": true,
+    "first_5_clip_ids": [
+      "common_voice_ar_23342586.mp3",
+      "common_voice_ar_24041068.mp3",
+      "common_voice_ar_27141031.mp3",
+      "common_voice_ar_19220379.mp3",
+      "common_voice_ar_19205134.mp3"
+    ],
+    "gate_baseline_wer": 12.51,
+    "gate_tolerance": 0.25,
+    "gate_threshold": 12.76
+  },
+  "environment": {
+    "platform": "win32",
+    "cuda_available": false,
+    "device": "cpu"
+  },
+  "artifact_verification": {
+    "manifest_loaded": true,
+    "matched_files": {
+      "medium_adapter_checkpoint_3600": {
+        "path": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\checkpoint-3600\\adapter_model.safetensors",
+        "sha256": "f48948c39650156035020072ee91de61538b551cece50a2d8937a5e374fedef0",
+        "status": "BIT_IDENTICAL_TO_KAGGLE_MANIFEST"
+      }
+    },
+    "missing_files": [],
+    "mismatched_files": {},
+    "total_manifest_entries": 131,
+    "expected_large_v3_adapter_sha256": "7ae54635bf729f00183c0532513d09da09b1cbf384d44e97482cdbab0ae2765d",
+    "expected_turbo_adapter_sha256": "d7034088df42ce75febeb1899368ad96fd4ce6cee02025b2356ff7950051fbd0",
+    "expected_large_v3_ct2_bin_sha256": "345b7350fb09249af9de788a5e2a4e20cfc95f86778ee4e9246a5b24ea212d33",
+    "expected_turbo_ct2_bin_sha256": "efa94de178f110f53be1c951f6cfdd81b6aab2681adbbee1f18b77ca2e47f248"
+  },
+  "arms": {
+    "arm_1_nf4_base_plus_adapter": {
+      "description": "Base model loaded in 4-bit NF4, adapter applied via PEFT. Emulates training forward pass.",
+      "status": "unmeasured",
+      "measured_wer": null,
+      "notes": "Requires CUDA GPU with bitsandbytes and Common Voice audio files."
+    },
+    "arm_2_merge_dequantized_nf4": {
+      "description": "Dequantize 4-bit NF4 weights to FP16/FP32 and merge adapter delta directly into dequantized base.",
+      "status": "unmeasured",
+      "measured_wer": null,
+      "notes": "Addresses quantization disparity where adapter was optimized against quantized representations."
+    },
+    "arm_3_fp32_remerge": {
+      "description": "Standard merge into unquantized FP32 base checkpoint (as performed in zero-notebook).",
+      "status": "measured_historical_reference",
+      "measured_wer": 13.03,
+      "claim_id": "GATE_01_FP16",
+      "status_detail": "Measured in final-01a-cv-gate-pass1 (exceeds 12.76% threshold by +0.27%)."
+    }
+  },
+  "recommendation": {
+    "retrain_needed": false,
+    "action": "Do NOT retrain yet. Execute Arm 1 and Arm 2 on GPU (Modal / Kaggle). If neither Arm 1 nor Arm 2 reaches <= 12.76% WER, propose updating the claims register to the measured served WER (13.03% FP16 / 14.15% Turbo) rather than retraining."
+  }
+}
