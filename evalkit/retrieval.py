@@ -69,11 +69,16 @@ def load_camelbert(
     mdl = AutoModel.from_pretrained(model_id, revision=revision).to(device).eval()
     return mdl, tok, device
 
+try:
+    from configs.shared_config import ENCODE_MAX_LENGTH
+except ImportError:
+    ENCODE_MAX_LENGTH = 128
+
 def encode_camelbert(
     texts: List[str],
     model,
     tokenizer,
-    max_length: int = 128,
+    max_length: int = ENCODE_MAX_LENGTH,
     batch_size: int = 32,
     device: Optional[str] = None
 ) -> np.ndarray:

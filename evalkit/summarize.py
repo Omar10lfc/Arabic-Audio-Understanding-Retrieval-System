@@ -4,17 +4,34 @@ import torch
 from typing import List, Dict, Any, Optional
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
-DEFAULT_SUMMARIZATION_CONFIG = {
-    "max_input_length": 512,
-    "max_summary_length": 100,
-    "min_length": 10,
-    "num_beams": 4,
-    "no_repeat_ngram_size": 3,
-    "length_penalty": 1.0,
-    "early_stopping": True,
-    "padding": "longest",
-    "batch_size": 8
-}
+try:
+    from configs.shared_config import (
+        SUMM_MAX_IN, SUMM_MAX_OUT, SUMM_MIN_LENGTH, SUMM_NUM_BEAMS,
+        SUMM_NO_REPEAT_NGRAM, SUMM_LENGTH_PENALTY, SUMM_EARLY_STOPPING
+    )
+    DEFAULT_SUMMARIZATION_CONFIG = {
+        "max_input_length": SUMM_MAX_IN,
+        "max_summary_length": SUMM_MAX_OUT,
+        "min_length": SUMM_MIN_LENGTH,
+        "num_beams": SUMM_NUM_BEAMS,
+        "no_repeat_ngram_size": SUMM_NO_REPEAT_NGRAM,
+        "length_penalty": SUMM_LENGTH_PENALTY,
+        "early_stopping": SUMM_EARLY_STOPPING,
+        "padding": "longest",
+        "batch_size": 8
+    }
+except ImportError:
+    DEFAULT_SUMMARIZATION_CONFIG = {
+        "max_input_length": 512,
+        "max_summary_length": 100,
+        "min_length": 10,
+        "num_beams": 4,
+        "no_repeat_ngram_size": 3,
+        "length_penalty": 1.0,
+        "early_stopping": True,
+        "padding": "longest",
+        "batch_size": 8
+    }
 
 def load_summarizer(
     model_id: str = "Omar10lfc/arabart-xlsum-arabic",

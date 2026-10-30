@@ -33,6 +33,17 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
+from configs.shared_config import (
+    SUMM_MAX_IN, SUMM_MAX_OUT, SUMM_MIN_LENGTH, SUMM_NUM_BEAMS,
+    SUMM_NO_REPEAT_NGRAM, SUMM_LENGTH_PENALTY, SUMM_EARLY_STOPPING,
+    SUMM_MODEL_ID as PROTOCOL_SUMM_MODEL_ID,
+    ENCODE_MAX_LENGTH, CROSS_ENCODER_MAX_LENGTH,
+    CHUNK_WORDS, TOP_K_FAISS, TOP_K_FINAL,
+    EMBEDDER_ID as PROTOCOL_EMBEDDER_ID,
+    CROSS_ENCODER_ID as PROTOCOL_CROSS_ENCODER_ID,
+    ASR_GREEDY, ASR_LONGFORM,
+)
+
 
 # Each indexed chunk carries its own time range when timestamps are available
 # (Whisper produces 30s segments by default — we interpolate per-word inside
@@ -64,23 +75,21 @@ WHISPER_DIR        = os.environ.get(
     "WHISPER_MODEL_ID",
     str(_EVAL_TURBO_CT2) if _EVAL_TURBO_CT2.exists() else "openai/whisper-large-v3-turbo")
 SUMMARIZER_DIR     = os.environ.get(
-    "SUMMARIZER_MODEL_ID", "Omar10lfc/arabart-xlsum-arabic")
+    "SUMMARIZER_MODEL_ID", PROTOCOL_SUMM_MODEL_ID)
 
 # Embedder + reranker default to HF IDs. Replace with `PROJECT_DIR / "<folder>"`
 # if you've downloaded local copies.
-EMBEDDER_ID        = "CAMeL-Lab/bert-base-arabic-camelbert-msa"
-CROSS_ENCODER_ID   = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"  # multilingual
+EMBEDDER_ID        = os.environ.get(
+    "EMBEDDER_MODEL_ID", PROTOCOL_EMBEDDER_ID)
+CROSS_ENCODER_ID   = os.environ.get(
+    "CROSS_ENCODER_MODEL_ID", PROTOCOL_CROSS_ENCODER_ID)
 
 FONT_DIR  = PROJECT_DIR / "fonts"
 FONT_PATH = FONT_DIR / "Amiri-Regular.ttf"
 FONT_URL  = ("https://github.com/aliftype/amiri/raw/master/fonts/ttf/"
              "Amiri-Regular.ttf")
 
-CHUNK_WORDS   = 50
-TOP_K_FAISS   = 10
 N_TAKEAWAYS   = 5
-SUMM_MAX_IN   = 512
-SUMM_MAX_OUT  = 84
 
 # Hidden queries that drive the cheat sheet — each becomes one section.
 CHEAT_QUERIES: List[Tuple[str, str]] = [
@@ -395,7 +404,7 @@ def encode_arabic(texts: List[str], batch_size: int = 32) -> np.ndarray:
         for i in range(0, len(texts), batch_size):
             batch = texts[i:i + batch_size]
             inp = _M.embed_tok(batch, padding=True, truncation=True,
-                               max_length=512, return_tensors="pt"
+                               max_length=ENCODE_MAX_LENGTH, return_tensors="pt"
                               ).to(_device())
             h   = _M.embed_mdl(**inp).last_hidden_state
             emb = _mean_pool(h, inp["attention_mask"]).cpu().numpy().astype("float32")
@@ -589,9 +598,25 @@ def _retrieve(query: str, chunks, index, k: int = TOP_K_FAISS):
 # =============================================================================
 # 3. SUMMARIZATION (AraBART)
 # =============================================================================
-def _summarize(texts, num_beams: int = 4, max_target: int = SUMM_MAX_OUT,
-               min_length: int = 10) -> List[str]:
-    """Batched AraBART decoding using the XL-Sum-paper generation parameters."""
+# News-framing prefixes to strip from abstractive summaries on lecture content
+_NEWS_FRAMING_PREFIXES = [
+    re.compile(r"^(في\s+هذا\s+المقال|في\s+هذا\s+التقرير|ذكرت\s+بي\s+بي\s+سي|أفادت\s+بي\s+بي\s+سي|بحسب\s+بي\s+بي\s+سي|وفي\s+هذا\s+المقال|وجاء\s+في\s+هذا\s+المقال)\s*[:،,-]?\s*", re.UNICODE),
+]
+
+
+def filter_news_framing(summary: str) -> str:
+    """Opening-phrase post-filter to remove journalistic framing ('في هذا المقال')."""
+    if not summary:
+        return ""
+    text = summary.strip()
+    for pattern in _NEWS_FRAMING_PREFIXES:
+        text = pattern.sub("", text).strip()
+    return text
+
+
+def _summarize(texts, num_beams: int = SUMM_NUM_BEAMS, max_target: int = SUMM_MAX_OUT,
+               min_length: int = SUMM_MIN_LENGTH) -> List[str]:
+    """Batched AraBART decoding adhering to configs/final_protocol.json."""
     import torch
     _load_summarizer()
     if isinstance(texts, str):
@@ -607,12 +632,13 @@ def _summarize(texts, num_beams: int = 4, max_target: int = SUMM_MAX_OUT,
             max_length=max_target,
             min_length=min_length,
             num_beams=num_beams,
-            no_repeat_ngram_size=2,
-            length_penalty=0.6,
-            early_stopping=True,
+            no_repeat_ngram_size=SUMM_NO_REPEAT_NGRAM,
+            length_penalty=SUMM_LENGTH_PENALTY,
+            early_stopping=SUMM_EARLY_STOPPING,
         )
-    return _M.summ_tok.batch_decode(out, skip_special_tokens=True,
-                                    clean_up_tokenization_spaces=False)
+    raw_summaries = _M.summ_tok.batch_decode(out, skip_special_tokens=True,
+                                            clean_up_tokenization_spaces=False)
+    return [filter_news_framing(s) for s in raw_summaries]
 
 
 # =============================================================================
