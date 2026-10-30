@@ -29,6 +29,15 @@ def stub_pipeline(monkeypatch):
     """Replace every heavy pipeline call with a deterministic stub. Returns the
        module so individual tests can override specific stubs if needed."""
     import pipeline
+    import socket
+
+    # Offline/deterministic DNS mock for tests so tests don't touch network
+    orig_getaddrinfo = socket.getaddrinfo
+    def fake_getaddrinfo(host, port, *args, **kwargs):
+        if host in ("youtube.com", "www.youtube.com", "example.com"):
+            return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("93.184.216.34", port or 0))]
+        return orig_getaddrinfo(host, port, *args, **kwargs)
+    monkeypatch.setattr(socket, "getaddrinfo", fake_getaddrinfo)
 
     monkeypatch.setattr(pipeline, "run_whisper",
                         lambda path: "هذا نص تجريبي للمحاضرة. " * 10)
@@ -69,8 +78,9 @@ def stub_pipeline(monkeypatch):
 def client(stub_pipeline):
     """FastAPI TestClient with the heavy pipeline already stubbed."""
     from fastapi.testclient import TestClient
-    from api import api, _SESSIONS, _RUNTIME
+    from api import api, _SESSIONS, _RUNTIME, _RATE_LIMIT_STORE
     _SESSIONS.clear()
     _RUNTIME.clear()
+    _RATE_LIMIT_STORE.clear()
     with TestClient(api) as c:
         yield c

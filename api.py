@@ -30,12 +30,17 @@ import os
 import shutil
 import tempfile
 import uuid
+import time
+import socket
+import ipaddress
+from collections import defaultdict
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from urllib.parse import urlparse
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
 
 import pipeline
@@ -60,6 +65,54 @@ class SessionData(BaseModel):
 # `chunks` + FAISS `index` in a parallel dict keyed by the same session id.
 _SESSIONS: Dict[str, SessionData] = {}
 _RUNTIME:  Dict[str, Dict[str, Any]] = {}
+
+# Rate Limiter: max requests per IP window
+_RATE_LIMIT_STORE: Dict[str, List[float]] = defaultdict(list)
+_RATE_LIMIT_MAX_REQ = int(os.environ.get("RATE_LIMIT_MAX_REQ", "60"))
+_RATE_LIMIT_WINDOW = 60.0
+
+
+def validate_ingest_url(url: str) -> None:
+    """Validate external URL against SSRF, loopback, private IPs and non-http schemes."""
+    if not url or not url.strip():
+        raise HTTPException(status_code=400, detail="Empty URL provided.")
+
+    parsed = urlparse(url.strip())
+    scheme = parsed.scheme.lower()
+    if scheme not in ("http", "https"):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid URL scheme '{scheme}'. Only http and https are allowed."
+        )
+
+    hostname = parsed.hostname
+    if not hostname:
+        raise HTTPException(status_code=400, detail="Missing hostname in URL.")
+
+    # Resolve IP and check against forbidden ranges
+    try:
+        addr_info = socket.getaddrinfo(hostname, None)
+    except socket.gaierror as e:
+        raise HTTPException(status_code=400, detail=f"Cannot resolve hostname '{hostname}': {e}")
+
+    for family, _, _, _, sockaddr in addr_info:
+        ip_str = sockaddr[0]
+        try:
+            ip = ipaddress.ip_address(ip_str)
+        except ValueError:
+            continue
+        if (
+            ip.is_private
+            or ip.is_loopback
+            or ip.is_link_local
+            or ip.is_multicast
+            or ip.is_reserved
+            or ip_str == "169.254.169.254"
+        ):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Access to private/internal IP address '{ip_str}' is forbidden."
+            )
 
 
 def _new_session() -> str:
@@ -97,6 +150,28 @@ api = FastAPI(
     description="Arabic ASR + summarization + semantic-search REST backend.",
     lifespan=lifespan,
 )
+
+
+@api.middleware("http")
+async def rate_limit_middleware(request: Request, call_next):
+    if request.url.path == "/health":
+        return await call_next(request)
+
+    client_ip = request.client.host if request.client else "127.0.0.1"
+    now = time.time()
+    timestamps = _RATE_LIMIT_STORE[client_ip]
+
+    valid_timestamps = [t for t in timestamps if now - t < _RATE_LIMIT_WINDOW]
+    if len(valid_timestamps) >= _RATE_LIMIT_MAX_REQ:
+        return JSONResponse(
+            status_code=429,
+            content={"detail": "Too many requests. Please slow down."},
+            headers={"Retry-After": str(int(_RATE_LIMIT_WINDOW))}
+        )
+
+    valid_timestamps.append(now)
+    _RATE_LIMIT_STORE[client_ip] = valid_timestamps
+    return await call_next(request)
 
 
 # =============================================================================
@@ -219,8 +294,16 @@ class AnalyzeUrlRequest(BaseModel):
 @api.post("/analyze-url", response_model=AnalyzeResponse)
 async def analyze_url(req: AnalyzeUrlRequest):
     """Full pipeline from a video/audio URL. Downloads the audio with yt-dlp
-       and feeds it through the same pipeline as `/analyze`. Requires ffmpeg
-       on the server (yt-dlp uses it to extract the audio track)."""
+       and feeds it through the same pipeline as `/analyze`. Requires ALLOW_URL_INGEST=1.
+       Protected against SSRF and internal address access."""
+    if os.environ.get("ALLOW_URL_INGEST") != "1":
+        raise HTTPException(
+            status_code=403,
+            detail="URL ingestion is disabled on this server. Set ALLOW_URL_INGEST=1 to enable."
+        )
+
+    validate_ingest_url(req.url)
+
     try:
         audio_path = pipeline.download_audio_from_url(req.url)
     except ValueError as e:

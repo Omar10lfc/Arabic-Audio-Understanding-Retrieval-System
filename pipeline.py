@@ -417,16 +417,14 @@ def encode_arabic(texts: List[str], batch_size: int = 32) -> np.ndarray:
 # =============================================================================
 # 1. SPEECH-TO-TEXT
 # =============================================================================
-def download_audio_from_url(url: str) -> str:
+def download_audio_from_url(url: str, max_duration: int = 600,
+                            max_filesize: int = 25 * 1024 * 1024,
+                            timeout: int = 30) -> str:
     """Download audio from a YouTube / Vimeo / Twitter / podcast URL to a temp
-       WAV file and return the local path. Powered by yt-dlp, so anything on
-       https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md works.
+       WAV file and return the local path. Powered by yt-dlp.
 
-       Requires ffmpeg on PATH (yt-dlp uses it to demux+encode the audio
-       stream). On Windows: `winget install ffmpeg` once, then restart the shell.
-
-       Raises RuntimeError with a friendly message if the URL is invalid,
-       the video is private/age-restricted, or ffmpeg is missing."""
+       Enforces max_filesize (25 MB) and socket timeout (30s) to prevent resource exhaustion.
+       Requires ffmpeg on PATH."""
     import yt_dlp
 
     if not url or not url.strip():
@@ -442,6 +440,8 @@ def download_audio_from_url(url: str) -> str:
         "quiet": True,
         "no_warnings": True,
         "noplaylist": True,           # if a playlist URL is passed, take 1st item only
+        "socket_timeout": timeout,
+        "max_filesize": max_filesize,
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
             "preferredcodec": "wav",  # librosa+soundfile can decode WAV without ffmpeg

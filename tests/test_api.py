@@ -158,7 +158,14 @@ class TestDrillDown:
 # =============================================================================
 class TestAnalyzeUrl:
 
-    def test_returns_full_bundle(self, client):
+    def test_disabled_by_default(self, client, monkeypatch):
+        monkeypatch.delenv("ALLOW_URL_INGEST", raising=False)
+        r = client.post("/analyze-url", json={"url": "https://youtube.com/watch?v=fake"})
+        assert r.status_code == 403
+        assert "disabled" in r.json()["detail"].lower()
+
+    def test_returns_full_bundle(self, client, monkeypatch):
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
         r = client.post("/analyze-url",
                         json={"url": "https://youtube.com/watch?v=fake"})
         assert r.status_code == 200
@@ -166,7 +173,8 @@ class TestAnalyzeUrl:
         assert set(body) >= {"session_id", "transcript", "cheat_sheet",
                              "takeaways", "pdf_url"}
 
-    def test_session_persists_for_drill_down(self, client):
+    def test_session_persists_for_drill_down(self, client, monkeypatch):
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
         r = client.post("/analyze-url",
                         json={"url": "https://youtube.com/watch?v=fake"})
         sid = r.json()["session_id"]
@@ -174,11 +182,13 @@ class TestAnalyzeUrl:
                          json={"session_id": sid, "takeaway": "فكرة 1"})
         assert r2.status_code == 200
 
-    def test_empty_url_is_400(self, client):
+    def test_empty_url_is_400(self, client, monkeypatch):
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
         r = client.post("/analyze-url", json={"url": ""})
         assert r.status_code == 400
 
-    def test_yt_dlp_failure_is_400(self, client):
+    def test_yt_dlp_failure_is_400(self, client, monkeypatch):
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
         # Stub raises RuntimeError when "fail" is in the URL — simulates
         # private video / geo-block / missing ffmpeg / 404.
         r = client.post("/analyze-url",
@@ -186,10 +196,58 @@ class TestAnalyzeUrl:
         assert r.status_code == 400
         assert "Failed to download" in r.json()["detail"]
 
-    def test_validates_request_body(self, client):
+    def test_validates_request_body(self, client, monkeypatch):
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
         # Missing 'url' field → 422 from pydantic.
         r = client.post("/analyze-url", json={})
         assert r.status_code == 422
+
+    def test_blocks_loopback_ip(self, client, monkeypatch):
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
+        r = client.post("/analyze-url", json={"url": "http://127.0.0.1/audio.mp3"})
+        assert r.status_code == 400
+        assert "forbidden" in r.json()["detail"].lower()
+
+    def test_blocks_private_subnet_ip(self, client, monkeypatch):
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
+        r = client.post("/analyze-url", json={"url": "http://192.168.1.1/lecture.wav"})
+        assert r.status_code == 400
+        assert "forbidden" in r.json()["detail"].lower()
+
+    def test_blocks_aws_metadata_ip(self, client, monkeypatch):
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
+        r = client.post("/analyze-url", json={"url": "http://169.254.169.254/latest/meta-data/"})
+        assert r.status_code == 400
+        assert "forbidden" in r.json()["detail"].lower()
+
+    def test_blocks_invalid_scheme(self, client, monkeypatch):
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
+        r = client.post("/analyze-url", json={"url": "ftp://example.com/audio.mp3"})
+        assert r.status_code == 400
+        assert "scheme" in r.json()["detail"].lower()
+
+    def test_rate_limiting(self, client, monkeypatch):
+        import api
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
+        monkeypatch.setattr(api, "_RATE_LIMIT_MAX_REQ", 2)
+        api._RATE_LIMIT_STORE.clear()
+
+        # Health is bypassed
+        r1 = client.get("/health")
+        assert r1.status_code == 200
+
+        # Normal requests
+        r2 = client.post("/analyze-url", json={"url": "ftp://bad1"})
+        assert r2.status_code == 400
+
+        r3 = client.post("/analyze-url", json={"url": "ftp://bad2"})
+        assert r3.status_code == 400
+
+        # Exceeds max 2 requests
+        r4 = client.post("/analyze-url", json={"url": "ftp://bad3"})
+        assert r4.status_code == 429
+        assert "Retry-After" in r4.headers
+        assert "slow down" in r4.json()["detail"].lower()
 
 
 # =============================================================================
