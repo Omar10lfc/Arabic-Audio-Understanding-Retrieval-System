@@ -203,27 +203,43 @@ def process_lecture_job(job_id: str, audio_bytes: bytes, suffix: str = ".wav") -
 # =============================================================================
 # Modal Cls: FastAPI Web Service
 # =============================================================================
+# SESSIONS & STATE ARCHITECTURE NOTE:
+# In the current dev deployment, session FAISS indexes (_RUNTIME) and asynchronous
+# job states (_JOBS) are maintained in-process within container memory.
+# Therefore, max_containers is pinned strictly to 1 so all requests route to the
+# same stateful container.
+# TASK B2.1 (Pre-prod hardening): Persist session FAISS indexes to modal.Volume
+# and job states to modal.Dict so max_containers can autoscale horizontally.
 @app.cls(
     image=image,
     gpu="T4",
     volumes={"/vol": vol},
     timeout=600,
     min_containers=0,
-    max_containers=2,
+    max_containers=1,
     secrets=[modal.Secret.from_name(SECRET_NAME)],
 )
 class SmartLectureService:
 
     @modal.enter()
     def initialize(self):
-        """Container cold start hook: verify weights on Volume and warm up models."""
+        """Container cold start hook: enforce auth fail-closed, verify weights on Volume, warm up."""
         print("[modal_boot] Executing container cold start hook...")
+        token = os.environ.get("API_BEARER_TOKEN", "").strip()
+        dev_no_auth = os.environ.get("DEV_NO_AUTH") == "1"
+        if not token and not dev_no_auth:
+            raise RuntimeError(
+                "FATAL: API_BEARER_TOKEN is required on Modal. Refusing to boot because "
+                "secret 'lecture-assistant-secret' is missing/empty and DEV_NO_AUTH!=1."
+            )
+
         weight_dir = verify_or_download_served_weights()
         os.environ["WHISPER_MODEL_ID"] = weight_dir
         os.environ["WHISPER_REVISION"] = CANONICAL_MODEL_REV
+        os.environ["WHISPER_CANONICAL_ID"] = CANONICAL_MODEL_REPO
 
         import pipeline
-        print("[modal_boot] Pre-warming heavy models in memory...")
+        print("[modal_boot] Pre-warming heavy models in GPU memory...")
         pipeline.warm_up()
         print("[modal_boot] Warm-up complete. Service ready.")
 
@@ -232,3 +248,57 @@ class SmartLectureService:
         """Expose FastAPI application through Modal reverse proxy."""
         import api
         return api.api
+
+
+# =============================================================================
+# GPU & cuDNN Pinning Verification Probe
+# =============================================================================
+@app.function(
+    image=image,
+    gpu="T4",
+    volumes={"/vol": vol},
+    timeout=600,
+    secrets=[modal.Secret.from_name(SECRET_NAME)],
+)
+def verify_gpu_transcription() -> Dict[str, Any]:
+    """Test real GPU transcription to verify PyTorch CUDA 12.1 and cuDNN 9 CTranslate2 linking."""
+    import torch
+    import faster_whisper
+    import numpy as np
+
+    print(f"[gpu_test] PyTorch Version: {torch.__version__}")
+    print(f"[gpu_test] CUDA Available: {torch.cuda.is_available()}")
+    if not torch.cuda.is_available():
+        raise RuntimeError("FATAL: CUDA is not available on GPU container!")
+
+    gpu_name = torch.cuda.get_device_name(0)
+    print(f"[gpu_test] GPU Device: {gpu_name}")
+
+    weight_dir = verify_or_download_served_weights()
+    print(f"[gpu_test] Loading Faster-Whisper on {gpu_name} (compute_type=int8)...")
+    t0 = time.time()
+    model = faster_whisper.WhisperModel(weight_dir, device="cuda", compute_type="int8")
+    load_time = time.time() - t0
+    print(f"[gpu_test] Model loaded in {load_time:.2f}s")
+
+    # Generate 3 seconds of 16kHz audio for live transcription test
+    sample_rate = 16000
+    dummy_audio = np.zeros(sample_rate * 3, dtype=np.float32)
+
+    t1 = time.time()
+    segments, info = model.transcribe(dummy_audio, language="ar", beam_size=1)
+    seg_list = list(segments)
+    infer_time = time.time() - t1
+    print(f"[gpu_test] Real GPU inference completed in {infer_time:.2f}s. Detected lang: {info.language}")
+
+    vram_alloc_mb = torch.cuda.memory_allocated() / (1024 * 1024)
+    vram_res_mb = torch.cuda.memory_reserved() / (1024 * 1024)
+
+    return {
+        "status": "success",
+        "gpu_name": gpu_name,
+        "load_time_sec": round(load_time, 2),
+        "infer_time_sec": round(infer_time, 2),
+        "vram_allocated_mb": round(vram_alloc_mb, 2),
+        "vram_reserved_mb": round(vram_res_mb, 2),
+    }

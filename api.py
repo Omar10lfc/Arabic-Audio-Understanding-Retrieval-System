@@ -51,8 +51,8 @@ import pipeline
 # =============================================================================
 # In-process session store
 # =============================================================================
-SESSION_TTL_SECONDS = int(os.environ.get("SESSION_TTL_SECONDS", "14400"))  # 4 hours
-MAX_SESSIONS = int(os.environ.get("MAX_SESSIONS", "1000"))
+SESSION_TTL_SECONDS = int(os.environ.get("SESSION_TTL_SECONDS", "3600"))  # 1 hour
+MAX_SESSIONS = int(os.environ.get("MAX_SESSIONS", "500"))
 
 
 class SessionData(BaseModel):
@@ -245,6 +245,14 @@ def _save_upload(upload: UploadFile) -> str:
 # =============================================================================
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Enforce fail-closed authentication on Modal / production:
+    # If API_BEARER_TOKEN is missing, refuse to start unless DEV_NO_AUTH=1 is explicitly set.
+    token = os.environ.get("API_BEARER_TOKEN", "").strip()
+    dev_no_auth = os.environ.get("DEV_NO_AUTH") == "1"
+    is_modal = bool(os.environ.get("MODAL_ENVIRONMENT") or os.environ.get("MODAL_APP_NAME"))
+    if is_modal and not token and not dev_no_auth:
+        raise RuntimeError("FATAL: API_BEARER_TOKEN is required on Modal. Secret 'lecture-assistant-secret' missing or unset.")
+
     # Warm models once at boot so first user request isn't slow. Skip during
     # tests by setting SKIP_WARMUP=1 in the env.
     if os.environ.get("SKIP_WARMUP") != "1":
@@ -310,20 +318,36 @@ async def rate_limit_middleware(request: Request, call_next):
 
 @api.middleware("http")
 async def auth_middleware(request: Request, call_next):
-    token = os.environ.get("API_BEARER_TOKEN", "").strip()
-    # Bypass auth if token is unset (dev mode) or for health check and docs
-    if token and request.url.path not in ("/health", "/docs", "/openapi.json", "/redoc"):
-        api_key = request.headers.get("x-api-key")
-        if not api_key:
-            auth_header = request.headers.get("authorization", "")
-            if auth_header.lower().startswith("bearer "):
-                api_key = auth_header[7:].strip()
+    # Liveness probe and docs are always open
+    if request.url.path in ("/health", "/docs", "/openapi.json", "/redoc"):
+        return await call_next(request)
 
-        if not api_key or not hmac.compare_digest(api_key, token):
-            return JSONResponse(
-                status_code=401,
-                content={"detail": "Unauthorized: invalid or missing API key."},
-            )
+    token = os.environ.get("API_BEARER_TOKEN", "").strip()
+    dev_no_auth = os.environ.get("DEV_NO_AUTH") == "1"
+
+    # Fail closed: if no token is configured and DEV_NO_AUTH!=1, reject immediately with 401
+    if not token and not dev_no_auth:
+        return JSONResponse(
+            status_code=401,
+            content={"detail": "Unauthorized: API_BEARER_TOKEN is not configured on server and DEV_NO_AUTH=1 is not set."},
+        )
+
+    # If DEV_NO_AUTH=1 and no token is set, allow bypass
+    if dev_no_auth and not token:
+        return await call_next(request)
+
+    # Validate header key
+    api_key = request.headers.get("x-api-key")
+    if not api_key:
+        auth_header = request.headers.get("authorization", "")
+        if auth_header.lower().startswith("bearer "):
+            api_key = auth_header[7:].strip()
+
+    if not api_key or not hmac.compare_digest(api_key, token):
+        return JSONResponse(
+            status_code=401,
+            content={"detail": "Unauthorized: invalid or missing API key."},
+        )
     return await call_next(request)
 
 
@@ -356,6 +380,7 @@ class HealthResponse(BaseModel):
     models_loaded: Dict[str, bool]
     asr_model:     Dict[str, Any]
     device:        str
+    gpu_status:    Dict[str, Any]
 
 
 class AsyncJobResponse(BaseModel):
@@ -377,7 +402,39 @@ class JobStatusResponse(BaseModel):
 # =============================================================================
 @api.get("/health", response_model=HealthResponse)
 def health():
-    """Liveness probe + which heavy models are already resident + ASR model metadata."""
+    """Liveness probe + resident models + sanitized ASR model metadata (no filesystem paths)."""
+    asr_raw = pipeline.get_asr_model_info()
+
+    # Sanitize model_id for prod: strictly NO filesystem paths leaked
+    clean_id = os.environ.get("WHISPER_CANONICAL_ID")
+    if not clean_id:
+        raw_id = str(asr_raw.get("model_id", ""))
+        if "turbo" in raw_id.lower():
+            clean_id = "Omar10lfc/whisper-large-v3-turbo-arabic-ct2-int8"
+        elif "large-v3" in raw_id.lower():
+            clean_id = "Omar10lfc/whisper-large-v3-arabic-ct2-int8"
+        else:
+            clean_id = Path(raw_id).name or "whisper-arabic"
+
+    # GPU status check
+    try:
+        import torch
+        cuda_avail = torch.cuda.is_available()
+        gpu_name = torch.cuda.get_device_name(0) if cuda_avail else None
+        gpu_count = torch.cuda.device_count() if cuda_avail else 0
+    except Exception:
+        cuda_avail = False
+        gpu_name = None
+        gpu_count = 0
+
+    asr_info = {
+        "model_id": clean_id,
+        "revision": asr_raw.get("revision", "unknown"),
+        "observed_weight_sha256": asr_raw.get("weight_sha256") or "unmeasured",
+        "is_fine_tuned": asr_raw.get("is_fine_tuned", True),
+        "engine": asr_raw.get("engine", "faster-whisper (CTranslate2 INT8)"),
+    }
+
     return HealthResponse(
         status="ok",
         models_loaded={
@@ -386,8 +443,13 @@ def health():
             "summarizer": pipeline._M.summ_mdl    is not None,
             "reranker":   pipeline._M.reranker    is not None,
         },
-        asr_model=pipeline.get_asr_model_info(),
-        device=pipeline._device(),
+        asr_model=asr_info,
+        device="cuda" if cuda_avail else "cpu",
+        gpu_status={
+            "cuda_available": cuda_avail,
+            "device_name": gpu_name,
+            "device_count": gpu_count,
+        },
     )
 
 

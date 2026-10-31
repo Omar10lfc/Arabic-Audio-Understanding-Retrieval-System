@@ -39,6 +39,8 @@ class TestHealth:
         assert "asr_model" in body
         assert "model_id" in body["asr_model"]
         assert "revision" in body["asr_model"]
+        assert "\\" not in body["asr_model"]["model_id"]
+        assert "gpu_status" in body
         assert body["device"] in {"cpu", "cuda"}
 
 
@@ -358,8 +360,9 @@ class TestSessionLifecycle:
 # =============================================================================
 class TestApiKeyAuth:
 
-    def test_auth_bypassed_when_env_unset(self, client, monkeypatch):
+    def test_auth_bypassed_only_when_dev_no_auth_is_1(self, client, monkeypatch):
         monkeypatch.delenv("API_BEARER_TOKEN", raising=False)
+        monkeypatch.setenv("DEV_NO_AUTH", "1")
         r = client.get("/health")
         assert r.status_code == 200
         r_post = client.post(
@@ -367,6 +370,20 @@ class TestApiKeyAuth:
             files={"audio": ("a.wav", io.BytesIO(_FAKE_WAV), "audio/wav")},
         )
         assert r_post.status_code == 200
+
+    def test_auth_fails_closed_when_unconfigured_and_not_dev(self, client, monkeypatch):
+        monkeypatch.delenv("API_BEARER_TOKEN", raising=False)
+        monkeypatch.delenv("DEV_NO_AUTH", raising=False)
+        # Health is public
+        r_health = client.get("/health")
+        assert r_health.status_code == 200
+        # Protected endpoints must fail closed with 401
+        r_post = client.post(
+            "/transcribe",
+            files={"audio": ("a.wav", io.BytesIO(_FAKE_WAV), "audio/wav")},
+        )
+        assert r_post.status_code == 401
+        assert "DEV_NO_AUTH" in r_post.json()["detail"]
 
     def test_health_always_public_even_with_token(self, client, monkeypatch):
         monkeypatch.setenv("API_BEARER_TOKEN", "prod-secret-123")

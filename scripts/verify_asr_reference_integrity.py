@@ -36,17 +36,17 @@ def check_asr_reference_integrity():
     assert "asr_model" in data, "asr_model field missing in /health response"
     
     asr = data["asr_model"]
-    print(f"  - Model ID:       {asr.get('model_id')}")
-    print(f"  - Revision:       {asr.get('revision')}")
-    print(f"  - Is Fine-Tuned:  {asr.get('is_fine_tuned')}")
-    print(f"  - Weight File:    {asr.get('weight_file')}")
-    print(f"  - Weight SHA-256: {asr.get('weight_sha256')}")
-    print(f"  - Config SHA-256: {asr.get('config_sha256')}")
-    print(f"  - Engine:         {asr.get('engine')}")
-    
+    print(f"  - Model ID:                {asr.get('model_id')}")
+    print(f"  - Revision:                {asr.get('revision')}")
+    print(f"  - Is Fine-Tuned:           {asr.get('is_fine_tuned')}")
+    print(f"  - Observed Weight SHA-256: {asr.get('observed_weight_sha256')}")
+    print(f"  - Engine:                  {asr.get('engine')}")
+    print(f"  - GPU Status:              {data.get('gpu_status')}")
+
     assert asr.get("model_id"), "ASR model_id must not be empty"
     assert asr.get("revision"), "ASR revision must not be empty"
     assert asr.get("is_fine_tuned") is True, "Served model must be detected as fine-tuned"
+    assert "\\" not in str(asr.get("model_id")), "model_id must not leak filesystem paths"
     print("  -> /health check: PASS")
 
     print("\n[2/2] Pass 4 Turbo CT2 INT8 Stored Reference Data Integrity...")

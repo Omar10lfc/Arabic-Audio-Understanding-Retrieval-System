@@ -14,6 +14,7 @@ import pytest
 
 # Skip the FastAPI lifespan warm-up so model loading isn't triggered on import.
 os.environ.setdefault("SKIP_WARMUP", "1")
+os.environ.setdefault("DEV_NO_AUTH", "1")
 
 
 @pytest.fixture
