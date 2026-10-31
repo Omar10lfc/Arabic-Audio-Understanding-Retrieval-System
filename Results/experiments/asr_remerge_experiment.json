@@ -19,46 +19,81 @@
     "cuda_available": false,
     "device": "cpu"
   },
-  "artifact_verification": {
+  "adapter_audit": {
     "manifest_loaded": true,
-    "matched_files": {
-      "medium_adapter_checkpoint_3600": {
+    "local_adapters": {
+      "whisper_medium_adapter": {
         "path": "whisper_medium_output\\whisper-medium-arabic-qlora-stage2\\checkpoint-3600\\adapter_model.safetensors",
+        "size_bytes": 56685288,
         "sha256": "f48948c39650156035020072ee91de61538b551cece50a2d8937a5e374fedef0",
-        "status": "BIT_IDENTICAL_TO_KAGGLE_MANIFEST"
+        "expected_sha256": "f48948c39650156035020072ee91de61538b551cece50a2d8937a5e374fedef0",
+        "status": "VERIFIED_BIT_IDENTICAL"
       }
     },
-    "missing_files": [],
-    "mismatched_files": {},
+    "missing_adapters": {
+      "whisper_large_v3_adapter": {
+        "expected_path": "kaggle_outputs\\zero-notebook\\final-merged-models\\adapters\\whisper-large-v3-adapter\\adapter_model.safetensors",
+        "expected_sha256": "7ae54635bf729f00183c0532513d09da09b1cbf384d44e97482cdbab0ae2765d",
+        "source_kaggle_kernel": "omar10lfc/fine-tuning-whisper-large-v3-on-arabic-speech",
+        "source_kaggle_path": "/kaggle/input/notebooks/omar10lfc/fine-tuning-whisper-large-v3-on-arabic-speech/whisper-large-v3-arabic-qlora/whisper-large-v3-arabic-lora-adapter/adapter_model.safetensors",
+        "fetch_command": "kaggle kernels output omar10lfc/fine-tuning-whisper-large-v3-on-arabic-speech -p ./kaggle_large_v3_out/"
+      },
+      "whisper_large_v3_turbo_adapter": {
+        "expected_path": "kaggle_outputs\\zero-notebook\\final-merged-models\\adapters\\whisper-large-v3-turbo-adapter\\adapter_model.safetensors",
+        "expected_sha256": "d7034088df42ce75febeb1899368ad96fd4ce6cee02025b2356ff7950051fbd0",
+        "source_kaggle_kernel": "omar10lfc/whisper-large-turbo",
+        "source_kaggle_path": "/kaggle/input/notebooks/omar10lfc/whisper-large-turbo/whisper-large-v3-turbo-arabic-qlora/whisper-large-v3-turbo-arabic-lora-adapter/adapter_model.safetensors",
+        "fetch_command": "kaggle kernels output omar10lfc/whisper-large-turbo -p ./kaggle_turbo_out/"
+      }
+    },
     "total_manifest_entries": 131,
-    "expected_large_v3_adapter_sha256": "7ae54635bf729f00183c0532513d09da09b1cbf384d44e97482cdbab0ae2765d",
-    "expected_turbo_adapter_sha256": "d7034088df42ce75febeb1899368ad96fd4ce6cee02025b2356ff7950051fbd0",
-    "expected_large_v3_ct2_bin_sha256": "345b7350fb09249af9de788a5e2a4e20cfc95f86778ee4e9246a5b24ea212d33",
-    "expected_turbo_ct2_bin_sha256": "efa94de178f110f53be1c951f6cfdd81b6aab2681adbbee1f18b77ca2e47f248"
+    "expected_ct2_int8_weights": {
+      "turbo_ct2_model_bin_sha256": "efa94de178f110f53be1c951f6cfdd81b6aab2681adbbee1f18b77ca2e47f248",
+      "large_v3_ct2_model_bin_sha256": "345b7350fb09249af9de788a5e2a4e20cfc95f86778ee4e9246a5b24ea212d33"
+    }
+  },
+  "historical_reference_baseline": {
+    "description": "Historical Kaggle FP16 merge result on Subset A (GATE_01_FP16)",
+    "measured_wer": 13.03,
+    "status": "EXCEEDS_TOLERANCE",
+    "note": "Existing Kaggle FP16 merge. Does not represent unquantized FP32 re-merge."
   },
   "arms": {
     "arm_1_nf4_base_plus_adapter": {
-      "description": "Base model loaded in 4-bit NF4, adapter applied via PEFT. Emulates training forward pass.",
+      "description": "Base model loaded in 4-bit NF4 with adapter applied in-situ via PEFT forward pass.",
       "status": "unmeasured",
       "measured_wer": null,
       "notes": "Requires CUDA GPU with bitsandbytes and Common Voice audio files."
     },
     "arm_2_merge_dequantized_nf4": {
-      "description": "Dequantize 4-bit NF4 weights to FP16/FP32 and merge adapter delta directly into dequantized base.",
+      "description": "Dequantize 4-bit NF4 weights to FP16/FP32, then merge adapter delta into dequantized base.",
       "status": "unmeasured",
       "measured_wer": null,
-      "notes": "Addresses quantization disparity where adapter was optimized against quantized representations."
+      "notes": "Tests whether quant distortion during merge accounts for WER gap."
     },
     "arm_3_fp32_remerge": {
-      "description": "Standard merge into unquantized FP32 base checkpoint (as performed in zero-notebook).",
-      "status": "measured_historical_reference",
-      "measured_wer": 13.03,
-      "claim_id": "GATE_01_FP16",
-      "status_detail": "Measured in final-01a-cv-gate-pass1 (exceeds 12.76% threshold by +0.27%)."
+      "description": "True unquantized FP32 / BF16 re-merge of base and adapter.",
+      "status": "unmeasured",
+      "measured_wer": null,
+      "notes": "Has not run yet. Distinct from historical Kaggle FP16 merge (13.03%)."
     }
+  },
+  "served_model_measurement_plan": {
+    "model_id": "kaggle_outputs/zero-notebook/final-merged-models/ct2_int8/whisper-large-v3-turbo-ct2-int8",
+    "target_claim_id": "SERVED_TURBO_CT2_INT8_GATE_WER",
+    "status": "unmeasured",
+    "measured_wer": null,
+    "note": "Will be measured on the exact 400 Subset A clips during Modal GPU run (budget: $5 cap)."
+  },
+  "budget_estimate": {
+    "gpu": "NVIDIA L4 (Modal)",
+    "rate_per_hour_usd": 0.8,
+    "estimated_runtime_minutes": 12.0,
+    "estimated_cost_usd": 0.16,
+    "cap_usd": 5.0
   },
   "recommendation": {
     "retrain_needed": false,
-    "action": "Do NOT retrain yet. Execute Arm 1 and Arm 2 on GPU (Modal / Kaggle). If neither Arm 1 nor Arm 2 reaches <= 12.76% WER, propose updating the claims register to the measured served WER (13.03% FP16 / 14.15% Turbo) rather than retraining."
+    "action": "Do NOT retrain yet. Fetch large-v3 and turbo adapter safetensors, run Arms 1, 2, 3, and the served Turbo CT2 INT8 evaluation on Modal L4 (estimated cost $0.16). Register the exact served Turbo CT2 INT8 WER as SERVED_TURBO_CT2_INT8_GATE_WER."
   }
 }

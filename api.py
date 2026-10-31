@@ -67,13 +67,20 @@ _SESSIONS: Dict[str, SessionData] = {}
 _RUNTIME:  Dict[str, Dict[str, Any]] = {}
 
 # Rate Limiter: max requests per IP window
+# NOTE: The in-process rate limiter is per container / per worker process.
+# In a serverless/multi-worker deployment (e.g., Modal), each container manages
+# its own sliding window. For production, URL ingest remains strictly disabled
+# (ALLOW_URL_INGEST=0) to prevent SSRF, DNS rebinding, and redirect attacks.
 _RATE_LIMIT_STORE: Dict[str, List[float]] = defaultdict(list)
 _RATE_LIMIT_MAX_REQ = int(os.environ.get("RATE_LIMIT_MAX_REQ", "60"))
 _RATE_LIMIT_WINDOW = 60.0
 
 
 def validate_ingest_url(url: str) -> None:
-    """Validate external URL against SSRF, loopback, private IPs and non-http schemes."""
+    """Validate external URL against SSRF, loopback, private IPs and non-http schemes.
+       NOTE: In production, ALLOW_URL_INGEST defaults to '0' (disabled) because third-party
+       download tools (yt-dlp) follow HTTP redirects and are subject to DNS rebinding.
+       Keep URL ingest disabled in production environments."""
     if not url or not url.strip():
         raise HTTPException(status_code=400, detail="Empty URL provided.")
 
@@ -157,7 +164,15 @@ async def rate_limit_middleware(request: Request, call_next):
     if request.url.path == "/health":
         return await call_next(request)
 
-    client_ip = request.client.host if request.client else "127.0.0.1"
+    # Read client IP, respecting X-Forwarded-For if behind reverse proxy (Modal, HF Spaces)
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        client_ip = forwarded.split(",")[0].strip()
+    elif request.client:
+        client_ip = request.client.host
+    else:
+        client_ip = "127.0.0.1"
+
     now = time.time()
     timestamps = _RATE_LIMIT_STORE[client_ip]
 

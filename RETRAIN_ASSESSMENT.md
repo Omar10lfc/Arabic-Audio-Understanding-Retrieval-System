@@ -30,12 +30,17 @@ An engineering audit scored this repository **54/100 for research** and **28/100
     - **Whisper-Large-v3-Turbo QLoRA**: $9,830,400$ trainable parameters ($r=64, \alpha=128$, `q_proj, v_proj` on 4 decoder layers + 32 encoder layers).
     - **Whisper-Medium QLoRA**: $14,155,776$ trainable parameters ($r=32, \alpha=64$).
 * **Cheapest Fix to Try First (In Order):**
-  1. *Artifact Verification:* Locate local adapters and verify SHA-256 against `sha256_manifest.json`. **Result (Verified):** The local `whisper_medium_output/.../checkpoint-3600/adapter_model.safetensors` has SHA-256 `f48948c39650156035020072ee91de61538b551cece50a2d8937a5e374fedef0`, bit-identically matching the Kaggle evaluated zero-notebook artifact.
-  2. *3-Arm Re-Merge Verification:* Run `scripts/experiment_asr_remerge.py` on the exact 400 Subset A clip IDs:
-     - **Arm 1 (NF4 Base + LoRA):** Load 4-bit NF4 base and attach PEFT adapter (emulates training forward pass without weight merging distortion).
-     - **Arm 2 (Merge Dequantized NF4):** Dequantize NF4 base to FP16/FP32, then merge adapter delta.
-     - **Arm 3 (FP32/BF16 Re-Merge):** Standard unquantized merge (measured at 13.03%).
-  3. *Claims Register Alignment:* If no arm reaches $\le 12.76\%$ WER, propose updating `claims_register.json` to the measured served WER (13.03% FP16 / 14.15% Turbo) before proposing any retrain.
+  1. *Artifact Verification:* Locate local adapters and verify SHA-256 against `sha256_manifest.json`. **Result (Verified):** The local `whisper_medium_output/.../checkpoint-3600/adapter_model.safetensors` has SHA-256 `f48948c39650156035020072ee91de61538b551cece50a2d8937a5e374fedef0`, bit-identically matching the Kaggle evaluated zero-notebook artifact. The Large-v3 and Turbo adapter safetensors are missing locally and reside in Kaggle kernel outputs `omar10lfc/fine-tuning-whisper-large-v3-on-arabic-speech` and `omar10lfc/whisper-large-turbo`.
+  2. *3-Arm Re-Merge Verification (`scripts/experiment_asr_remerge.py`):*
+     - **Arm 1 (NF4 Base + LoRA):** Base model loaded in 4-bit NF4 with adapter applied in-situ via PEFT forward pass (unmeasured).
+     - **Arm 2 (Merge Dequantized NF4):** Dequantize 4-bit NF4 weights to FP16/FP32, then merge adapter delta into dequantized base (unmeasured).
+     - **Arm 3 (FP32/BF16 Re-Merge):** True unquantized FP32/BF16 re-merge of base and adapter (unmeasured).
+     - *Historical Kaggle Baseline:* Existing Kaggle FP16 merge result on Subset A is 13.03% WER (`GATE_01_FP16`). All three experimental arms are unmeasured pending a GPU run.
+  3. *Exact Served Artifact Measurement:* Rather than proposing training-time 14.15% or FP16 13.03% as served numbers, evaluate the exact served artifact (`whisper-large-v3-turbo-ct2-int8`) on the 400 Subset A clips on GPU, and register it in `claims_register.json` under claim ID `SERVED_TURBO_CT2_INT8_GATE_WER`.
+* **Modal GPU Cost Estimate for EXP1:**
+  - Hardware: NVIDIA L4 GPU on Modal ($0.80/hour = $0.0133/minute).
+  - Runtime: ~12 minutes for 400 clips across Arms 1-3 and Turbo CT2 INT8.
+  - Estimated cost: **~$0.16**, well within the user-approved **$5.00** budget cap.
 * **Full Retraining Recipe (Contingency Only):**
   - *Base Models:* `openai/whisper-large-v3` (`06f233f`) or `openai/whisper-large-v3-turbo` (`41f01f3`).
   - *QLoRA Config:* Rank $r=64$, $\alpha=128$, dropout $0.05$, target modules `["q_proj", "v_proj"]`.
@@ -43,7 +48,7 @@ An engineering audit scored this repository **54/100 for research** and **28/100
   - *Optimization:* AdamW ($\beta_1=0.9, \beta_2=0.999$, $\epsilon=10^{-8}$), lr $1\times 10^{-4}$, linear decay with 500 warmup steps, effective batch size 64 (per-device 16 $\times$ 4 gradient accumulation).
   - *Dataset:* Mozilla Common Voice 25.0 Arabic (10,506 clean clips, length $>2$, seed 42).
   - *Gate Check:* Merged FP16 and CT2 INT8 artifacts must both achieve $\le 12.51\% \pm 0.25\%$ ($12.76\%$) on Subset A.
-* **Recommendation:** **DO NOT RETRAIN YET.** Test Arms 1 and 2 on GPU first; update claims register if needed.
+* **Recommendation:** **DO NOT RETRAIN YET.** Fetch missing adapter safetensors, execute Arms 1-3 and served Turbo CT2 INT8 on Modal L4 (estimated cost $0.16), and register the measured served WER. Update claims register if needed.
 
 ---
 
@@ -167,16 +172,22 @@ If any retraining candidate is approved by the user, the execution must strictly
 
 ---
 
-## 6. INPUTS NEEDED FROM USER
+## 6. Comprehensive Register of Inputs & Decisions
 
-The following table summarizes all inputs, decisions, or authorizations currently needed from the user:
+The following table summarizes all decisions, external authorizations, and artifacts needed from the user:
 
 | Item | Description | Owner | Status | Blocking Impact |
 | :--- | :--- | :--- | :--- | :--- |
-| **1. Modal Deployment Authorization** | Authorization to configure Modal deployment token and deploy the private backend. | User | Pending user authorization | Blocks live Modal deployment (`modal deploy`) |
-| **2. Hugging Face Space Secret** | Setting `MODAL_API_URL` and `API_BEARER_TOKEN` in the Hugging Face Space repository secrets. | User | Pending Modal deployment | Blocks end-to-end integration of HF Space frontend |
-| **3. ASR Claims Register Acceptance** | Approval to retain evaluated serving numbers (13.03% FP16 / 14.15% Turbo) without retraining. | User | Recommended (Do Not Retrain) | Unblocks closing Candidate 1 retraining question |
-| **4. GPU / Cloud Session for Arm 1 & 2** | Authorization of $0+ compute budget if live execution of Arms 1 & 2 on 400 clips is desired. | User | Optional (marked unmeasured on CPU) | Non-blocking (cleanly reported as unmeasured) |
+| **1. Deliverable & Licensing** | Define product scope and license. | User | **RESOLVED** (Non-commercial research demo; CC-BY-NC-SA 4.0 badges added) | None (resolved) |
+| **2. Architecture Choice** | Serving topology. | User | **RESOLVED** (Option B: HF Space Gradio calling private Modal FastAPI) | None (resolved) |
+| **3. Served ASR Selection** | Target production ASR checkpoint. | User | **RESOLVED** (Fine-tuned Whisper-Large-v3-Turbo CT2 INT8 pinned in pipeline) | None (resolved) |
+| **4. Experiment Tracking** | Logging infrastructure. | User | **RESOLVED** (JSON logs committed to repository; no W&B) | None (resolved) |
+| **5. EXP1 GPU Budget** | Budget for 3-arm re-merge on 400 clips. | User | **RESOLVED** (Approved up to $5.00 total; estimated cost $0.16 on Modal L4) | Unblocks EXP1 live run once adapters fetched |
+| **6. Missing Adapter Safetensors** | Download Large-v3 and Turbo `adapter_model.safetensors` from Kaggle kernel outputs or supply path. | User | Pending user download / Kaggle CLI execution | Blocks live execution of Arms 1-3 on GPU |
+| **7. Modal Token & Secrets** | Setup Modal credentials and `lecture-assistant-secret` on Modal account. | User | Handled by user (in progress) | Blocks running live Modal deploy (`modal deploy`) |
+| **8. HF Space Secrets** | Add `MODAL_API_URL` and `API_BEARER_TOKEN` in HF Space repository settings. | User | Pending live Modal deployment | Blocks end-to-end integration of HF Space |
+| **9. Served ASR Claims Register Entry** | Register measured WER on 400 clips for exact served CT2 INT8 Turbo (`SERVED_TURBO_CT2_INT8_GATE_WER`). | ML Eng / User | Scheduled for live GPU run | Will finalize ASR serving claims |
 
 ---
 *End of Retraining Assessment.*
+

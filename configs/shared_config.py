@@ -76,3 +76,4 @@ ASR_LONGFORM: Dict[str, Any]     = ASR_CFG.get("longform_decoding", {
 
 def get_protocol_dict() -> Dict[str, Any]:
     return PROTOCOL
+

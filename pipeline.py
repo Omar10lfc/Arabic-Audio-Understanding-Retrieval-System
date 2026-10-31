@@ -249,17 +249,31 @@ def get_asr_model_info() -> Dict[str, Any]:
     )
 
     # Compute SHA-256 for local verification
-    sha256 = None
+    weight_file = None
+    weight_sha256 = None
+    config_sha256 = None
+
     if target_path.is_dir():
-        for candidate in ["model.bin", "model.safetensors", "config.json", "model_card.json"]:
-            cp = target_path / candidate
-            if cp.exists():
+        # First check for actual weight binaries
+        for weight_name in ["model.bin", "model.safetensors"]:
+            wp = target_path / weight_name
+            if wp.exists():
+                weight_file = weight_name
                 h = hashlib.sha256()
-                with open(cp, "rb") as fd:
+                with open(wp, "rb") as fd:
                     while chunk := fd.read(65536):
                         h.update(chunk)
-                sha256 = h.hexdigest()
+                weight_sha256 = h.hexdigest()
                 break
+
+        # Check config.json separately
+        cfg_p = target_path / "config.json"
+        if cfg_p.exists():
+            h_cfg = hashlib.sha256()
+            with open(cfg_p, "rb") as fd:
+                while chunk := fd.read(65536):
+                    h_cfg.update(chunk)
+            config_sha256 = h_cfg.hexdigest()
 
     use_ct2 = os.environ.get("USE_CT2", "1") == "1"
     info = {
@@ -267,7 +281,10 @@ def get_asr_model_info() -> Dict[str, Any]:
         "revision": revision,
         "is_fine_tuned": is_fine_tuned,
         "adapter_source": card_data.get("adapter_source"),
-        "sha256": sha256 or "unknown",
+        "weight_file": weight_file,
+        "weight_sha256": weight_sha256 or "unmeasured (weights not downloaded locally)",
+        "config_sha256": config_sha256 or "unknown",
+        "sha256": weight_sha256 or config_sha256 or "unknown",
         "engine": "faster-whisper (CTranslate2 INT8)" if use_ct2 else "transformers",
     }
     return info

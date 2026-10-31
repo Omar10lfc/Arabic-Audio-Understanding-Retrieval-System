@@ -249,6 +249,22 @@ class TestAnalyzeUrl:
         assert "Retry-After" in r4.headers
         assert "slow down" in r4.json()["detail"].lower()
 
+    def test_rate_limiting_forwarded_for(self, client, monkeypatch):
+        import api
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
+        monkeypatch.setattr(api, "_RATE_LIMIT_MAX_REQ", 1)
+        api._RATE_LIMIT_STORE.clear()
+
+        # IP A hits limit
+        r1 = client.post("/analyze-url", json={"url": "ftp://ip-a-1"}, headers={"x-forwarded-for": "198.51.100.1"})
+        assert r1.status_code == 400
+        r2 = client.post("/analyze-url", json={"url": "ftp://ip-a-2"}, headers={"x-forwarded-for": "198.51.100.1"})
+        assert r2.status_code == 429
+
+        # IP B has independent window
+        r3 = client.post("/analyze-url", json={"url": "ftp://ip-b-1"}, headers={"x-forwarded-for": "198.51.100.2"})
+        assert r3.status_code == 400
+
 
 # =============================================================================
 # /cheat-sheet/{sid}.pdf

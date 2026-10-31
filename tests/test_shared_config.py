@@ -54,3 +54,4 @@ def test_protocol_keys_equal_pipeline_constants():
     assert pipeline.filter_news_framing("في هذا المقال: يتناول الكاتب الذكاء الاصطناعي") == "يتناول الكاتب الذكاء الاصطناعي"
     assert pipeline.filter_news_framing("ذكرت بي بي سي أن المؤتمر بدأ اليوم") == "أن المؤتمر بدأ اليوم"
     assert pipeline.filter_news_framing("شرح مفصل عن المحاضرة") == "شرح مفصل عن المحاضرة"
+
