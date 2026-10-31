@@ -5,6 +5,7 @@ models are loaded; the heavy functions are replaced with deterministic stubs in
 """
 
 import io
+import time
 
 import pytest
 
@@ -437,4 +438,96 @@ class TestUploadValidation:
         )
         assert r.status_code == 413
         assert "exceeds maximum permitted size" in r.json()["detail"]
+
+
+# =============================================================================
+# Task B2: Session Store with TTL & Max Capacity
+# =============================================================================
+class TestSessionStoreTTLAndCapacity:
+
+    def test_session_records_created_at(self, client):
+        import api
+        t0 = time.time()
+        sid = _upload(client).json()["session_id"]
+        assert sid in api._SESSIONS
+        assert sid in api._RUNTIME
+        assert api._SESSIONS[sid].created_at >= t0
+        assert api._RUNTIME[sid]["created_at"] >= t0
+
+    def test_session_ttl_eviction_on_drilldown(self, client, monkeypatch):
+        import api
+        monkeypatch.setattr(api, "SESSION_TTL_SECONDS", 10)
+        sid = _upload(client).json()["session_id"]
+
+        # Backdate created_at to 20s ago
+        api._SESSIONS[sid].created_at = time.time() - 20
+        api._RUNTIME[sid]["created_at"] = time.time() - 20
+
+        # Drill-down should evict it and return 404
+        r = client.post("/drill-down", json={"session_id": sid, "takeaway": "فكرة 1"})
+        assert r.status_code == 404
+        assert "Unknown or expired" in r.json()["detail"]
+        assert sid not in api._SESSIONS
+        assert sid not in api._RUNTIME
+
+    def test_session_ttl_eviction_on_pdf_download(self, client, monkeypatch):
+        import api
+        monkeypatch.setattr(api, "SESSION_TTL_SECONDS", 10)
+        sid = _upload(client).json()["session_id"]
+
+        api._SESSIONS[sid].created_at = time.time() - 20
+        api._RUNTIME[sid]["created_at"] = time.time() - 20
+
+        r = client.get(f"/cheat-sheet/{sid}.pdf")
+        assert r.status_code == 404
+        assert "Unknown or expired" in r.json()["detail"]
+
+    def test_session_max_capacity_evicts_oldest_first(self, client, monkeypatch):
+        import api
+        monkeypatch.setattr(api, "MAX_SESSIONS", 3)
+        api._SESSIONS.clear()
+        api._RUNTIME.clear()
+
+        now = time.time()
+        # Create session 1 (oldest: 300s ago)
+        s1 = _upload(client).json()["session_id"]
+        api._SESSIONS[s1].created_at = now - 300
+
+        # Create session 2 (200s ago)
+        s2 = _upload(client).json()["session_id"]
+        api._SESSIONS[s2].created_at = now - 200
+
+        # Create session 3 (100s ago)
+        s3 = _upload(client).json()["session_id"]
+        api._SESSIONS[s3].created_at = now - 100
+
+        assert len(api._SESSIONS) == 3
+
+        # Create session 4 -> should evict s1 (oldest, now - 300)
+        s4 = _upload(client).json()["session_id"]
+        assert len(api._SESSIONS) == 3
+        assert s1 not in api._SESSIONS
+        assert s1 not in api._RUNTIME
+        assert s2 in api._SESSIONS
+        assert s3 in api._SESSIONS
+        assert s4 in api._SESSIONS
+
+    def test_session_eviction_removes_temp_pdf(self, client, tmp_path, monkeypatch):
+        import api
+        fake_pdf = tmp_path / "test_session_evict.pdf"
+        fake_pdf.write_bytes(b"%PDF-1.4\n")
+        import pipeline
+        monkeypatch.setattr(pipeline, "generate_cheat_sheet",
+                            lambda c, i: ("# md", str(fake_pdf)))
+        monkeypatch.setattr(api, "SESSION_TTL_SECONDS", 5)
+
+        sid = _upload(client).json()["session_id"]
+        assert fake_pdf.exists()
+
+        # Age the session
+        api._SESSIONS[sid].created_at = time.time() - 10
+        # Trigger eviction
+        api.evict_expired_sessions()
+        assert not fake_pdf.exists()
+
 
