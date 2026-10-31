@@ -1,9 +1,10 @@
 """
-scripts/verify_q2_acceptance.py — Acceptance test for Q2
-=========================================================
-Acceptance criteria:
-1. /health reports model_id and revision and ASR metadata.
-2. Compare transcripts against stored Pass 2 outputs for the same clip IDs.
+scripts/verify_asr_reference_integrity.py — ASR Stored Reference Integrity Check
+================================================================================
+Integrity criteria:
+1. /health reports model_id, revision, and ASR metadata.
+2. Verify integrity of stored Pass 4 Turbo CT2 INT8 reference clips (cv_pass4_turbo_clips.csv).
+NOTE: Live model acceptance inference remains UNMEASURED pending the Modal GPU session.
 """
 
 import sys
@@ -25,7 +26,7 @@ sys.path.insert(0, str(ROOT))
 import api
 import pipeline
 
-def check_q2():
+def check_asr_reference_integrity():
     print("[1/2] Verifying /health endpoint metadata...")
     client = TestClient(api.api)
     r = client.get("/health")
@@ -48,35 +49,35 @@ def check_q2():
     assert asr.get("is_fine_tuned") is True, "Served model must be detected as fine-tuned"
     print("  -> /health check: PASS")
 
-    print("\n[2/2] Pass 2 Reference Data Inspection (Historical Benchmark)...")
-    print("  [AUDIT NOTE] The 20 reference transcripts in cv_pass2_clips.csv were generated")
-    print("  on Kaggle GPU using Whisper-Large-v3 fine-tuned CT2 INT8 Greedy (beam=1, temp=0.0).")
-    print("  Because Common Voice audio clips and CUDA GPU are not present in this local")
-    print("  workspace, live model execution cannot be run here.")
-    print("  STATUS: Real inference acceptance is marked UNMEASURED pending GPU session on Modal.")
+    print("\n[2/2] Pass 4 Turbo CT2 INT8 Stored Reference Data Integrity...")
+    print("  [AUDIT NOTE] The served ASR model is Whisper-Large-v3-Turbo CT2 INT8.")
+    print("  Pass 2 stored outputs came from Large-v3 and are not the served baseline.")
+    print("  Results/final/cv_pass4_turbo_clips.csv contains the exact 1,000 clips evaluated")
+    print("  on Kaggle GPU for Turbo CT2 INT8, including the 400 Subset A clips.")
+    print("  STATUS: Live inference acceptance is UNMEASURED pending Modal GPU execution.")
     
-    pass2_csv = ROOT / "Results" / "final" / "cv_pass2_clips.csv"
-    assert pass2_csv.exists(), f"Missing Pass 2 stored clips: {pass2_csv}"
+    turbo_csv = ROOT / "Results" / "final" / "cv_pass4_turbo_clips.csv"
+    assert turbo_csv.exists(), f"Missing Turbo CT2 stored clips: {turbo_csv}"
     
-    pass2_records = {}
-    with open(pass2_csv, "r", encoding="utf-8") as f:
+    turbo_records = {}
+    with open(turbo_csv, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            pass2_records[row["path"]] = row
-            if len(pass2_records) >= 20:
+            turbo_records[row["path"]] = row
+            if len(turbo_records) >= 20:
                 break
                 
-    print(f"  - Inspected {len(pass2_records)} stored reference clip outputs.")
-    sample_paths = list(pass2_records.keys())[:5]
+    print(f"  - Inspected {len(turbo_records)} stored Turbo CT2 INT8 reference clip outputs.")
+    sample_paths = list(turbo_records.keys())[:5]
     for p in sample_paths:
-        rec = pass2_records[p]
+        rec = turbo_records[p]
         print(f"    Clip: {p} | Ref: {rec['ref'][:30]}... | Hyp: {rec['hyp_norm'][:30]}... (WER: {rec['wer']})")
         assert len(rec["hyp_norm"]) > 0, f"Empty hypothesis for clip {p}"
         
-    print("  -> Stored Pass 2 reference integrity: PASS")
-    print("\n[PASS] Task Q2 acceptance check passed (Live inference queued for Modal GPU run)!")
+    print("  -> Stored Pass 4 Turbo reference integrity: PASS")
+    print("\n[PASS] Stored reference integrity check passed! (Live ASR inference queued for Modal GPU)")
     return True
 
 if __name__ == "__main__":
-    success = check_q2()
+    success = check_asr_reference_integrity()
     sys.exit(0 if success else 1)

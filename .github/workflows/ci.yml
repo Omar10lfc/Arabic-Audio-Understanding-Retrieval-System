@@ -41,7 +41,7 @@ jobs:
         run: |
           python scripts/verify_doc_claims.py
 
-      - name: Verify Q2 ASR Acceptance Check
+      - name: Verify Stored ASR Reference Integrity
         run: |
-          python scripts/verify_q2_acceptance.py
+          python scripts/verify_asr_reference_integrity.py
 
