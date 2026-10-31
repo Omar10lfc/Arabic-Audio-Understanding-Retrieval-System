@@ -39,7 +39,8 @@ import modal
 APP_NAME = "smart-lecture-assistant"
 VOLUME_NAME = "smart-lecture-assistant-volume"
 JOBS_DICT_NAME = "smart-lecture-jobs"
-SECRET_NAME = "lecture-assistant-secret"
+# User-created secret on Modal
+SECRET_NAME = os.environ.get("MODAL_SECRET_NAME", "audio")
 
 # Canonical served model metadata
 CANONICAL_MODEL_REPO = "Omar10lfc/whisper-large-v3-turbo-arabic-ct2-int8"
@@ -225,12 +226,14 @@ class SmartLectureService:
     def initialize(self):
         """Container cold start hook: enforce auth fail-closed, verify weights on Volume, warm up."""
         print("[modal_boot] Executing container cold start hook...")
-        token = os.environ.get("API_BEARER_TOKEN", "").strip()
+        token = (os.environ.get("audiotoken") or os.environ.get("API_BEARER_TOKEN", "")).strip()
+        if token:
+            os.environ["API_BEARER_TOKEN"] = token
         dev_no_auth = os.environ.get("DEV_NO_AUTH") == "1"
         if not token and not dev_no_auth:
             raise RuntimeError(
-                "FATAL: API_BEARER_TOKEN is required on Modal. Refusing to boot because "
-                "secret 'lecture-assistant-secret' is missing/empty and DEV_NO_AUTH!=1."
+                f"FATAL: API_BEARER_TOKEN / audiotoken is required on Modal. Refusing to boot because "
+                f"secret '{SECRET_NAME}' is missing/empty and DEV_NO_AUTH!=1."
             )
 
         weight_dir = verify_or_download_served_weights()

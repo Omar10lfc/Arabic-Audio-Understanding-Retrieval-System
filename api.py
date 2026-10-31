@@ -247,7 +247,7 @@ def _save_upload(upload: UploadFile) -> str:
 async def lifespan(app: FastAPI):
     # Enforce fail-closed authentication on Modal / production:
     # If API_BEARER_TOKEN is missing, refuse to start unless DEV_NO_AUTH=1 is explicitly set.
-    token = os.environ.get("API_BEARER_TOKEN", "").strip()
+    token = (os.environ.get("audiotoken") or os.environ.get("API_BEARER_TOKEN", "")).strip()
     dev_no_auth = os.environ.get("DEV_NO_AUTH") == "1"
     is_modal = bool(os.environ.get("MODAL_ENVIRONMENT") or os.environ.get("MODAL_APP_NAME"))
     if is_modal and not token and not dev_no_auth:
@@ -322,7 +322,7 @@ async def auth_middleware(request: Request, call_next):
     if request.url.path in ("/health", "/docs", "/openapi.json", "/redoc"):
         return await call_next(request)
 
-    token = os.environ.get("API_BEARER_TOKEN", "").strip()
+    token = (os.environ.get("audiotoken") or os.environ.get("API_BEARER_TOKEN", "")).strip()
     dev_no_auth = os.environ.get("DEV_NO_AUTH") == "1"
 
     # Fail closed: if no token is configured and DEV_NO_AUTH!=1, reject immediately with 401
