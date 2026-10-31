@@ -14,7 +14,8 @@ from evalkit.retrieval import (
 def test_canonical_arcd_corpus_and_biencoder_p1():
     set_all_seeds(42)
     arcd_zip = 'Data/ARCD (Arabic Language Comprehension)-Dataset.zip'
-    assert os.path.exists(arcd_zip), f"Missing ARCD dataset at {arcd_zip}"
+    if not os.path.exists(arcd_zip):
+        pytest.skip(f"Missing ARCD dataset at {arcd_zip} (Data/ is gitignored)")
     
     with zipfile.ZipFile(arcd_zip, 'r') as z:
         df = pd.read_csv(z.open('train.csv'))
