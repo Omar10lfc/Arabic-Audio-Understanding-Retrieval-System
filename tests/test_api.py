@@ -531,3 +531,52 @@ class TestSessionStoreTTLAndCapacity:
         assert not fake_pdf.exists()
 
 
+# =============================================================================
+# Task B3: Spawn-and-Poll Async Processing for Long Lectures
+# =============================================================================
+class TestAsyncSpawnAndPoll:
+
+    def test_analyze_async_returns_202_and_poll_url(self, client):
+        r = client.post(
+            "/analyze-async",
+            files={"audio": ("lecture.wav", io.BytesIO(_FAKE_WAV), "audio/wav")},
+        )
+        assert r.status_code == 202
+        body = r.json()
+        assert "job_id" in body
+        assert "poll_url" in body
+        assert body["poll_url"] == f"/jobs/{body['job_id']}"
+
+    def test_poll_job_returns_completed_result(self, client):
+        r = client.post(
+            "/analyze-async",
+            files={"audio": ("lecture.wav", io.BytesIO(_FAKE_WAV), "audio/wav")},
+        )
+        job_id = r.json()["job_id"]
+        poll_r = client.get(f"/jobs/{job_id}")
+        assert poll_r.status_code == 200
+        poll_body = poll_r.json()
+        assert poll_body["job_id"] == job_id
+        assert poll_body["status"] == "completed"
+        assert poll_body["result"] is not None
+        assert "session_id" in poll_body["result"]
+        assert "cheat_sheet" in poll_body["result"]
+
+    def test_poll_unknown_job_is_404(self, client):
+        assert client.get("/jobs/no-such-job").status_code == 404
+
+    def test_job_ttl_eviction(self, client, monkeypatch):
+        import api
+        monkeypatch.setattr(api, "SESSION_TTL_SECONDS", 10)
+        r = client.post(
+            "/analyze-async",
+            files={"audio": ("lecture.wav", io.BytesIO(_FAKE_WAV), "audio/wav")},
+        )
+        job_id = r.json()["job_id"]
+        # Age the job
+        api._JOBS[job_id]["created_at"] = time.time() - 20
+        # Polling should trigger eviction and 404
+        assert client.get(f"/jobs/{job_id}").status_code == 404
+
+
+

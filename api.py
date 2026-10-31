@@ -111,6 +111,22 @@ def enforce_session_capacity() -> None:
             except OSError:
                 pass
 
+
+# Asynchronous jobs store (for long lectures exceeding standard HTTP timeouts)
+_JOBS: Dict[str, Dict[str, Any]] = {}
+
+
+def evict_expired_jobs() -> int:
+    """Evict asynchronous job records older than SESSION_TTL_SECONDS."""
+    now = time.time()
+    expired = [jid for jid, jdata in list(_JOBS.items()) if now - jdata.get("created_at", 0) > SESSION_TTL_SECONDS]
+    for jid in expired:
+        _JOBS.pop(jid, None)
+    return len(expired)
+    for jid in expired:
+        _JOBS.pop(jid, None)
+    return len(expired)
+
 # Rate Limiter: max requests per IP window
 # NOTE: The in-process rate limiter is per container / per worker process.
 # In a serverless/multi-worker deployment (e.g., Modal), each container manages
@@ -342,6 +358,20 @@ class HealthResponse(BaseModel):
     device:        str
 
 
+class AsyncJobResponse(BaseModel):
+    job_id:   str
+    status:   str
+    poll_url: str
+
+
+class JobStatusResponse(BaseModel):
+    job_id:     str
+    status:     str
+    created_at: float
+    result:     Optional[AnalyzeResponse] = None
+    error:      Optional[str] = None
+
+
 # =============================================================================
 # Endpoints
 # =============================================================================
@@ -425,6 +455,85 @@ async def analyze(audio: UploadFile = File(...)):
             os.unlink(path)
         except OSError:
             pass
+
+
+@api.post("/analyze-async", response_model=AsyncJobResponse, status_code=202)
+async def analyze_async(audio: UploadFile = File(...)):
+    """Asynchronous analysis endpoint for long lectures exceeding HTTP timeout."""
+    path = _save_upload(audio)
+    job_id = uuid.uuid4().hex
+    evict_expired_jobs()
+    now = time.time()
+    _JOBS[job_id] = {
+        "status": "processing",
+        "created_at": now,
+        "result": None,
+        "error": None,
+    }
+
+    # If running on Modal, spawn function call
+    if os.environ.get("MODAL_ENVIRONMENT") and "modal_app" in sys.modules:
+        try:
+            with open(path, "rb") as f:
+                content = f.read()
+            import modal_app
+            modal_app.process_lecture_job.spawn(job_id, content, Path(path).suffix)
+        except Exception as e:
+            _JOBS[job_id]["status"] = "failed"
+            _JOBS[job_id]["error"] = str(e)
+        finally:
+            if os.path.exists(path):
+                os.unlink(path)
+    else:
+        # Local / test mode: execute pipeline and record output
+        try:
+            resp = _analyze_audio_path(path)
+            _JOBS[job_id]["status"] = "completed"
+            _JOBS[job_id]["result"] = resp
+        except Exception as e:
+            _JOBS[job_id]["status"] = "failed"
+            _JOBS[job_id]["error"] = str(e)
+        finally:
+            if os.path.exists(path):
+                try:
+                    os.unlink(path)
+                except OSError:
+                    pass
+
+    return AsyncJobResponse(
+        job_id=job_id,
+        status=_JOBS[job_id]["status"],
+        poll_url=f"/jobs/{job_id}",
+    )
+
+
+@api.get("/jobs/{job_id}", response_model=JobStatusResponse)
+async def get_job_status(job_id: str):
+    """Poll the status and result of an asynchronous processing job."""
+    evict_expired_jobs()
+    if job_id not in _JOBS:
+        # Check Modal dict if running in cloud
+        if os.environ.get("MODAL_ENVIRONMENT") and "modal_app" in sys.modules:
+            import modal_app
+            if job_id in modal_app.jobs_store:
+                data = modal_app.jobs_store[job_id]
+                return JobStatusResponse(
+                    job_id=job_id,
+                    status=data.get("status", "processing"),
+                    created_at=data.get("created_at", time.time()),
+                    result=data.get("result"),
+                    error=data.get("error"),
+                )
+        raise HTTPException(404, "Unknown or expired job_id")
+
+    job = _JOBS[job_id]
+    return JobStatusResponse(
+        job_id=job_id,
+        status=job["status"],
+        created_at=job["created_at"],
+        result=job.get("result"),
+        error=job.get("error"),
+    )
 
 
 class AnalyzeUrlRequest(BaseModel):
