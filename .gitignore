@@ -40,6 +40,8 @@ external/
 # Scratch, Temporary & Audio Files
 # ==========================================
 scratch/
+kaggle_*_out/
+kaggle_outputs/adapters/
 arabic_lecture_sample.mp3
 *.mp3
 *.wav
