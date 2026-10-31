@@ -265,6 +265,44 @@ class TestAnalyzeUrl:
         r3 = client.post("/analyze-url", json={"url": "ftp://ip-b-1"}, headers={"x-forwarded-for": "198.51.100.2"})
         assert r3.status_code == 400
 
+    def test_rate_limiting_spoofed_header(self, client, monkeypatch):
+        import api
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
+        monkeypatch.setattr(api, "_RATE_LIMIT_MAX_REQ", 1)
+        api._RATE_LIMIT_STORE.clear()
+
+        # Attacker tries to spoof client IP by prepending fake IPs to X-Forwarded-For
+        # Real proxy appends the verified IP '203.0.113.50' at the end of the header
+        r1 = client.post("/analyze-url", json={"url": "ftp://req1"},
+                         headers={"x-forwarded-for": "1.1.1.1, 203.0.113.50"})
+        assert r1.status_code == 400
+
+        # Second request with a different spoofed leading IP but same proxy edge IP
+        r2 = client.post("/analyze-url", json={"url": "ftp://req2"},
+                         headers={"x-forwarded-for": "2.2.2.2, 203.0.113.50"})
+        assert r2.status_code == 429
+
+    def test_rate_limiting_keyed_by_api_key(self, client, monkeypatch):
+        import api
+        monkeypatch.setenv("ALLOW_URL_INGEST", "1")
+        monkeypatch.setattr(api, "_RATE_LIMIT_MAX_REQ", 1)
+        api._RATE_LIMIT_STORE.clear()
+
+        # Same IP, different API keys
+        r1 = client.post("/analyze-url", json={"url": "ftp://req1"},
+                         headers={"x-api-key": "key-alpha", "x-forwarded-for": "198.51.100.1"})
+        assert r1.status_code == 400
+
+        # Key alpha hits 429
+        r2 = client.post("/analyze-url", json={"url": "ftp://req2"},
+                         headers={"x-api-key": "key-alpha", "x-forwarded-for": "198.51.100.1"})
+        assert r2.status_code == 429
+
+        # Key beta succeeds even from the same IP
+        r3 = client.post("/analyze-url", json={"url": "ftp://req3"},
+                         headers={"x-api-key": "key-beta", "x-forwarded-for": "198.51.100.1"})
+        assert r3.status_code == 400
+
 
 # =============================================================================
 # /cheat-sheet/{sid}.pdf
@@ -312,3 +350,91 @@ class TestSessionLifecycle:
 
     def test_delete_unknown_is_404(self, client):
         assert client.delete("/sessions/missing").status_code == 404
+
+
+# =============================================================================
+# Task B1: API Key Auth, Upload Cap, Audio MIME Allowlist
+# =============================================================================
+class TestApiKeyAuth:
+
+    def test_auth_bypassed_when_env_unset(self, client, monkeypatch):
+        monkeypatch.delenv("API_BEARER_TOKEN", raising=False)
+        r = client.get("/health")
+        assert r.status_code == 200
+        r_post = client.post(
+            "/transcribe",
+            files={"audio": ("a.wav", io.BytesIO(_FAKE_WAV), "audio/wav")},
+        )
+        assert r_post.status_code == 200
+
+    def test_health_always_public_even_with_token(self, client, monkeypatch):
+        monkeypatch.setenv("API_BEARER_TOKEN", "prod-secret-123")
+        r = client.get("/health")
+        assert r.status_code == 200
+
+    def test_protected_endpoint_rejects_missing_auth(self, client, monkeypatch):
+        monkeypatch.setenv("API_BEARER_TOKEN", "prod-secret-123")
+        r = client.post(
+            "/transcribe",
+            files={"audio": ("a.wav", io.BytesIO(_FAKE_WAV), "audio/wav")},
+        )
+        assert r.status_code == 401
+        assert "Unauthorized" in r.json()["detail"]
+
+    def test_protected_endpoint_rejects_wrong_key(self, client, monkeypatch):
+        monkeypatch.setenv("API_BEARER_TOKEN", "prod-secret-123")
+        r = client.post(
+            "/transcribe",
+            files={"audio": ("a.wav", io.BytesIO(_FAKE_WAV), "audio/wav")},
+            headers={"x-api-key": "wrong-secret"}
+        )
+        assert r.status_code == 401
+
+    def test_protected_endpoint_accepts_valid_x_api_key(self, client, monkeypatch):
+        monkeypatch.setenv("API_BEARER_TOKEN", "prod-secret-123")
+        r = client.post(
+            "/transcribe",
+            files={"audio": ("a.wav", io.BytesIO(_FAKE_WAV), "audio/wav")},
+            headers={"x-api-key": "prod-secret-123"}
+        )
+        assert r.status_code == 200
+
+    def test_protected_endpoint_accepts_valid_bearer_token(self, client, monkeypatch):
+        monkeypatch.setenv("API_BEARER_TOKEN", "prod-secret-123")
+        r = client.post(
+            "/transcribe",
+            files={"audio": ("a.wav", io.BytesIO(_FAKE_WAV), "audio/wav")},
+            headers={"authorization": "Bearer prod-secret-123"}
+        )
+        assert r.status_code == 200
+
+
+class TestUploadValidation:
+
+    def test_invalid_mime_type_returns_415(self, client):
+        r = client.post(
+            "/transcribe",
+            files={"audio": ("notes.txt", io.BytesIO(b"hello world"), "text/plain")},
+        )
+        assert r.status_code == 415
+        assert "Unsupported media type" in r.json()["detail"]
+
+    def test_allowed_mime_types(self, client):
+        for mime in ["audio/wav", "audio/mpeg", "audio/mp3", "audio/ogg", "audio/x-m4a", "audio/m4a", "audio/webm"]:
+            r = client.post(
+                "/transcribe",
+                files={"audio": ("sample.audio", io.BytesIO(_FAKE_WAV), mime)},
+            )
+            assert r.status_code == 200
+
+    def test_upload_size_limit_exceeded_returns_413(self, client, monkeypatch):
+        import api
+        monkeypatch.setattr(api, "MAX_UPLOAD_BYTES", 50)
+        oversized = b"x" * 60
+        r = client.post(
+            "/transcribe",
+            files={"audio": ("big.wav", io.BytesIO(oversized), "audio/wav")},
+        )
+        assert r.status_code == 413
+        assert "exceeds maximum permitted size" in r.json()["detail"]
+

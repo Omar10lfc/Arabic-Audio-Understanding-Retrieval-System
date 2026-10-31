@@ -33,6 +33,8 @@ import uuid
 import time
 import socket
 import ipaddress
+import hashlib
+import hmac
 from collections import defaultdict
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -126,13 +128,56 @@ def _new_session() -> str:
     return uuid.uuid4().hex
 
 
+MAX_UPLOAD_BYTES = int(os.environ.get("MAX_UPLOAD_BYTES", 25 * 1024 * 1024))  # 25 MB cap
+ALLOWED_AUDIO_MIMES = {
+    "audio/wav",
+    "audio/x-wav",
+    "audio/mpeg",
+    "audio/mp3",
+    "audio/ogg",
+    "audio/x-m4a",
+    "audio/m4a",
+    "audio/webm",
+}
+
+
 def _save_upload(upload: UploadFile) -> str:
-    """Persist an uploaded file to a temp path that librosa can open."""
+    """Validate MIME type and file size, persisting an uploaded file to a temp path."""
+    raw_ct = upload.content_type or ""
+    mime = raw_ct.split(";")[0].strip().lower()
+    if mime not in ALLOWED_AUDIO_MIMES:
+        raise HTTPException(
+            status_code=415,
+            detail=f"Unsupported media type '{mime or 'unknown'}'. Allowed formats: {sorted(ALLOWED_AUDIO_MIMES)}",
+        )
+
     suffix = Path(upload.filename or "audio").suffix or ".wav"
     fd, path = tempfile.mkstemp(suffix=suffix)
     os.close(fd)
-    with open(path, "wb") as f:
-        shutil.copyfileobj(upload.file, f)
+
+    total_bytes = 0
+    chunk_size = 1024 * 1024  # 1MB
+    try:
+        with open(path, "wb") as f:
+            while True:
+                chunk = upload.file.read(chunk_size)
+                if not chunk:
+                    break
+                total_bytes += len(chunk)
+                if total_bytes > MAX_UPLOAD_BYTES:
+                    raise HTTPException(
+                        status_code=413,
+                        detail=f"File exceeds maximum permitted size of {MAX_UPLOAD_BYTES // (1024 * 1024)}MB.",
+                    )
+                f.write(chunk)
+    except Exception:
+        if os.path.exists(path):
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+        raise
+
     return path
 
 
@@ -164,17 +209,32 @@ async def rate_limit_middleware(request: Request, call_next):
     if request.url.path == "/health":
         return await call_next(request)
 
-    # Read client IP, respecting X-Forwarded-For if behind reverse proxy (Modal, HF Spaces)
-    forwarded = request.headers.get("x-forwarded-for")
-    if forwarded:
-        client_ip = forwarded.split(",")[0].strip()
-    elif request.client:
-        client_ip = request.client.host
+    # 1. Key by API key if provided
+    api_key = request.headers.get("x-api-key")
+    if not api_key:
+        auth_header = request.headers.get("authorization", "")
+        if auth_header.lower().startswith("bearer "):
+            api_key = auth_header[7:].strip()
+
+    if api_key:
+        rate_key = f"key:{hashlib.sha256(api_key.encode()).hexdigest()[:16]}"
     else:
-        client_ip = "127.0.0.1"
+        # 2. Key by trusted client IP behind proxy.
+        # NOTE: In X-Forwarded-For: <client>, <proxy1>, the first entry is client-controlled
+        # and trivially spoofable. Trusted reverse proxies (Modal, Cloudflare) append the
+        # verified client IP. We take the last entry added by the trusted ingress.
+        forwarded = request.headers.get("x-forwarded-for")
+        if forwarded:
+            hops = [h.strip() for h in forwarded.split(",") if h.strip()]
+            client_ip = hops[-1] if hops else "127.0.0.1"
+        elif request.client:
+            client_ip = request.client.host
+        else:
+            client_ip = "127.0.0.1"
+        rate_key = f"ip:{client_ip}"
 
     now = time.time()
-    timestamps = _RATE_LIMIT_STORE[client_ip]
+    timestamps = _RATE_LIMIT_STORE[rate_key]
 
     valid_timestamps = [t for t in timestamps if now - t < _RATE_LIMIT_WINDOW]
     if len(valid_timestamps) >= _RATE_LIMIT_MAX_REQ:
@@ -185,7 +245,26 @@ async def rate_limit_middleware(request: Request, call_next):
         )
 
     valid_timestamps.append(now)
-    _RATE_LIMIT_STORE[client_ip] = valid_timestamps
+    _RATE_LIMIT_STORE[rate_key] = valid_timestamps
+    return await call_next(request)
+
+
+@api.middleware("http")
+async def auth_middleware(request: Request, call_next):
+    token = os.environ.get("API_BEARER_TOKEN", "").strip()
+    # Bypass auth if token is unset (dev mode) or for health check and docs
+    if token and request.url.path not in ("/health", "/docs", "/openapi.json", "/redoc"):
+        api_key = request.headers.get("x-api-key")
+        if not api_key:
+            auth_header = request.headers.get("authorization", "")
+            if auth_header.lower().startswith("bearer "):
+                api_key = auth_header[7:].strip()
+
+        if not api_key or not hmac.compare_digest(api_key, token):
+            return JSONResponse(
+                status_code=401,
+                content={"detail": "Unauthorized: invalid or missing API key."},
+            )
     return await call_next(request)
 
 
