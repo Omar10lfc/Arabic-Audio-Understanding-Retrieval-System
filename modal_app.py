@@ -51,6 +51,9 @@ app = modal.App(APP_NAME)
 vol = modal.Volume.from_name(VOLUME_NAME, create_if_missing=True)
 jobs_store = modal.Dict.from_name(JOBS_DICT_NAME, create_if_missing=True)
 
+# Compute target: T4 GPU by default, or CPU if MODAL_USE_CPU=1
+MODAL_GPU_SPEC: Optional[str] = None if os.environ.get("MODAL_USE_CPU") == "1" else "T4"
+
 # Build pinned Debian 12 container image
 image = (
     modal.Image.debian_slim(python_version="3.11")
@@ -63,8 +66,9 @@ image = (
     .pip_install(
         "nvidia-cudnn-cu12==9.1.0.70",
         "ctranslate2==4.4.0",
-        "faster-whisper==1.0.3",
-        "transformers==4.44.2",
+        "tokenizers>=0.20.3",
+        "faster-whisper>=1.0.3",
+        "transformers>=4.45.0",
         "accelerate>=0.30.0,<1.0",
         "sentence-transformers>=3.0.0",
         "faiss-cpu>=1.8.0",
@@ -143,6 +147,25 @@ def verify_or_download_served_weights() -> str:
             )
         print(f"[modal_init] Successfully verified served CT2 model.bin SHA256: {final_sha}")
 
+    # Ensure preprocessor_config.json exists with feature_size=128 for Turbo model
+    preprocessor_json = target_dir / "preprocessor_config.json"
+    processor_json = target_dir / "processor_config.json"
+    if not preprocessor_json.exists():
+        if processor_json.exists():
+            import json
+            with open(processor_json, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            feat_cfg = data.get("feature_extractor", data)
+            with open(preprocessor_json, "w", encoding="utf-8") as f:
+                json.dump(feat_cfg, f, indent=2)
+            print(f"[modal_init] Extracted preprocessor_config.json with feature_size={feat_cfg.get('feature_size')}")
+        else:
+            import json
+            with open(preprocessor_json, "w", encoding="utf-8") as f:
+                json.dump({"feature_size": 128, "sampling_rate": 16000, "hop_length": 160, "chunk_length": 30, "n_fft": 400}, f, indent=2)
+            print("[modal_init] Created default 128-mel preprocessor_config.json for Turbo")
+        vol.commit()
+
     return str(target_dir)
 
 
@@ -151,7 +174,7 @@ def verify_or_download_served_weights() -> str:
 # =============================================================================
 @app.function(
     image=image,
-    gpu="T4",
+    gpu=MODAL_GPU_SPEC,
     volumes={"/vol": vol},
     timeout=1800,  # 30 minutes max for long lectures
     secrets=[modal.Secret.from_name(SECRET_NAME)],
@@ -213,7 +236,7 @@ def process_lecture_job(job_id: str, audio_bytes: bytes, suffix: str = ".wav") -
 # and job states to modal.Dict so max_containers can autoscale horizontally.
 @app.cls(
     image=image,
-    gpu="T4",
+    gpu=MODAL_GPU_SPEC,
     volumes={"/vol": vol},
     timeout=600,
     min_containers=0,
@@ -258,31 +281,35 @@ class SmartLectureService:
 # =============================================================================
 @app.function(
     image=image,
-    gpu="T4",
+    gpu=MODAL_GPU_SPEC,
     volumes={"/vol": vol},
     timeout=600,
     secrets=[modal.Secret.from_name(SECRET_NAME)],
 )
 def verify_gpu_transcription() -> Dict[str, Any]:
-    """Test real GPU transcription to verify PyTorch CUDA 12.1 and cuDNN 9 CTranslate2 linking."""
+    """Test real transcription to verify PyTorch and CTranslate2 linking."""
     import torch
     import faster_whisper
     import numpy as np
 
-    print(f"[gpu_test] PyTorch Version: {torch.__version__}")
-    print(f"[gpu_test] CUDA Available: {torch.cuda.is_available()}")
-    if not torch.cuda.is_available():
-        raise RuntimeError("FATAL: CUDA is not available on GPU container!")
+    has_cuda = torch.cuda.is_available()
+    print(f"[compute_test] PyTorch Version: {torch.__version__}")
+    print(f"[compute_test] CUDA Available: {has_cuda}")
 
-    gpu_name = torch.cuda.get_device_name(0)
-    print(f"[gpu_test] GPU Device: {gpu_name}")
+    if has_cuda:
+        device = "cuda"
+        device_name = torch.cuda.get_device_name(0)
+    else:
+        device = "cpu"
+        device_name = "CPU"
+    print(f"[compute_test] Compute Device: {device_name}")
 
     weight_dir = verify_or_download_served_weights()
-    print(f"[gpu_test] Loading Faster-Whisper on {gpu_name} (compute_type=int8)...")
+    print(f"[compute_test] Loading Faster-Whisper on {device_name} (compute_type=int8)...")
     t0 = time.time()
-    model = faster_whisper.WhisperModel(weight_dir, device="cuda", compute_type="int8")
+    model = faster_whisper.WhisperModel(weight_dir, device=device, compute_type="int8")
     load_time = time.time() - t0
-    print(f"[gpu_test] Model loaded in {load_time:.2f}s")
+    print(f"[compute_test] Model loaded in {load_time:.2f}s")
 
     # Generate 3 seconds of 16kHz audio for live transcription test
     sample_rate = 16000
@@ -292,14 +319,15 @@ def verify_gpu_transcription() -> Dict[str, Any]:
     segments, info = model.transcribe(dummy_audio, language="ar", beam_size=1)
     seg_list = list(segments)
     infer_time = time.time() - t1
-    print(f"[gpu_test] Real GPU inference completed in {infer_time:.2f}s. Detected lang: {info.language}")
+    print(f"[compute_test] Real inference completed in {infer_time:.2f}s. Detected lang: {info.language}")
 
-    vram_alloc_mb = torch.cuda.memory_allocated() / (1024 * 1024)
-    vram_res_mb = torch.cuda.memory_reserved() / (1024 * 1024)
+    vram_alloc_mb = torch.cuda.memory_allocated() / (1024 * 1024) if has_cuda else 0.0
+    vram_res_mb = torch.cuda.memory_reserved() / (1024 * 1024) if has_cuda else 0.0
 
     return {
         "status": "success",
-        "gpu_name": gpu_name,
+        "device": device,
+        "device_name": device_name,
         "load_time_sec": round(load_time, 2),
         "infer_time_sec": round(infer_time, 2),
         "vram_allocated_mb": round(vram_alloc_mb, 2),

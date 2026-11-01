@@ -317,6 +317,22 @@ async def rate_limit_middleware(request: Request, call_next):
 
 
 @api.middleware("http")
+async def payload_limit_middleware(request: Request, call_next):
+    # Early rejection of payloads exceeding upload size limit
+    content_length = request.headers.get("content-length")
+    if content_length:
+        try:
+            if int(content_length) > MAX_UPLOAD_BYTES:
+                return JSONResponse(
+                    status_code=413,
+                    content={"detail": f"File exceeds maximum permitted size of {MAX_UPLOAD_BYTES // (1024 * 1024)}MB."},
+                )
+        except ValueError:
+            pass
+    return await call_next(request)
+
+
+@api.middleware("http")
 async def auth_middleware(request: Request, call_next):
     # Liveness probe and docs are always open
     if request.url.path in ("/health", "/docs", "/openapi.json", "/redoc"):

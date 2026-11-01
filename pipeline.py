@@ -322,6 +322,20 @@ def _load_whisper():
         try:
             from faster_whisper import WhisperModel
             model_target = str(WHISPER_DIR)
+            p_target = Path(model_target)
+            if p_target.is_dir():
+                prep_p = p_target / "preprocessor_config.json"
+                proc_p = p_target / "processor_config.json"
+                if not prep_p.exists() and proc_p.exists():
+                    try:
+                        with open(proc_p, "r", encoding="utf-8") as f:
+                            pdata = json.load(f)
+                        f_cfg = pdata.get("feature_extractor", pdata)
+                        with open(prep_p, "w", encoding="utf-8") as f:
+                            json.dump(f_cfg, f, indent=2)
+                        print(f"[pipeline] Extracted preprocessor_config.json with feature_size={f_cfg.get('feature_size')}")
+                    except Exception as ex:
+                        print(f"[pipeline] Warning: failed to extract preprocessor_config: {ex}")
             print(f"[pipeline] loading Whisper CT2 INT8 from {model_target} ...")
             dev = "cuda" if _device() == "cuda" else "cpu"
             _M.whisper_mdl = WhisperModel(model_target, device=dev, compute_type="int8")
